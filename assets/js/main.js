@@ -188,7 +188,7 @@ function initCountdown() {
       return
     }
     const startedAt = performance.now()
-    const duration = 900
+    const duration = 600
     const update = (now) => {
       const progress = Math.min((now - startedAt) / duration, 1)
       setDisplayedDays(Math.round(daysUntilFight * easeOutCubic(progress)))
@@ -243,13 +243,16 @@ function initScrollReveal() {
     return
   }
 
+  // 画面に入る少し手前で一度だけ表示する（戻ってきたときに再び隠さない）
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
-        entry.target.classList.toggle('is-visible', entry.isIntersecting)
+        if (!entry.isIntersecting) return
+        entry.target.classList.add('is-visible')
+        observer.unobserve(entry.target)
       })
     },
-    { threshold: 0.12, rootMargin: '0px 0px -8% 0px' },
+    { threshold: 0, rootMargin: '0px 0px 15% 0px' },
   )
 
   sections.forEach((section) => observer.observe(section))
@@ -272,16 +275,11 @@ function initRecordCounters() {
   let animationFrame = 0
   const observer = new IntersectionObserver(
     ([entry]) => {
-      window.cancelAnimationFrame(animationFrame)
-      if (!entry.isIntersecting) {
-        counters.forEach((counter) => {
-          counter.textContent = format(counter, 0)
-        })
-        return
-      }
+      if (!entry.isIntersecting) return
+      observer.disconnect()
 
       const startedAt = performance.now()
-      const duration = 1600
+      const duration = 1000
       const update = (now) => {
         const progress = Math.min((now - startedAt) / duration, 1)
         const eased = easeOutCubic(progress)
@@ -292,7 +290,7 @@ function initRecordCounters() {
       }
       animationFrame = window.requestAnimationFrame(update)
     },
-    { threshold: 0.35 },
+    { threshold: 0.15 },
   )
 
   observer.observe(section)
@@ -384,6 +382,35 @@ function initGalleryCarousel() {
   updateActive()
 }
 
+/* Hero smoke: stop animating while the hero is off screen ---------------- */
+function initHeroVisibility() {
+  const hero = document.querySelector('.hero')
+  const smokeSvg = hero?.querySelector('.smoke-filter')
+  if (!hero) return
+
+  const observer = new IntersectionObserver(([entry]) => {
+    hero.classList.toggle('is-offscreen', !entry.isIntersecting)
+    // SVG の揺らぎアニメーション（<animate>）は CSS では止まらないため個別に止める
+    if (entry.isIntersecting) smokeSvg?.unpauseAnimations?.()
+    else smokeSvg?.pauseAnimations?.()
+  })
+  observer.observe(hero)
+}
+
+/* Video: load the YouTube player only after a tap ----------------------- */
+function initVideoFacade() {
+  document.querySelectorAll('.video-facade').forEach((facade) => {
+    facade.addEventListener('click', () => {
+      const iframe = document.createElement('iframe')
+      iframe.src = `https://www.youtube-nocookie.com/embed/${facade.dataset.videoId}?autoplay=1&playsinline=1`
+      iframe.title = facade.dataset.videoTitle
+      iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
+      iframe.allowFullscreen = true
+      facade.replaceWith(iframe)
+    }, { once: true })
+  })
+}
+
 /* Contact form ----------------------------------------------------------- */
 function initContactForm() {
   const form = document.querySelector('.contact-form')
@@ -401,5 +428,7 @@ initCountdown()
 initScrollReveal()
 initRecordCounters()
 initGalleryCarousel()
+initHeroVisibility()
+initVideoFacade()
 initContactForm()
 initIntro()

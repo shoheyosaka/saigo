@@ -248,8 +248,9 @@ main {
     radial-gradient(ellipse at 35% 69%,rgba(57,87,113,.52) 0 10%,rgba(27,49,72,.24) 23%,transparent 44%),
     linear-gradient(90deg,transparent 8%,rgba(28,54,78,.18) 33%,rgba(72,102,128,.52) 50%,rgba(29,55,79,.2) 68%,transparent 92%);
   filter: url(#smoke-warp) blur(13px); mix-blend-mode: screen; opacity: 0;
-  will-change: transform,opacity;
 }
+/* ヒーローが画面外にある間は煙の描画を止める（main.js が is-offscreen を付与） */
+.hero.is-offscreen .smoke span { animation-play-state: paused; }
 .smoke span:nth-child(1) {
   right: 4%; bottom: -54%; left: auto; animation: aura-rise 19s ease-in-out -4s infinite;
 }
@@ -315,29 +316,25 @@ main {
 }
 
 /* Scroll reveal ----------------------------------------------------------- */
+/* セクションは画面に入る少し手前から短く表示する（main.js で一度だけ is-visible を付与） */
 .scroll-reveal {
   opacity: 0; transition:
-    opacity .9s cubic-bezier(.2,.7,.2,1),
-    transform 1s cubic-bezier(.16,.76,.2,1);
-  will-change: opacity,transform;
+    opacity .45s ease-out,
+    transform .55s cubic-bezier(.2,.7,.2,1);
 }
-.scroll-reveal.reveal-up { transform: translate3d(0,52px,0); }
-.scroll-reveal.reveal-left { transform: translate3d(-48px,0,0); }
-.scroll-reveal.is-visible { opacity: 1; transform: translate3d(0,0,0); }
+.scroll-reveal.reveal-up { transform: translate3d(0,24px,0); }
+.scroll-reveal.reveal-left { transform: translate3d(-24px,0,0); }
+.scroll-reveal.is-visible { opacity: 1; transform: none; }
 .scroll-reveal.is-visible .plans article,
-.scroll-reveal.is-visible .fight-card,
-.scroll-reveal.is-visible .contact-links > * {
-  animation: scroll-child-rise .65s both;
+.scroll-reveal.is-visible .fight-card {
+  animation: scroll-child-rise .4s both;
 }
 .scroll-reveal.is-visible .plans article:nth-child(2),
-.scroll-reveal.is-visible .fight-card:nth-child(2),
-.scroll-reveal.is-visible .contact-links > *:nth-child(2) { animation-delay: .08s; }
+.scroll-reveal.is-visible .fight-card:nth-child(2) { animation-delay: .05s; }
 .scroll-reveal.is-visible .plans article:nth-child(3),
-.scroll-reveal.is-visible .fight-card:nth-child(3),
-.scroll-reveal.is-visible .contact-links > *:nth-child(3) { animation-delay: .16s; }
-.scroll-reveal.is-visible .contact-links > *:nth-child(4) { animation-delay: .24s; }
+.scroll-reveal.is-visible .fight-card:nth-child(3) { animation-delay: .1s; }
 @keyframes scroll-child-rise {
-  from { opacity: 0; transform: translateY(24px); }
+  from { opacity: 0; transform: translateY(14px); }
   to { opacity: 1; transform: translateY(0); }
 }
 .hero-actions {
@@ -396,6 +393,17 @@ main {
   pointer-events: none; content: '';
 }
 .video-frame iframe { width: 100%; height: 100%; border: 0; }
+.video-facade { position: relative; display: block; width: 100%; height: 100%; padding: 0; border: 0; background: #000; cursor: pointer; }
+.video-facade img { width: 100%; height: 100%; object-fit: cover; opacity: .82; transition: opacity .2s ease; }
+.video-facade:hover img { opacity: 1; }
+.video-play {
+  position: absolute; top: 50%; left: 50%; width: 68px; height: 48px; border-radius: 12px;
+  background: var(--orange); transform: translate(-50%,-50%); box-shadow: 0 8px 24px rgba(0,0,0,.4);
+}
+.video-play::after {
+  position: absolute; top: 50%; left: 54%; border-block: 10px solid transparent; border-left: 17px solid white;
+  transform: translate(-50%,-50%); content: '';
+}
 
 /* Profile ----------------------------------------------------------------- */
 .profile-section,.sponsor-section { padding: 110px max(24px, calc((100vw - 1240px)/2)); }
@@ -771,7 +779,10 @@ footer p,footer > a:last-child { color: #777; font: 500 9px/1 'Barlow Condensed'
   main { scroll-padding-top: 68px; }
   .dark-shell { padding-top: 68px; }
   .snap-section { height: calc(100svh - 68px); min-height: calc(100svh - 68px); }
-  .site-header { width: 100%; height: 68px; padding-inline: 15px; }
+  /* スマホでは負荷の高い効果を軽くする：ヘッダーのぼかし・煙のゆらぎフィルター・オープニングの煙の数 */
+  .site-header { width: 100%; height: 68px; padding-inline: 15px; background: rgba(13,13,15,.96); backdrop-filter: none; }
+  .smoke span { filter: blur(13px); }
+  .intro-smoke span:nth-child(n+7) { display: none; }
   .menu-panel { top: 60px; }
   .hero {
     min-height: calc(100svh - 68px);

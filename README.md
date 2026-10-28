@@ -25,14 +25,22 @@ HTML / CSS / JavaScript のみで構成した静的サイトです。ビルド�
         ├── favicon.svg
         ├── saigo-brush.webp      # 筆文字ロゴ（透過）
         ├── saigo-hero.webp       # ヒーロー用人物切り抜き（透過）
-        ├── saigo-profile.jpg     # プロフィール写真
-        ├── sponsor-champion.jpg  # ギャラリー 01
-        ├── sponsor-victory.jpg   # ギャラリー 02
-        ├── sponsor-ring.jpg      # ギャラリー 03
-        └── sponsor-entrance.jpg  # ギャラリー 04
+        ├── saigo-profile.webp     # プロフィール写真
+        ├── sponsor-champion.webp  # ギャラリー 01
+        ├── sponsor-victory.webp   # ギャラリー 02
+        ├── sponsor-ring.webp      # ギャラリー 03
+        └── sponsor-entrance.webp  # ギャラリー 04
 ```
 
 外部読み込みは Google Fonts（Barlow Condensed / Noto Sans JP）と YouTube 埋め込みのみです。
+
+### 表示速度のための工夫
+
+- 写真は WebP（幅 1000px 程度）に変換して軽量化。新しい写真も `cwebp -q 80 -resize 1000 0 元画像.jpg -o 出力.webp` などで変換してから置く
+- 紹介動画はサムネイルだけ先に表示し、タップされてから YouTube プレーヤーを読み込む
+- ヒーローの煙アニメーションは、画面外にある間は停止
+- スマホではヘッダーのぼかし・煙のゆらぎフィルターを省略し、描画負荷を軽減
+- 日本語フォントは可変フォント（1セットで全ウェイト）を読み込み
 
 ## ページ構成
 

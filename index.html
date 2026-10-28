@@ -15,8 +15,11 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700;800;900&family=Noto+Sans+JP:wght@400;500;600;700;800&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800;900&family=Noto+Sans+JP:wght@400..800&display=swap">
   <link rel="stylesheet" href="assets/css/style.css">
+  <!-- 最初の画面（オープニング・ヒーロー）で使う画像は先に読み込む -->
+  <link rel="preload" as="image" href="assets/images/saigo-brush.webp" type="image/webp">
+  <link rel="preload" as="image" href="assets/images/saigo-hero.webp" type="image/webp" fetchpriority="high">
 
   <script>
     // オープニング演出の要否を描画前に判定（同一タブ内では初回のみ再生）
@@ -74,7 +77,7 @@
 
       <div class="hero snap-section">
         <div class="hero-image" aria-hidden="true">
-          <img src="assets/images/saigo-hero.webp" alt="" width="410" height="780">
+          <img src="assets/images/saigo-hero.webp" alt="" width="410" height="780" fetchpriority="high">
         </div>
         <div class="smoke" aria-hidden="true">
           <svg class="smoke-filter">
@@ -153,13 +156,12 @@
         </div>
 
         <div class="video-feature">
+          <!-- サムネイルだけ表示し、タップされたら YouTube プレーヤーを読み込む（main.js） -->
           <div class="video-frame">
-            <iframe
-              src="https://www.youtube-nocookie.com/embed/kZ74_njNdtU"
-              title="拳剛 vs SAIGO｜2026.8.30 RISE EVOL OSAKA Vol.3"
-              loading="lazy"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              allowfullscreen></iframe>
+            <button class="video-facade" type="button" data-video-id="kZ74_njNdtU" data-video-title="拳剛 vs SAIGO｜2026.8.30 RISE EVOL OSAKA Vol.3" aria-label="動画を再生：拳剛 vs SAIGO｜2026.8.30 RISE EVOL OSAKA Vol.3">
+              <img src="https://i.ytimg.com/vi/kZ74_njNdtU/sddefault.jpg" alt="" loading="lazy" decoding="async" width="640" height="480">
+              <span class="video-play" aria-hidden="true"></span>
+            </button>
           </div>
         </div>
       </section>
@@ -170,7 +172,7 @@
         <p class="section-label">PROFILE / SAIGO</p>
         <h2>SAIGO</h2>
         <figure class="profile-photo">
-          <img src="assets/images/saigo-profile.jpg" alt="計量時にポーズを取るSAIGO" loading="lazy" width="422" height="426">
+          <img src="assets/images/saigo-profile.webp" alt="計量時にポーズを取るSAIGO" loading="lazy" decoding="async" width="422" height="426">
           <figcaption>PROFESSIONAL FIGHTER / SAIGO</figcaption>
         </figure>
       </div>
@@ -273,19 +275,19 @@
 
       <div class="sponsor-gallery" aria-label="SAIGO 活動写真">
         <figure class="gallery-main">
-          <img src="assets/images/sponsor-champion.jpg" alt="トロフィーを手にリングに立つSAIGO" loading="lazy" width="1179" height="877">
+          <img src="assets/images/sponsor-champion.webp" alt="トロフィーを手にリングに立つSAIGO" loading="lazy" decoding="async" width="1000" height="744">
           <figcaption><span>01</span>CHAMPION</figcaption>
         </figure>
         <figure class="gallery-wide">
-          <img src="assets/images/sponsor-victory.jpg" alt="海外大会で勝利したSAIGO" loading="lazy" width="1179" height="731">
+          <img src="assets/images/sponsor-victory.webp" alt="海外大会で勝利したSAIGO" loading="lazy" decoding="async" width="1000" height="621">
           <figcaption><span>02</span>VICTORY</figcaption>
         </figure>
         <figure>
-          <img src="assets/images/sponsor-ring.jpg" alt="リングで試合に臨むSAIGO" loading="lazy" width="1179" height="649">
+          <img src="assets/images/sponsor-ring.webp" alt="リングで試合に臨むSAIGO" loading="lazy" decoding="async" width="1000" height="551">
           <figcaption><span>03</span>FIGHT</figcaption>
         </figure>
         <figure>
-          <img src="assets/images/sponsor-entrance.jpg" alt="和装で入場するSAIGO" loading="lazy" width="1179" height="645">
+          <img src="assets/images/sponsor-entrance.webp" alt="和装で入場するSAIGO" loading="lazy" decoding="async" width="1000" height="548">
           <figcaption><span>04</span>ENTRANCE</figcaption>
         </figure>
       </div>
