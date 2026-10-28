@@ -785,8 +785,13 @@ footer p,footer > a:last-child { color: #777; font: 500 9px/1 'Barlow Condensed'
   .snap-section,.overview-section { height: auto; min-height: 0; overflow: visible; }
   /* スマホでは負荷の高い効果を軽くする：ヘッダーのぼかし・煙のゆらぎフィルター・オープニングの煙の数 */
   .site-header { width: 100%; height: 68px; padding-inline: 15px; background: rgba(13,13,15,.96); backdrop-filter: none; }
-  .smoke span { filter: blur(13px); }
   .intro-smoke span:nth-child(n+7) { display: none; }
+  /* 煙は動かさず、合成（mix-blend-mode）もしない静止した光にする */
+  .smoke span { filter: blur(13px); mix-blend-mode: normal; opacity: .32; animation: none; }
+  .smoke span:nth-child(n+3) { display: none; }
+  /* 日本語は端末内蔵フォント（iPhone はヒラギノ）を優先し、Webフォントのダウンロード・再描画を避ける。
+     ヒラギノのない端末（Android など）は従来どおり Noto Sans JP を使う */
+  :root { font-family: 'Hiragino Sans','Hiragino Kaku Gothic ProN','Noto Sans JP',sans-serif; }
   .menu-panel { top: 60px; }
   /* スマホは上から順に積む（文字 → ボタンは下寄せ）。画面が低い iPhone Safari でも重ならない */
   .hero {

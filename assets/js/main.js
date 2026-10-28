@@ -389,6 +389,11 @@ function initHeroVisibility() {
   const hero = document.querySelector('.hero')
   const smokeSvg = hero?.querySelector('.smoke-filter')
   if (!hero) return
+  // スマホでは煙を静止表示にしているので、SVG の揺らぎアニメーションも常に止めておく
+  if (window.matchMedia('(max-width: 780px)').matches) {
+    smokeSvg?.pauseAnimations?.()
+    return
+  }
 
   const observer = new IntersectionObserver(([entry]) => {
     hero.classList.toggle('is-offscreen', !entry.isIntersecting)
