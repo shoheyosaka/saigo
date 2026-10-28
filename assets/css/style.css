@@ -784,9 +784,10 @@ footer p,footer > a:last-child { color: #777; font: 500 9px/1 'Barlow Condensed'
   .smoke span { filter: blur(13px); }
   .intro-smoke span:nth-child(n+7) { display: none; }
   .menu-panel { top: 60px; }
+  /* スマホは上から順に積む（文字 → ボタンは下寄せ）。画面が低い iPhone Safari でも重ならない */
   .hero {
-    min-height: calc(100svh - 68px);
-    padding: 0 0 18px; align-items: flex-start;
+    min-height: calc(100svh - 68px); flex-direction: column; align-items: stretch;
+    padding: clamp(24px,9svh,90px) var(--hero-gutter) 62px;
     --hero-gutter: 18px;
   }
   .hero::after {
@@ -794,14 +795,10 @@ footer p,footer > a:last-child { color: #777; font: 500 9px/1 'Barlow Condensed'
       linear-gradient(90deg,#0d0d0f 0,rgba(13,13,15,.95) 33%,rgba(13,13,15,.25) 79%,transparent 100%),
       linear-gradient(0deg,#0d0d0f 0,transparent 32%);
   }
-  .hero-copy {
-    position: absolute; inset: 0 var(--hero-gutter); width: auto; margin-top: 0; padding-left: 0;
-    transform: none;
-  }
-  .hero-heading { position: absolute; top: clamp(70px,12svh,112px); left: 0; }
-  .hero-main { position: absolute; top: clamp(150px,22svh,210px); right: 0; left: 0; }
+  .hero-copy { width: auto; padding-left: 0; transform: none; }
+  .hero-main { margin-top: clamp(14px,5svh,56px); }
   .hero-name-image { width: 88%; max-width: none; margin-top: 0; margin-left: -3%; }
-  .hero-details { position: static; margin-top: clamp(70px,10svh,90px); }
+  .hero-details { margin-top: clamp(20px,6svh,64px); }
   .hero-image { top: 4%; right: -42%; bottom: 0; width: 116%; opacity: .88; }
   .hero-image img { width: auto; height: 84%; }
   .kicker { max-width: 210px; font-size: 10px; line-height: 1.4; }
@@ -829,7 +826,7 @@ footer p,footer > a:last-child { color: #777; font: 500 9px/1 'Barlow Condensed'
     70%,100% { transform: translateY(240%); }
   }
   .hero-actions {
-    right: var(--hero-gutter); bottom: 62px; left: var(--hero-gutter); display: flex; width: auto;
+    position: relative; inset: auto; display: flex; width: auto; margin-top: auto; padding-top: 22px;
     flex-direction: column; gap: 7px;
   }
   .hero-actions .button { min-width: 0; width: 100%; padding: 12px 13px; font-size: 9px; }
@@ -928,6 +925,18 @@ footer p,footer > a:last-child { color: #777; font: 500 9px/1 'Barlow Condensed'
   .form-row { grid-template-columns: 1fr; }
   footer { flex-wrap: wrap; gap: 20px; padding-block: 32px; }
   footer p { order: 3; width: 100%; }
+}
+
+/* iPhone SE など縦が短いスマホ：ヒーローを詰めてボタンまで1画面に収める */
+@media (max-width: 780px) and (max-height: 620px) {
+  .hero { padding-top: 18px; padding-bottom: 20px; }
+  .hero-name-image { width: 72%; }
+  .hero-main { margin-top: 10px; }
+  .hero-details { margin-top: 14px; }
+  .hero-lead { margin-top: 10px; }
+  .hero-actions { padding-top: 14px; gap: 6px; }
+  .hero-actions .button { padding-block: 10px; }
+  .scroll-cue { display: none; }
 }
 
 @media (max-width: 430px) {
