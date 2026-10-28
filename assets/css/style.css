@@ -79,12 +79,17 @@
 .intro-smoke span:nth-child(12) {
   top: 18%; left: -4%; width: 44vw; height: 44vw; animation-delay: .9s;
 }
+/* 画面中央を通る斜めの線。どの画面比率でも端から端まで届くよう長さは 160vmax */
 .intro-slash {
-  position: absolute; z-index: 3; top: 50%; left: -15%; width: 130%; height: 4px;
-  transform: rotate(-18deg) scaleX(0); transform-origin: left center; opacity: 0;
+  position: absolute; z-index: 3; top: 50%; left: 50%; width: 160vmax; height: 4px;
+  transform: translate(-50%,-50%) rotate(-18deg); pointer-events: none;
+}
+.intro-slash::before {
+  position: absolute; inset: 0; transform: scaleX(0); transform-origin: left center; opacity: 0;
   background: linear-gradient(90deg,transparent 0,#fff 12%,#cde7f4 48%,#fff 88%,transparent 100%);
   box-shadow: 0 0 12px #fff,0 0 36px #7fc8e8,0 0 80px rgba(100,185,225,.8);
   animation: intro-slash 1s cubic-bezier(.2,.8,.15,1) 1.65s forwards;
+  content: '';
 }
 .intro-logo {
   position: absolute; z-index: 4; top: 50%; left: 50%; width: min(76vw,920px); height: auto;
@@ -103,10 +108,10 @@
   100% { opacity: .62; transform: scale(1.3) translate3d(8%,-9%,0); }
 }
 @keyframes intro-slash {
-  0% { opacity: 0; transform: rotate(-18deg) scaleX(0); }
+  0% { opacity: 0; transform: scaleX(0); }
   12% { opacity: 1; }
-  62% { opacity: 1; transform: rotate(-18deg) scaleX(1); }
-  100% { opacity: 0; transform: rotate(-18deg) scaleX(1); }
+  62% { opacity: 1; transform: scaleX(1); }
+  100% { opacity: 0; transform: scaleX(1); }
 }
 @keyframes intro-logo-in {
   0% { opacity: 0; transform: translate(-50%,-50%) scale(1.28) rotate(-3deg); filter: blur(8px) drop-shadow(0 0 45px white); }
@@ -813,7 +818,7 @@ footer p,footer > a:last-child { color: #777; font: 500 9px/1 'Barlow Condensed'
     70%,100% { transform: translateY(240%); }
   }
   .hero-actions {
-    right: var(--hero-gutter); bottom: 88px; left: var(--hero-gutter); display: flex; width: auto;
+    right: var(--hero-gutter); bottom: 62px; left: var(--hero-gutter); display: flex; width: auto;
     flex-direction: column; gap: 7px;
   }
   .hero-actions .button { min-width: 0; width: 100%; padding: 12px 13px; font-size: 9px; }
