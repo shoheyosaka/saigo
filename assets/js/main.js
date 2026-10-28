@@ -238,7 +238,8 @@ function initCountdown() {
 /* Scroll reveal ---------------------------------------------------------- */
 function initScrollReveal() {
   const sections = document.querySelectorAll('.scroll-reveal')
-  if (prefersReducedMotion()) {
+  // スマホは速いスクロールで空白が見えないよう、最初から表示しておく
+  if (prefersReducedMotion() || window.matchMedia('(max-width: 780px)').matches) {
     sections.forEach((section) => section.classList.add('is-visible'))
     return
   }
@@ -277,6 +278,7 @@ function initRecordCounters() {
     ([entry]) => {
       if (!entry.isIntersecting) return
       observer.disconnect()
+      section.classList.add('is-counted')
 
       const startedAt = performance.now()
       const duration = 1000

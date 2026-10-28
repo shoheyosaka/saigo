@@ -480,7 +480,7 @@ main {
   inherits: false;
   initial-value: 0%;
 }
-.record-section.is-visible .rate-ring { animation: rate-fill 1.6s cubic-bezier(.16,.8,.2,1) .15s forwards; }
+.record-section.is-counted .rate-ring { animation: rate-fill 1.6s cubic-bezier(.16,.8,.2,1) .15s forwards; }
 @keyframes rate-fill {
   from { --rate: 0%; }
   to { --rate: 61.5%; }
@@ -776,9 +776,13 @@ footer p,footer > a:last-child { color: #777; font: 500 9px/1 'Barlow Condensed'
 }
 
 @media (max-width: 780px) {
-  main { scroll-padding-top: 68px; }
+  /* スマホはブラウザ標準のページスクロールにする。
+     入れ子スクロール＋強制スナップは iOS Safari で描画が追いつかなくなるため使わない */
+  html { scroll-padding-top: 68px; }
+  body { height: auto; overflow: visible; }
+  main { height: auto; overflow: visible; overflow-x: clip; scroll-snap-type: none; }
   .dark-shell { padding-top: 68px; }
-  .snap-section { height: calc(100svh - 68px); min-height: calc(100svh - 68px); }
+  .snap-section,.overview-section { height: auto; min-height: 0; overflow: visible; }
   /* スマホでは負荷の高い効果を軽くする：ヘッダーのぼかし・煙のゆらぎフィルター・オープニングの煙の数 */
   .site-header { width: 100%; height: 68px; padding-inline: 15px; background: rgba(13,13,15,.96); backdrop-filter: none; }
   .smoke span { filter: blur(13px); }
