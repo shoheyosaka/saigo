@@ -815,10 +815,11 @@ html:has(.subpage) { scroll-padding-top: 82px; }
 /* 現在のスポンサー：白いカードにロゴを中央配置。Re:SHAL はロゴの赤背景とつなげる */
 .partners .sponsor-block-head { margin-top: 64px; }
 .partner-logos { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; margin-top: 26px; }
-.partner-logos li { display: flex; height: 150px; align-items: center; justify-content: center; padding: 22px; background: #fff; }
-.partner-logos img { display: block; width: auto; height: auto; max-width: 84%; max-height: 106px; }
-.partner-logos .partner-logo-red { padding: 0; background: #f00; }
-.partner-logos .partner-logo-red img { width: 100%; height: 100%; max-width: none; max-height: none; object-fit: contain; }
+/* ロゴの見た目の大きさをそろえる：画像は余白を切り詰めておき、
+   各 li の --logo-w（基準サイズの何倍の幅か）で、見た目の存在感が同じくらいになるよう調整 */
+.partner-logos { --logo-base: 66px; }
+.partner-logos li { display: flex; height: 150px; align-items: center; justify-content: center; padding: 18px; background: #fff; }
+.partner-logos img { display: block; width: calc(var(--logo-base) * var(--logo-w, 2)); max-width: 100%; height: auto; }
 
 /* 小見出し（プラン・流れ） */
 .sponsor-block-head { margin-top: 90px; }
@@ -1095,8 +1096,8 @@ footer p,footer > a:last-child { color: #777; font: 500 9px/1 'Barlow Condensed'
   .sponsor-block-head { margin-top: 60px; }
   .partners .sponsor-block-head { margin-top: 48px; }
   .partner-logos { grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 20px; }
-  .partner-logos li { height: 104px; padding: 14px; }
-  .partner-logos img { max-height: 76px; }
+  .partner-logos { --logo-base: 48px; }
+  .partner-logos li { height: 104px; padding: 12px; }
   .sponsor-block-head h3 { font-size: 24px; }
   .flow-steps { grid-template-columns: 1fr; }
   .flow-steps > li,.flow-steps > li:first-child { min-height: 0; padding: 22px 4px 26px; border: 0; border-bottom: 1px solid #3b3b3e; }
