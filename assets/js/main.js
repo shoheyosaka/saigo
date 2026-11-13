@@ -21,6 +21,41 @@ const fights = [
   { result: '引分', opponent: '叶和', finish: '判定（1-0）', time: '3R 3:00', weight: 'フェザー級（-57.5kg）', event: 'RISE EVOL.11', venue: '新宿FACE', date: '2022.11.03' },
 ]
 
+/* ==========================================================================
+   グッズデータ（表示したい順）
+   status: '販売中' | '近日発売' | '売り切れ'
+   price : 税込価格（数値）。未定なら null
+   image : assets/images/ 内の画像パス。未定なら null（ロゴ入りの仮画像を表示）
+   url   : 購入ページ（BASE・STORES など）の URL。無ければ null
+   ========================================================================== */
+const goods = [
+  { name: 'オフィシャルTシャツ', category: 'APPAREL', price: null, status: '近日発売', image: 'assets/images/goods-tshirt.webp', url: null },
+  { name: 'オフィシャルタオル', category: 'GOODS', price: null, status: '近日発売', image: null, url: null },
+  { name: 'オフィシャルキャップ', category: 'APPAREL', price: null, status: '近日発売', image: null, url: null },
+  { name: 'ステッカー', category: 'GOODS', price: null, status: '近日発売', image: null, url: null },
+]
+
+/* ==========================================================================
+   激励賞（決済・保存は未実装）
+   CHEER_PAYMENT_LINKS : 金額ごとの Stripe Payment Link の URL。空のあいだは「準備中」と表示
+   CHEER_SHEET_ENDPOINT: スプレッドシートに保存する Google Apps Script の URL（未設定なら空）
+   CHEER_NAME_PERK_MIN : この金額以上で「Tシャツにお名前」の特典がつく
+   ========================================================================== */
+const CHEER_PAYMENT_LINKS = {
+  1000: '',
+  5000: '',
+  10000: '',
+  30000: '',
+  50000: '',
+}
+const CHEER_SHEET_ENDPOINT = ''
+// true の間、Stripe のリンクが未設定の金額は仮の決済ページ（checkout-demo.html）へ移動する。本番公開前に false にする
+const CHEER_DEMO_CHECKOUT = true
+const CHEER_NAME_PERK_MIN = 10000
+// Stripe の「支払い後のリダイレクト先」を ?cheer=thanks&amount=金額 にすると、お礼表示になる
+const cheerParams = new URLSearchParams(window.location.search)
+const isCheerThanks = cheerParams.get('cheer') === 'thanks'
+
 const INITIAL_FIGHT_COUNT = 5
 const INTRO_SESSION_KEY = 'saigo-intro-seen'
 const INTRO_DURATION = 5200
@@ -88,6 +123,12 @@ function initIntro() {
       startIntro()
     })
   })
+
+  // 激励賞の決済から戻ってきたときは、トップへ戻さずお礼表示（initCheerThanks）に任せる
+  if (isCheerThanks) {
+    darkShell.classList.add('top-ready')
+    return
+  }
 
   focusTop()
   if (root.classList.contains('intro-active')) {
@@ -345,6 +386,44 @@ function initFightList() {
   render()
 }
 
+/* Goods list ------------------------------------------------------------- */
+const GOODS_STATUS = {
+  販売中: { label: 'ON SALE', className: 'is-on-sale' },
+  近日発売: { label: 'COMING SOON', className: 'is-coming' },
+  売り切れ: { label: 'SOLD OUT', className: 'is-sold-out' },
+}
+
+function renderGoodsCard(item) {
+  const status = GOODS_STATUS[item.status] ?? GOODS_STATUS['近日発売']
+  const price = typeof item.price === 'number' ? `¥${item.price.toLocaleString('ja-JP')}` : '価格未定'
+  const image = item.image
+    ? `<img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.name)}" loading="lazy" decoding="async" width="800" height="800">`
+    : `<img class="goods-placeholder" src="assets/images/saigo-brush.webp" alt="" loading="lazy" decoding="async" width="1400" height="511"><span class="goods-placeholder-label">IMAGE COMING SOON</span>`
+  // 購入ページがあり、売り切れでない商品だけリンクにする
+  const isLink = item.url && item.status !== '売り切れ'
+  const tag = isLink ? 'a' : 'article'
+  const linkAttributes = isLink ? ` href="${escapeHtml(item.url)}" target="_blank" rel="noreferrer"` : ''
+
+  return `
+    <${tag} class="goods-card ${status.className}"${linkAttributes}>
+      <div class="goods-image">
+        ${image}
+        <span class="goods-status">${status.label}</span>
+      </div>
+      <div class="goods-body">
+        <small>${escapeHtml(item.category)}</small>
+        <h3>${escapeHtml(item.name)}</h3>
+        <p class="goods-price">${price}${isLink ? '<span aria-hidden="true">↗</span>' : ''}</p>
+      </div>
+    </${tag}>`
+}
+
+function initGoodsList() {
+  const list = document.querySelector('.goods-list')
+  if (!list) return
+  list.innerHTML = goods.map(renderGoodsCard).join('')
+}
+
 /* Sponsor gallery carousel (mobile only; layout switches in CSS) --------- */
 function initGalleryCarousel() {
   const gallery = document.querySelector('.sponsor-gallery')
@@ -418,6 +497,105 @@ function initVideoFacade() {
   })
 }
 
+/* Cheer (激励賞) ----------------------------------------------------------- */
+function initCheerForm() {
+  const form = document.querySelector('.cheer-form')
+  if (!form) return
+
+  const submitLabel = form.querySelector('.cheer-submit-label')
+  const nameInput = form.elements.name
+  const anonymous = form.elements.anonymous
+  const message = form.elements.message
+  const count = form.querySelector('.cheer-count')
+  const nameHint = form.querySelector('.cheer-name-hint')
+  const perks = document.querySelectorAll('[data-perk-min]')
+  const notice = form.querySelector('.cheer-notice')
+
+  const getAmount = () => Number(form.elements.amount.value)
+
+  const update = () => {
+    const amount = getAmount()
+    submitLabel.textContent = `¥${amount.toLocaleString('ja-JP')} の激励賞を贈る`
+    perks.forEach((perk) => perk.classList.toggle('is-active', amount >= Number(perk.dataset.perkMin)))
+    nameInput.disabled = anonymous.checked
+    nameHint.hidden = amount < CHEER_NAME_PERK_MIN || anonymous.checked
+    count.textContent = `${message.value.length} / ${message.maxLength}`
+    notice.hidden = true
+  }
+
+  form.addEventListener('input', update)
+  form.addEventListener('change', update)
+  form.addEventListener('submit', (event) => {
+    event.preventDefault()
+    const amount = getAmount()
+    // 保存する内容（スプレッドシート連携時にこのまま送る想定）
+    const record = {
+      amount,
+      name: anonymous.checked ? '' : nameInput.value.trim(),
+      anonymous: anonymous.checked,
+      message: message.value.trim(),
+      createdAt: new Date().toISOString(),
+    }
+    const paymentLink = CHEER_PAYMENT_LINKS[amount]
+    if (!paymentLink && CHEER_DEMO_CHECKOUT) {
+      // 仮の決済ページへ。入力内容は確認表示用に URL で渡す（実際の決済・保存はしない）
+      const params = new URLSearchParams({ amount: String(amount), name: record.name, message: record.message })
+      if (record.anonymous) params.set('anonymous', '1')
+      window.location.href = `checkout-demo.html?${params}`
+      return
+    }
+    if (!paymentLink) {
+      notice.hidden = false
+      return
+    }
+    // TODO: CHEER_SHEET_ENDPOINT に record を送ってから、Stripe の決済ページへ移動する
+    void record
+    window.location.href = paymentLink
+  })
+  update()
+}
+
+function initCheerThanks() {
+  const thanks = document.querySelector('.cheer-thanks')
+  const form = document.querySelector('.cheer-form')
+  if (!isCheerThanks || !thanks || !form) return
+
+  const amount = Number(cheerParams.get('amount'))
+  thanks.querySelector('.cheer-thanks-perk').hidden = !(amount >= CHEER_NAME_PERK_MIN)
+  // 左側の「特典」も、贈っていただいた金額の状態で点灯させる
+  const amountInput = form.querySelector(`input[name="amount"][value="${amount}"]`)
+  if (amountInput) {
+    amountInput.checked = true
+    form.dispatchEvent(new Event('change'))
+  }
+
+  const pageUrl = `${window.location.origin}${window.location.pathname}`
+  const shareText = 'プロキックボクサー SAIGO 選手に激励賞を贈りました！一緒に応援しよう 🔥'
+  thanks.querySelector('.cheer-share').href =
+    `https://x.com/intent/post?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(pageUrl)}`
+
+  form.hidden = true
+  thanks.hidden = false
+
+  // 再読み込みでお礼が出続けないよう、URL から ?cheer=thanks を外す
+  window.history.replaceState(null, '', `${window.location.pathname}#cheer`)
+
+  const section = document.querySelector('#cheer')
+  // 表示アニメーション（下から少し浮き上がる）の途中だと移動先がずれるので、このセクションだけ即表示にする
+  section.style.transition = 'none'
+  section.classList.add('is-visible')
+  // CSS の scroll-behavior: smooth を上書きして瞬時に移動（ページ先頭から長くスクロールする演出を見せない）
+  // スマホは縦積みでお礼カードが説明の下にあるため、カードの位置まで移動する
+  const target = window.matchMedia('(max-width: 780px)').matches ? thanks : section
+  const scrollToCheer = () => target.scrollIntoView({ block: 'start', behavior: 'instant' })
+  window.requestAnimationFrame(() => {
+    scrollToCheer()
+    thanks.focus({ preventScroll: true })
+  })
+  // 画像・フォントの読み込みで上のセクションの高さが変わり位置がずれるため、読み込み完了後にもう一度合わせる
+  if (document.readyState !== 'complete') window.addEventListener('load', scrollToCheer, { once: true })
+}
+
 /* Contact form ----------------------------------------------------------- */
 function initContactForm() {
   const form = document.querySelector('.contact-form')
@@ -431,6 +609,7 @@ function initContactForm() {
 initStaggerText()
 initMenu()
 initFightList()
+initGoodsList()
 initCountdown()
 initScrollReveal()
 initRecordCounters()
@@ -438,4 +617,6 @@ initGalleryCarousel()
 initHeroVisibility()
 initVideoFacade()
 initContactForm()
+initCheerForm()
 initIntro()
+initCheerThanks()

@@ -4,14 +4,16 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>SAIGO OFFICIAL SITE | 初代STRIKE NEXUSフェザー級チャンピオン</title>
-  <meta name="description" content="プロキックボクサー SAIGO（TARGET SHIBUYA）の公式サイト。初代STRIKE NEXUSフェザー級チャンピオン。試合情報・戦績・プロフィール・スポンサー募集。">
+  <meta name="description" content="プロキックボクサー SAIGO（TARGET SHIBUYA）の公式サイト。初代STRIKE NEXUSフェザー級チャンピオン。試合情報・戦績・プロフィール・グッズ・スポンサー募集。">
   <meta name="theme-color" content="#0d0d0f">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="SAIGO OFFICIAL SITE">
   <meta property="og:title" content="SAIGO OFFICIAL SITE | 初代STRIKE NEXUSフェザー級チャンピオン">
   <meta property="og:description" content="挑み続ける姿で、見る人の心を動かす。SAIGOの次なる戦いを、ともに。">
   <meta name="twitter:card" content="summary_large_image">
-  <link rel="icon" href="assets/images/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="assets/images/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="icon" href="assets/images/favicon-192.png" sizes="192x192" type="image/png">
+  <link rel="apple-touch-icon" href="assets/images/apple-touch-icon.png">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -26,7 +28,9 @@
     (function () {
       var seen = false
       try { seen = sessionStorage.getItem('saigo-intro-seen') === '1' } catch (e) {}
-      if (!seen && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      // 激励賞の決済から戻ってきたとき（?cheer=thanks）は演出を飛ばしてお礼をすぐ見せる
+      var fromCheer = /[?&]cheer=thanks/.test(location.search)
+      if (!seen && !fromCheer && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
         document.documentElement.classList.add('intro-active')
       }
     })()
@@ -62,8 +66,10 @@
           <a href="#top"><small>01</small>HOME</a>
           <a href="#profile"><small>02</small>PROFILE</a>
           <a href="#career"><small>03</small>FIGHT RECORD</a>
-          <a href="#sponsor"><small>04</small>SPONSOR</a>
-          <a href="#contact"><small>05</small>CONTACT</a>
+          <a href="#shop"><small>04</small>SHOP</a>
+          <a href="#cheer"><small>05</small>CHEER</a>
+          <a href="#sponsor"><small>06</small>SPONSOR</a>
+          <a href="#contact"><small>07</small>CONTACT</a>
           <div class="menu-socials">
             <a href="https://instagram.com/saigo0306" target="_blank" rel="noreferrer" aria-label="Instagram @saigo0306">
               <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5" /><circle cx="12" cy="12" r="4" /><circle cx="17.5" cy="6.5" r=".8" class="icon-fill" /></svg>
@@ -234,6 +240,96 @@
       </button>
     </section>
 
+    <section class="goods-section snap-section scroll-reveal reveal-up" id="shop" aria-labelledby="shop-heading">
+      <div class="goods-head">
+        <div>
+          <p class="section-label">OFFICIAL GOODS</p>
+          <div class="goods-title">
+            <h2 id="shop-heading">SHOP</h2>
+            <img class="chara chara-stand" src="assets/images/chara-stand.webp" alt="" aria-hidden="true" loading="lazy" decoding="async" width="374" height="640">
+          </div>
+        </div>
+        <p>
+          SAIGOオフィシャルグッズ。会場やSNSで一緒に応援してください。
+          販売情報は Instagram・X でもお知らせします。
+        </p>
+      </div>
+
+      <!-- グッズカードは main.js の goods 配列から描画 -->
+      <div class="goods-list"></div>
+
+      <p class="goods-note">
+        価格はすべて税込です。会場販売の在庫や通信販売については
+        <a href="#contact">お問い合わせ</a>ください。
+      </p>
+    </section>
+
+    <section class="cheer-section snap-section scroll-reveal reveal-up" id="cheer" aria-labelledby="cheer-heading">
+      <div class="cheer-intro">
+        <p class="section-label">CHEER FOR SAIGO</p>
+        <h2 id="cheer-heading">激励賞を贈る</h2>
+        <p class="cheer-lead">
+          リングに立つSAIGOへ、応援の気持ちを激励賞として届けませんか。
+          いただいた激励賞は、試合に向けた練習・遠征・減量などの活動に使わせていただきます。
+        </p>
+
+        <!-- 特典：選んだ金額で受け取れるものが点灯する（data-perk-min 以上で点灯。main.js が制御） -->
+        <div class="cheer-perks">
+          <p class="cheer-perks-title">激励賞の特典</p>
+          <ul>
+            <li data-perk-min="1000"><b>¥1,000〜</b><span>SAIGOからのお礼メッセージ</span></li>
+            <li data-perk-min="10000"><b>¥10,000〜</b><span>試合で使うTシャツにお名前を掲載</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 決済（Stripe Payment Link）とスプレッドシート保存は未実装（README「激励賞」参照） -->
+      <form class="cheer-form" novalidate>
+        <fieldset class="cheer-step">
+          <legend><span>1</span>金額を選ぶ</legend>
+          <div class="cheer-amounts">
+            <label><input type="radio" name="amount" value="1000"><span>¥1,000</span></label>
+            <label><input type="radio" name="amount" value="5000" checked><span>¥5,000</span></label>
+            <label><input type="radio" name="amount" value="10000"><span>¥10,000</span></label>
+            <label><input type="radio" name="amount" value="30000"><span>¥30,000</span></label>
+            <label><input type="radio" name="amount" value="50000"><span>¥50,000</span></label>
+          </div>
+        </fieldset>
+
+        <fieldset class="cheer-step">
+          <legend><span>2</span>お名前・メッセージ <em>どちらも任意</em></legend>
+          <label class="cheer-field">
+            <span>お名前（ニックネーム可）</span>
+            <input name="name" type="text" maxlength="30" autocomplete="nickname">
+          </label>
+          <p class="cheer-name-hint" hidden>このお名前が、試合で使うTシャツに入ります。</p>
+          <label class="cheer-anonymous"><input name="anonymous" type="checkbox"><span>匿名で贈る</span></label>
+          <label class="cheer-field">
+            <span>SAIGOへのメッセージ</span>
+            <textarea name="message" rows="3" maxlength="200" placeholder="応援メッセージをどうぞ"></textarea>
+            <small class="cheer-count" aria-live="polite">0 / 200</small>
+          </label>
+        </fieldset>
+
+        <button class="cheer-submit" type="submit"><span class="cheer-submit-label">¥5,000 の激励賞を贈る</span> <span aria-hidden="true">→</span></button>
+        <p class="cheer-secure">お支払いは Stripe の安全な決済ページで行います（クレジットカード・Apple Pay など）。</p>
+        <p class="form-notice cheer-notice" role="status" hidden>激励賞の決済機能は現在準備中です。お支払いは行われていません。</p>
+      </form>
+
+      <!-- 決済完了後（?cheer=thanks で戻ってきたとき）にフォームの代わりに表示。main.js が制御 -->
+      <div class="cheer-thanks" role="status" tabindex="-1" hidden>
+        <img class="chara" src="assets/images/chara-stand.webp" alt="" aria-hidden="true" loading="lazy" decoding="async" width="374" height="640">
+        <p class="section-label">THANK YOU</p>
+        <h3>激励賞、<br>ありがとうございました！</h3>
+        <p>いただいた応援は、SAIGOの力になります。<br>リングの上で結果で応えます。引き続き応援よろしくお願いします！</p>
+        <p class="cheer-thanks-perk" hidden>試合で使うTシャツへのお名前掲載は、準備ができしだい SNS でお知らせします。</p>
+        <div class="cheer-thanks-actions">
+          <a class="cheer-share" href="https://x.com/intent/post" target="_blank" rel="noreferrer">X で応援をシェアする <span aria-hidden="true">↗</span></a>
+          <a class="cheer-follow" href="https://instagram.com/saigo0306" target="_blank" rel="noreferrer">Instagram をフォロー <span aria-hidden="true">↗</span></a>
+        </div>
+      </div>
+    </section>
+
     <section class="sponsor-section snap-section scroll-reveal reveal-up" id="sponsor">
       <div class="sponsor-head">
         <div>
@@ -244,33 +340,6 @@
           SAIGOの競技活動を支え、ともに挑戦してくださるスポンサーを募集しています。
           ご希望や目的に応じた形で、柔軟にご相談いたします。
         </p>
-      </div>
-
-      <div class="supported-by">
-        <div class="supported-by-head">
-          <div>
-            <p class="section-label">SUPPORTED BY</p>
-            <h3>OFFICIAL PARTNERS</h3>
-          </div>
-          <p>SAIGOの挑戦を、ともに支えてくださるパートナーを募集しています。</p>
-        </div>
-        <div class="partner-grid">
-          <a class="partner-slot partner-slot-main" href="#contact">
-            <small>MAIN PARTNER</small><strong>PARTNER<br>募集中</strong><span>YOUR LOGO HERE <span aria-hidden="true">↗</span></span>
-          </a>
-          <a class="partner-slot" href="#contact">
-            <small>OFFICIAL PARTNER</small><strong>PARTNER<br>募集中</strong><span>YOUR LOGO HERE <span aria-hidden="true">↗</span></span>
-          </a>
-          <a class="partner-slot" href="#contact">
-            <small>OFFICIAL PARTNER</small><strong>PARTNER<br>募集中</strong><span>YOUR LOGO HERE <span aria-hidden="true">↗</span></span>
-          </a>
-          <a class="partner-slot" href="#contact">
-            <small>SUPPORT PARTNER</small><strong>PARTNER<br>募集中</strong><span>YOUR LOGO HERE <span aria-hidden="true">↗</span></span>
-          </a>
-          <a class="partner-slot" href="#contact">
-            <small>SUPPORT PARTNER</small><strong>PARTNER<br>募集中</strong><span>YOUR LOGO HERE <span aria-hidden="true">↗</span></span>
-          </a>
-        </div>
       </div>
 
       <div class="sponsor-gallery" aria-label="SAIGO 活動写真">
@@ -294,6 +363,10 @@
       <!-- スマホ表示時のみ表示（ボタンは main.js が写真の枚数分生成） -->
       <div class="gallery-dots" aria-label="写真を選択"></div>
 
+      <div class="sponsor-block-head">
+        <p class="section-label">SPONSOR PLAN</p>
+        <h3>スポンサープラン</h3>
+      </div>
       <div class="plans">
         <article>
           <span>01</span><h3>PERSONAL</h3><p>個人の方向けの応援プラン。活動を身近に支えていただけます。</p>
@@ -309,73 +382,29 @@
         </article>
       </div>
 
-      <details class="sponsor-value sponsor-accordion">
-        <summary>
-          <div class="sponsor-value-head">
-            <p class="section-label">WHAT WE CAN OFFER</p>
-            <h3>スポンサー企業様への<br>ご提供例</h3>
-            <p>企業様の目的や課題に合わせて、内容は柔軟に設計いたします。</p>
-          </div>
-          <span class="accordion-icon" aria-hidden="true"></span>
-        </summary>
-        <div class="sponsor-value-grid">
-          <article>
-            <b>01</b><h4>BRAND VISIBILITY</h4><h5>ブランド・企業名の露出</h5>
-            <p>試合・イベント・各種活動におけるロゴや企業名の掲出。公式サイトやSNSを含め、オンライン・オフライン双方で認知拡大をサポートします。</p>
-          </article>
-          <article>
-            <b>02</b><h4>SNS &amp; CONTENT</h4><h5>SNS・コンテンツを活用した発信</h5>
-            <p>Instagram、X、YouTubeなど、SAIGO自身の発信を活用した商品・サービスのご紹介。広告だけではない、ファンとの自然な接点をつくります。</p>
-          </article>
-          <article>
-            <b>03</b><h4>COLLABORATION</h4><h5>企業様とのコラボレーション</h5>
-            <p>商品PR、キャンペーン、共同コンテンツなど、企業様の目的に合わせたオリジナルの取り組みを一緒に企画します。</p>
-          </article>
-          <article>
-            <b>04</b><h4>EVENT</h4><h5>イベント・交流機会</h5>
-            <p>企業イベント、店舗企画、プロモーション、ファン交流企画などへの出演。「人」を通じてブランドを身近に感じてもらう機会を創出します。</p>
-          </article>
+      <div class="sponsor-flow">
+        <div class="sponsor-block-head">
+          <p class="section-label">HOW TO START</p>
+          <h3>スポンサー開始までの流れ</h3>
         </div>
-      </details>
+        <ol class="flow-steps">
+          <li><small>STEP 01</small><strong>お問い合わせ</strong><span>ご希望や目的をお聞かせください。</span></li>
+          <li><small>STEP 02</small><strong>内容のご提案</strong><span>目的に合った支援内容をご提案します。</span></li>
+          <li><small>STEP 03</small><strong>パートナー開始</strong><span>合意した内容で取り組みを開始します。</span></li>
+        </ol>
+      </div>
 
-      <details class="sponsor-story sponsor-accordion">
-        <summary>
-          <div>
-            <p class="section-label">OUR PARTNERSHIP</p>
-            <h3>企業の挑戦と、<br>ファイターの挑戦。</h3>
-          </div>
-          <span class="accordion-icon" aria-hidden="true"></span>
-        </summary>
-        <div class="sponsor-story-copy">
-          <p>スポンサーシップを、ただロゴを掲載するだけの関係にはしたくないと考えています。</p>
-          <p>企業が挑戦する。SAIGOも挑戦する。</p>
-          <p>その二つの挑戦が重なったとき、そこには新しいストーリーと、これまでにない価値が生まれます。</p>
-          <strong>挑戦する企業と、挑戦するファイター。<br>その物語を、一緒につくりませんか？</strong>
-          <p>「まずは話を聞いてみたい」という段階でも歓迎しております。ご予算やご希望に合わせて、無理のない形からご提案します。</p>
-        </div>
-      </details>
-
-      <details class="sponsor-flow sponsor-accordion">
-        <summary>
-          <div>
-            <p class="section-label">HOW TO START</p>
-            <h3>スポンサー開始までの流れ</h3>
-          </div>
-          <span class="accordion-icon" aria-hidden="true"></span>
-        </summary>
-        <div class="flow-steps">
-          <div><small>STEP 01</small><strong>お問い合わせ</strong><span>ご希望や目的をお聞かせください。</span></div>
-          <div><small>STEP 02</small><strong>内容のご提案</strong><span>目的に合った支援内容をご提案します。</span></div>
-          <div><small>STEP 03</small><strong>パートナー開始</strong><span>合意した内容で取り組みを開始します。</span></div>
-        </div>
-      </details>
+      <div class="sponsor-cta">
+        <p>「まずは話を聞いてみたい」という段階でも歓迎しております。<br>ご予算やご希望に合わせて、無理のない形からご提案します。</p>
+        <a class="button primary" href="#contact">スポンサーについて問い合わせる <span aria-hidden="true">↗</span></a>
+      </div>
     </section>
 
     <section class="contact-form-section snap-section scroll-reveal reveal-up" id="contact">
       <div class="contact-form-intro">
         <p class="section-label">CONTACT</p>
         <h2>ともに、新しい挑戦を。</h2>
-        <p>スポンサーシップ、出演、取材、その他のお問い合わせはこちらからお送りください。</p>
+        <p>スポンサーシップ、出演、取材、グッズ、その他のお問い合わせはこちらからお送りください。</p>
         <div>
           <small>RESPONSE</small>
           <span>内容を確認後、担当者よりご連絡いたします。</span>
@@ -397,6 +426,7 @@
               <option value="sponsor">スポンサーについて</option>
               <option value="appearance">出演・イベントについて</option>
               <option value="media">取材・メディアについて</option>
+              <option value="goods">グッズについて</option>
               <option value="other">その他</option>
             </select>
           </label>

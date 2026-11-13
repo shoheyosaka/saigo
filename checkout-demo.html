@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- 激励賞の「仮の決済ページ」。Stripe 接続前に流れを確認するためのデモ。実際の決済・カード入力は一切ない -->
+  <meta name="robots" content="noindex, nofollow">
+  <title>激励賞のお支払い（デモ） | SAIGO OFFICIAL SITE</title>
+  <link rel="icon" href="assets/images/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Noto+Sans+JP:wght@400..800&display=swap">
+  <style>
+    *,::before,::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --orange: #f1482d; --cream: #f1efe8; }
+    body {
+      min-height: 100svh; color: #171717; background: var(--cream);
+      font-family: 'Hiragino Sans','Hiragino Kaku Gothic ProN','Noto Sans JP',sans-serif;
+    }
+    a { color: inherit; }
+    .demo-bar {
+      padding: 10px 16px; color: white; background: #171717; text-align: center;
+      font-size: 12px; font-weight: 700; letter-spacing: .04em;
+    }
+    .demo-bar b { color: var(--orange); }
+    main { width: min(520px,100%); margin: 0 auto; padding: 40px 16px 60px; }
+    .logo { font: 800 24px/1 'Barlow Condensed',sans-serif; letter-spacing: .08em; text-decoration: none; }
+    .logo span { color: var(--orange); }
+    .card { margin-top: 24px; padding: 30px 26px; border-top: 4px solid var(--orange); background: white; box-shadow: 0 18px 40px rgba(20,18,15,.08); }
+    .label { color: var(--orange); font: 700 12px/1 'Barlow Condensed',sans-serif; letter-spacing: .22em; }
+    h1 { margin-top: 12px; font-size: 22px; font-weight: 800; letter-spacing: -.03em; }
+    .amount { margin-top: 18px; font: 800 52px/1 'Barlow Condensed',sans-serif; letter-spacing: .01em; }
+    .amount small { margin-left: 6px; color: #8a867e; font: 600 12px/1 'Hiragino Sans','Noto Sans JP',sans-serif; }
+    dl { margin-top: 24px; border-top: 1px solid #e3e0d8; }
+    dl div { display: grid; grid-template-columns: 96px 1fr; gap: 12px; padding: 14px 0; border-bottom: 1px solid #e3e0d8; font-size: 13px; }
+    dt { color: #8a867e; font-size: 12px; font-weight: 600; }
+    dd { font-weight: 600; white-space: pre-wrap; overflow-wrap: anywhere; }
+    dd.is-empty { color: #b3afa6; font-weight: 400; }
+    .perk { margin-top: 18px; padding: 12px 14px; border-left: 3px solid var(--orange); background: var(--cream); font-size: 12px; font-weight: 600; }
+    .note { margin-top: 22px; padding: 14px; border: 1px dashed #d6d2c8; color: #66625b; font-size: 12px; line-height: 1.8; }
+    .pay {
+      display: flex; width: 100%; min-height: 60px; margin-top: 24px; align-items: center; justify-content: space-between;
+      padding: 0 22px; border: 0; color: white; background: var(--orange);
+      font: inherit; font-size: 15px; font-weight: 800; cursor: pointer;
+    }
+    .pay:hover { background: #d93a21; }
+    .back { display: block; margin-top: 16px; color: #66625b; font-size: 13px; text-align: center; }
+  </style>
+</head>
+<body>
+  <p class="demo-bar"><b>DEMO</b> これは仮の決済ページです。実際のお支払いは行われません。</p>
+  <main>
+    <a class="logo" href="index.html">SAIGO<span>.</span></a>
+    <section class="card" aria-labelledby="checkout-title">
+      <p class="label">CHEER FOR SAIGO</p>
+      <h1 id="checkout-title">激励賞のお支払い</h1>
+      <p class="amount"><span data-amount>¥5,000</span><small>（税込）</small></p>
+      <dl>
+        <div><dt>お名前</dt><dd data-name></dd></div>
+        <div><dt>メッセージ</dt><dd data-message></dd></div>
+      </dl>
+      <p class="perk" data-perk hidden>このお名前が、試合で使うTシャツに入ります。</p>
+      <p class="note">
+        Stripe の決済リンクを設定すると、このページの代わりに Stripe の決済ページ（クレジットカード・Apple Pay など）が開きます。
+        このデモではカード情報の入力はありません。
+      </p>
+      <button class="pay" type="button" data-pay>テスト支払いを完了する <span aria-hidden="true">→</span></button>
+      <a class="back" href="index.html" data-back>← 戻って内容を変更する</a>
+    </section>
+  </main>
+
+  <script>
+    'use strict'
+    // サイト側（main.js の CHEER_NAME_PERK_MIN）と同じ値にする
+    const NAME_PERK_MIN = 10000
+    const params = new URLSearchParams(window.location.search)
+    const amount = Number(params.get('amount')) || 5000
+    const anonymous = params.get('anonymous') === '1'
+    const name = (params.get('name') || '').trim()
+    const message = (params.get('message') || '').trim()
+
+    const setText = (selector, value, emptyText) => {
+      const element = document.querySelector(selector)
+      element.textContent = value || emptyText
+      element.classList.toggle('is-empty', !value)
+    }
+
+    document.querySelector('[data-amount]').textContent = `¥${amount.toLocaleString('ja-JP')}`
+    setText('[data-name]', anonymous ? '' : name, anonymous ? '匿名' : '（未入力）')
+    setText('[data-message]', message, '（未入力）')
+    document.querySelector('[data-perk]').hidden = !(amount >= NAME_PERK_MIN && !anonymous && name)
+
+    // Stripe の「支払い後のリダイレクト先」と同じ URL に戻す
+    document.querySelector('[data-pay]').addEventListener('click', () => {
+      window.location.href = `index.html?cheer=thanks&amount=${amount}`
+    })
+    // 戻る：入力内容が残った状態で激励賞欄に戻れるよう、履歴があればブラウザの「戻る」を使う
+    document.querySelector('[data-back]').addEventListener('click', (event) => {
+      if (window.history.length > 1) {
+        event.preventDefault()
+        window.history.back()
+      }
+    })
+  </script>
+</body>
+</html>
