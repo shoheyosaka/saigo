@@ -167,6 +167,12 @@ main {
 }
 .logo { font: 800 26px/1 'Barlow Condensed', sans-serif; letter-spacing: .08em; }
 .logo span { color: var(--orange); }
+/* ヘッダーのロゴ（キャラ入り。暗い背景でも見えるよう白フチ付きの画像） */
+/* ヘッダー・フッターのロゴ（白文字＋赤い I の画像） */
+.logo:has(.logo-image) { display: flex; align-items: center; }
+.logo-image { display: block; width: auto; height: 32px; transition: transform .2s ease; }
+.logo:hover .logo-image { transform: scale(1.04); }
+footer .logo-image { height: 28px; }
 .menu-button {
   position: relative; z-index: 2; display: flex; width: 48px; height: 48px; margin-left: auto;
   flex-direction: column; align-items: flex-end; justify-content: center; gap: 6px;
@@ -1279,6 +1285,7 @@ footer p,footer > a:last-child { color: #777; font: 500 9px/1 'Barlow Condensed'
 }
 
 @media (max-width: 780px) {
+  .logo-image { height: 28px; }
   /* iPhone は入力欄の文字が 16px 未満だと、押したときに画面を自動で拡大してしまうので 16px にそろえる */
   input:not([type='checkbox']):not([type='radio']),select,textarea { font-size: 16px !important; }
   /* スマホはブラウザ標準のページスクロールにする。
