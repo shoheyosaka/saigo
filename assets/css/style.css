@@ -342,6 +342,8 @@ main {
 .hero-actions {
   position: absolute; bottom: 34px; left: var(--hero-gutter); z-index: 4; display: flex; gap: 12px;
 }
+/* トップのボタンは文字を大きめに */
+.hero-actions .button { min-width: 200px; font-size: 14px; }
 .button {
   display: flex; align-items: center; justify-content: space-between; min-width: 184px; padding: 17px 20px;
   border: 1px solid #777; font-size: 11px; font-weight: 700;
@@ -1213,7 +1215,7 @@ footer p,footer > a:last-child { color: #777; font: 500 9px/1 'Barlow Condensed'
     flex-direction: column; gap: 7px;
   }
   /* 矢印の有無で高さが変わらないよう、ボタンの高さをそろえる */
-  .hero-actions .button { min-width: 0; width: 100%; min-height: 48px; padding: 12px 13px; font-size: 9px; }
+  .hero-actions .button { min-width: 0; width: 100%; min-height: 48px; padding: 12px 13px; font-size: 13px; }
   .overview-section {
     display: flex; flex-direction: column; align-items: stretch; gap: 0;
     padding: 24px 18px 48px;
