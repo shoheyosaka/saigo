@@ -28,9 +28,10 @@ HTML / CSS / JavaScript のみで構成した静的サイトです。ビルド�
         ├── favicon-32.png        # ファビコン（キャラの顔・白フチ）
         ├── favicon-192.png       # ファビコン大（Android など）
         ├── apple-touch-icon.png  # iPhone のホーム画面用（黒地）
-        ├── chara-stand.webp      # キャラクター（トップのサポーターカード・お礼画面）※背景透過
+        ├── chara-stand.webp      # キャラクター（トップのSHOPカード・お礼画面）※背景透過
         ├── shop-logo.webp        # SHOP 上部のロゴ（キャラ＋ゴリラ＋SAIGO、白フチのステッカー風）
         ├── goods-tshirt.webp     # SHOP：オフィシャルTシャツ
+        ├── goods-tshirt-cut.webp # 同じTシャツの背景を透明にしたもの（トップのサポーターカード）
         ├── partner-1〜4-*.webp   # 現在のスポンサーのロゴ（番号順に表示）
         ├── saigo-brush.webp      # 筆文字ロゴ（透過）
         ├── saigo-hero.webp       # ヒーロー用人物切り抜き（透過）

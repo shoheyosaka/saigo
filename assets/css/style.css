@@ -796,24 +796,31 @@ html:has(.subpage) { scroll-padding-top: 82px; }
 }
 .support-card-button span { font-size: 18px; transition: transform .2s ease; }
 .support-card:hover .support-card-button span { transform: translateX(4px); }
-/* サポーター：黒地＋キャラ */
+/* サポーター：黒地＋Tシャツ（名前が入る特典の一言を下に） */
 .support-card-cheer { color: white; background: #171719; }
 .support-card-cheer > p:not(.section-label) { color: #b2b1ad; }
 .support-card-cheer .support-card-button { color: white; background: var(--orange); }
-.support-card-cheer .chara {
-  position: absolute; right: 30px; bottom: 26px; width: clamp(110px,12vw,150px);
-  filter: drop-shadow(0 12px 18px rgba(0,0,0,.4)); transform-origin: bottom center;
+.support-card-tee {
+  position: absolute; top: 50%; right: 26px; width: clamp(170px,17vw,220px); margin: 0; text-align: center;
+  transform: translateY(-50%); /* 画像＋一言のまとまりをカードの上下中央に */
 }
-.support-card-cheer:hover .chara { transform: rotate(6deg) translateY(-6px); }
-/* SHOP：白地＋Tシャツ */
+.support-card-tee img {
+  display: block; width: 100%; height: auto; transform: rotate(-5deg);
+  filter: drop-shadow(0 14px 22px rgba(0,0,0,.5)); transition: transform .5s cubic-bezier(.2,.7,.2,1);
+}
+.support-card-cheer:hover .support-card-tee img { transform: rotate(-1deg) scale(1.04); }
+.support-card-tee figcaption { margin-top: 10px; color: #d6d4cf; font-size: 10px; font-weight: 700; line-height: 1.6; }
+.support-card-tee figcaption b { display: block; color: var(--orange); font: 800 15px/1.2 'Barlow Condensed',sans-serif; letter-spacing: .04em; }
+/* SHOP：白地＋キャラ */
 .support-card-shop { color: #171717; background: #fff; }
 .support-card-shop > p:not(.section-label) { color: #66625b; }
 .support-card-shop .support-card-button { color: white; background: #171717; }
-.support-card-photo {
-  position: absolute; right: -10px; bottom: -6px; width: clamp(190px,21vw,270px);
-  transition: transform .5s cubic-bezier(.2,.7,.2,1);
+.support-card-shop .chara {
+  position: absolute; top: 50%; right: 30px; width: clamp(110px,12vw,150px);
+  filter: drop-shadow(0 12px 18px rgba(0,0,0,.18)); transform-origin: bottom center;
+  transform: translateY(-50%); /* カードの上下中央に */
 }
-.support-card-shop:hover .support-card-photo { transform: scale(1.04) rotate(-2deg); }
+.support-card-shop:hover .chara { transform: translateY(calc(-50% - 6px)) rotate(6deg); }
 
 /* Cheer (サポーター) ---------------------------------------------------------- */
 .cheer-section {
@@ -1265,8 +1272,11 @@ footer p,footer > a:last-child { color: #777; font: 500 9px/1 'Barlow Condensed'
   .support-card { min-height: 0; padding: 28px 22px 24px; }
   .support-card > p:not(.section-label) { max-width: 62%; font-size: 11px; }
   .support-card-button { min-width: 0; margin-top: 22px; padding: 14px 18px; font-size: 12px; }
-  .support-card-cheer .chara { right: 18px; bottom: 20px; width: 92px; }
-  .support-card-photo { right: -14px; bottom: -8px; width: 160px; }
+  /* スマホは見出しと重ならないよう、少し小さく・少し下寄りの中央に */
+  .support-card-tee { top: 56%; right: 12px; width: 112px; }
+  .support-card-tee figcaption { margin-top: 6px; font-size: 8.5px; }
+  .support-card-tee figcaption b { font-size: 12px; }
+  .support-card-shop .chara { top: 56%; right: 14px; width: 80px; }
   .cheer-section { grid-template-columns: 1fr; gap: 36px; padding: 70px 20px; }
   .cheer-perks { margin-top: 26px; padding: 18px; }
   .cheer-form { gap: 24px; margin-inline: -4px; padding: 22px 16px; }
