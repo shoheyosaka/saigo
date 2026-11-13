@@ -351,7 +351,7 @@ main {
   border: 1px solid #777; font-size: 11px; font-weight: 700;
 }
 .button.primary { border-color: var(--orange); background: var(--orange); }
-.button span { font-size: 17px; }
+.button span { font-size: 17px; line-height: 1; }
 
 /* Next fight -------------------------------------------------------------- */
 .next-fight {
@@ -1200,7 +1200,8 @@ footer p,footer > a:last-child { color: #777; font: 500 9px/1 'Barlow Condensed'
     position: relative; inset: auto; display: flex; width: auto; margin-top: auto; padding-top: 22px;
     flex-direction: column; gap: 7px;
   }
-  .hero-actions .button { min-width: 0; width: 100%; padding: 12px 13px; font-size: 9px; }
+  /* 矢印の有無で高さが変わらないよう、ボタンの高さをそろえる */
+  .hero-actions .button { min-width: 0; width: 100%; min-height: 48px; padding: 12px 13px; font-size: 9px; }
   .overview-section {
     display: flex; flex-direction: column; align-items: stretch; gap: 0;
     padding: 24px 18px 48px;
@@ -1342,7 +1343,7 @@ footer p,footer > a:last-child { color: #777; font: 500 9px/1 'Barlow Condensed'
   .hero-details { margin-top: 14px; }
   .hero-lead { margin-top: 10px; }
   .hero-actions { padding-top: 14px; gap: 6px; }
-  .hero-actions .button { padding-block: 10px; }
+  .hero-actions .button { min-height: 42px; padding-block: 10px; }
   .scroll-cue { display: none; }
 }
 
