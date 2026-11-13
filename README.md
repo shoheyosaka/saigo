@@ -61,7 +61,7 @@ HTML / CSS / JavaScript のみで構成した静的サイトです。ビルド�
 | 概要 | `#next-fight` / `#career` | 次戦情報（カウントダウン）・戦績サマリー・紹介動画 |
 | プロフィール | `#profile` | メッセージ・基本データ |
 | 戦績 | — | 勝率リング・数値カウントアップ・試合カード一覧（5件＋もっと見る） |
-| ギャラリー | `#gallery` | 写真18枚の横スクロール（PCは矢印・ドラッグ、スマホはスワイプ） |
+| ギャラリー | `#gallery` | 写真18枚の立体スライダー（奥の写真が前に出てくる。PCは矢印・ドラッグ、スマホはスワイプ、自動送りあり） |
 | 応援（入口） | `#support` | 激励賞ページ・SHOP ページへの入口カード2枚 |
 | スポンサー | `#sponsor` | 見出し・ギャラリー・プラン・開始までの流れ・お問い合わせボタン |
 | お問い合わせ | `#contact` | フォーム（送信機能は未実装） |
@@ -131,10 +131,11 @@ python3 -m http.server 8000
 
 ### ギャラリーの写真を追加・入れ替える
 
-`index.html` の `.photo-track` に `<li class="photo-item">…</li>` を追加・削除します（並び順＝表示順。枚数表示は自動）。
+`index.html` の `.depth-stage` に `<li class="depth-card" data-index="番号">…</li>` を追加・削除します（並び順＝表示順。`data-index` は 0 から順番に振り直す。枚数表示とバーの長さは自動）。
 
 - 画像は `assets/images/gallery-番号.webp`。横幅 1400px 程度の WebP にする（例：`cwebp -q 78 -resize 1400 0 元画像.jpg -o gallery-19.webp`）
-- `<img>` の `width`・`height` は画像の実寸、`alt` は写真の説明、`.photo-caption` は番号と英字ラベル（ENTRANCE / FIGHT など）
+- `<img>` の `width`・`height` は画像の実寸、`alt` は写真の説明、`.depth-caption` は番号と英字ラベル（ENTRANCE / FIGHT など）
+- 自動で次へ進む間隔は `assets/js/main.js` の `DEPTH_AUTOPLAY_MS`（ミリ秒）
 
 ### スポンサーのロゴを追加・変更する
 

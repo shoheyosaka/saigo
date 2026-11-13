@@ -624,54 +624,92 @@ a.goods-card:hover .goods-image > img:not(.goods-placeholder) { transform: scale
 html:has(.subpage) { scroll-padding-top: 82px; }
 .subpage .goods-section,.subpage .cheer-section { min-height: calc(100svh - 82px - 120px); }
 
-/* Gallery（横スクロールの写真ギャラリー） --------------------------------- */
-.photo-section {
+/* Gallery（立体スライダー：手前の写真が抜けて、奥の写真が前に出てくる） ---- */
+.depth-section {
   --gutter: max(24px,calc((100vw - 1240px)/2));
-  display: flex; flex-direction: column; justify-content: center; gap: 36px;
-  padding: 60px 0; color: #f4f2ed; background: var(--black);
+  --card-h: clamp(220px,calc(100svh - 82px - 330px),500px);
+  --card-w: min(calc(var(--card-h) * 1.5),72vw);
+  position: relative; display: flex; flex-direction: column; justify-content: center; gap: 30px;
+  overflow: hidden; clip-path: inset(0); padding: 60px 0; color: #f4f2ed; background: #050506; isolation: isolate;
 }
-.photo-head { display: flex; align-items: end; justify-content: space-between; gap: 24px; padding: 0 var(--gutter); }
-.photo-head h2 { margin-top: 18px; font-size: clamp(36px,4.6vw,62px); font-weight: 800; line-height: 1.2; letter-spacing: -.06em; }
-.photo-controls { display: flex; align-items: center; gap: 10px; }
-.photo-count { margin-right: 14px; color: #8b8a87; white-space: nowrap; font: 600 15px/1 'Barlow Condensed',sans-serif; letter-spacing: .12em; }
-.photo-count b { color: #f4f2ed; font-size: 26px; font-weight: 700; }
-.photo-arrow {
+/* 背景：いまの写真を大きくぼかして敷く */
+.depth-bg { position: absolute; inset: 0; z-index: -2; overflow: hidden; }
+.depth-bg img {
+  width: 100%; height: 100%; object-fit: cover; opacity: .32;
+  filter: blur(38px) saturate(1.3); transform: scale(1.2);
+}
+.depth-bg img.is-changing { animation: depth-bg-in .8s ease both; }
+@keyframes depth-bg-in { from { opacity: 0; transform: scale(1.18); } }
+.depth-section::before {
+  position: absolute; inset: 0; z-index: -1; pointer-events: none; content: '';
+  background:
+    radial-gradient(ellipse at 60% 55%,transparent 20%,rgba(5,5,6,.85) 75%),
+    repeating-linear-gradient(90deg,rgba(255,255,255,.025) 0 1px,transparent 1px 80px);
+}
+/* 背景の大きな番号（白抜き） */
+.depth-number {
+  position: absolute; bottom: -.18em; left: calc(var(--gutter) - .06em); z-index: -1; pointer-events: none;
+  color: transparent; -webkit-text-stroke: 1px rgba(255,255,255,.14);
+  font: 800 clamp(160px,26vw,380px)/1 'Barlow Condensed',sans-serif; letter-spacing: -.02em;
+}
+.depth-number.is-changing { animation: depth-number-in .6s cubic-bezier(.2,.8,.2,1) both; }
+@keyframes depth-number-in { from { opacity: 0; transform: translateY(30px); } }
+
+.depth-head { display: flex; align-items: end; justify-content: space-between; gap: 24px; padding: 0 var(--gutter); }
+.depth-head h2 { margin-top: 18px; font-size: clamp(36px,4.6vw,62px); font-weight: 800; line-height: 1.2; letter-spacing: -.06em; }
+.depth-controls { display: flex; align-items: center; gap: 10px; }
+.depth-count { margin-right: 14px; color: #8b8a87; font: 600 15px/1 'Barlow Condensed',sans-serif; letter-spacing: .12em; white-space: nowrap; }
+.depth-count b { color: #f4f2ed; font-size: 26px; font-weight: 700; }
+.depth-arrow {
   display: grid; width: 52px; height: 52px; place-items: center;
-  border: 1px solid #3a3a3e; color: #f4f2ed; background: transparent; font-size: 18px; cursor: pointer;
-  transition: border-color .2s ease,background .2s ease,opacity .2s ease;
+  border: 1px solid rgba(255,255,255,.22); color: #f4f2ed; background: rgba(0,0,0,.2); font-size: 18px; cursor: pointer;
+  transition: border-color .2s ease,background .2s ease;
 }
-.photo-arrow:hover:not(:disabled) { border-color: var(--orange); background: var(--orange); }
-.photo-arrow:disabled { opacity: .3; cursor: default; }
-.photo-track {
-  display: flex; gap: 12px; overflow-x: auto; overscroll-behavior-x: contain;
-  padding: 0 var(--gutter); scroll-padding-inline: var(--gutter);
-  scroll-snap-type: x mandatory; scrollbar-width: none; list-style: none;
-  cursor: grab;
+.depth-arrow:hover { border-color: var(--orange); background: var(--orange); }
+
+/* 舞台：遠近感をつけて、カードを奥に向かって重ねる（位置は main.js が毎フレーム計算） */
+.depth-stage {
+  position: relative; height: calc(var(--card-h) + 40px); margin: 0;
+  perspective: 1400px; perspective-origin: 30% 40%;
+  list-style: none; cursor: grab; touch-action: pan-y; user-select: none;
 }
-.photo-track::-webkit-scrollbar { display: none; }
-.photo-track.is-dragging { cursor: grabbing; scroll-snap-type: none; }
-.photo-track.is-dragging img { pointer-events: none; }
-.photo-track:focus-visible { outline: 2px solid var(--orange); outline-offset: 4px; }
-.photo-item {
-  position: relative; flex: 0 0 auto; height: clamp(240px,calc(100svh - 82px - 330px),560px); overflow: hidden;
-  scroll-snap-align: start; background: #242426;
+.depth-stage.is-dragging { cursor: grabbing; }
+.depth-stage:focus-visible { outline: none; }
+.depth-stage:focus-visible .depth-card.is-front { outline: 2px solid var(--orange); outline-offset: 6px; }
+.depth-card {
+  position: absolute; top: 20px; left: var(--gutter); width: var(--card-w); height: var(--card-h);
+  overflow: hidden; background: #1b1b1d; transform-origin: 50% 50%;
+  box-shadow: 0 40px 80px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.06);
+  will-change: transform,opacity;
 }
-.photo-item img {
-  display: block; width: auto; height: 100%; user-select: none; -webkit-user-drag: none;
-  filter: saturate(.92); transition: transform .6s cubic-bezier(.2,.7,.2,1),filter .4s ease;
+.depth-card img { display: block; width: 100%; height: 100%; object-fit: cover; pointer-events: none; -webkit-user-drag: none; }
+/* 奥にあるほど暗く（--shade は main.js が 0〜1 で指定） */
+.depth-card::before {
+  position: absolute; inset: 0; z-index: 1; pointer-events: none; content: '';
+  background: #050506; opacity: var(--shade,0);
 }
-.photo-item:hover img { transform: scale(1.035); filter: saturate(1.05); }
-.photo-item::after {
-  position: absolute; inset: auto 0 0; height: 38%; pointer-events: none;
-  background: linear-gradient(to top,rgba(0,0,0,.6),transparent); content: '';
+.depth-card::after {
+  position: absolute; inset: auto 0 0; height: 40%; pointer-events: none; content: '';
+  background: linear-gradient(to top,rgba(0,0,0,.65),transparent);
 }
-.photo-caption {
-  position: absolute; bottom: 16px; left: 18px; z-index: 1;
-  color: white; font: 700 12px/1 'Barlow Condensed',sans-serif; letter-spacing: .2em;
+/* 手前のカードだけキャプションを出す */
+.depth-card.is-front .depth-caption { opacity: 1; transform: none; }
+.depth-caption {
+  position: absolute; bottom: 18px; left: 20px; z-index: 2; opacity: 0; transform: translateY(8px);
+  color: white; font: 700 13px/1 'Barlow Condensed',sans-serif; letter-spacing: .22em;
+  transition: opacity .35s ease .1s,transform .35s ease .1s;
 }
-.photo-caption b { margin-right: 10px; color: var(--orange); }
-.photo-progress { height: 2px; margin: 0 var(--gutter); background: #2c2c30; }
-.photo-progress span { display: block; width: var(--progress,0%); min-width: 8%; height: 100%; background: var(--orange); transition: width .15s linear; }
+.depth-caption b { margin-right: 10px; color: var(--orange); }
+.depth-bar { position: relative; height: 2px; margin: 0 var(--gutter); background: rgba(255,255,255,.12); }
+.depth-bar span {
+  position: absolute; top: 0; left: 0; height: 100%; width: calc(100% / 18);
+  background: var(--orange); box-shadow: 0 0 10px rgba(241,72,45,.8);
+  transform: translateX(calc(var(--bar,0) * 100%)); transition: transform .45s cubic-bezier(.2,.8,.2,1);
+}
+.depth-hint {
+  position: absolute; right: var(--gutter); bottom: 26px;
+  color: rgba(255,255,255,.35); font: 600 10px/1 'Barlow Condensed',sans-serif; letter-spacing: .3em;
+}
 
 /* Support（トップの「激励賞・SHOP」入口） --------------------------------- */
 .support-section {
@@ -1108,16 +1146,13 @@ footer p,footer > a:last-child { color: #777; font: 500 9px/1 'Barlow Condensed'
   .subpage main { padding-top: 68px; }
   html:has(.subpage) { scroll-padding-top: 68px; }
   .subpage .goods-section,.subpage .cheer-section { min-height: 0; }
-  /* スマホ：ギャラリーは指でスワイプ。矢印は隠して枚数だけ表示 */
-  .photo-section { --gutter: 20px; gap: 26px; padding: 70px 0; }
-  .photo-head { align-items: end; }
-  .photo-arrow { display: none; }
-  .photo-count { margin-right: 0; }
-  .photo-track { gap: 8px; cursor: auto; }
-  /* スマホ：次の写真が少し見えるよう、幅を画面の84%・3:2にそろえる */
-  .photo-item { width: 84vw; height: auto; aspect-ratio: 3/2; }
-  .photo-item img { width: 100%; height: 100%; object-fit: cover; }
-  .photo-caption { bottom: 12px; left: 14px; font-size: 11px; }
+  /* スマホ：ギャラリーはカードを画面幅に合わせ、矢印は隠してスワイプで操作 */
+  .depth-section { --gutter: 20px; --card-w: calc(100vw - 110px); --card-h: calc(var(--card-w) / 1.5); gap: 24px; padding: 70px 0 64px; }
+  .depth-arrow { display: none; }
+  .depth-count { margin-right: 0; }
+  .depth-stage { perspective: 900px; perspective-origin: 20% 40%; }
+  .depth-caption { bottom: 12px; left: 14px; font-size: 11px; }
+  .depth-hint { bottom: 30px; }
   .support-section { gap: 32px; padding: 70px 20px; }
   .support-cards { grid-template-columns: 1fr; gap: 12px; }
   .support-card { min-height: 0; padding: 28px 22px 24px; }

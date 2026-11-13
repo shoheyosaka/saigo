@@ -444,76 +444,197 @@ function initGoodsList() {
   list.innerHTML = goods.map(renderGoodsCard).join('')
 }
 
-/* Photo gallery (横スクロール：矢印・枚数・進捗バー・マウスでドラッグ) ------- */
-function initPhotoGallery() {
-  const track = document.querySelector('.photo-track')
-  if (!track) return
-  const section = track.closest('.photo-section')
-  const items = Array.from(track.querySelectorAll('.photo-item'))
-  const current = section.querySelector('[data-photo-current]')
-  const prev = section.querySelector('[data-photo-prev]')
-  const next = section.querySelector('[data-photo-next]')
-  const progress = section.querySelector('.photo-progress')
+/* Gallery：立体スライダー ------------------------------------------------
+   pos（いま手前にある写真の番号。小数で途中の状態も表す）を目標値へなめらかに近づけ、
+   各カードの「手前からの距離 d」に応じて奥行き・角度・暗さを毎フレーム計算する。
+   最後の次は最初に戻る（ループ）。画面に入っている間だけ自動で送る。 */
+const DEPTH_AUTOPLAY_MS = 4200
+
+function initDepthGallery() {
+  const section = document.querySelector('.depth-section')
+  if (!section) return
+  const stage = section.querySelector('.depth-stage')
+  const cards = Array.from(stage.querySelectorAll('.depth-card'))
+  const count = cards.length
+  const currentLabel = section.querySelector('[data-depth-current]')
+  const bigNumber = section.querySelector('[data-depth-number]')
+  const bg = section.querySelector('[data-depth-bg]')
+  const bar = section.querySelector('[data-depth-bar]')
   const pad = (n) => String(n).padStart(2, '0')
-  const startOf = (item) => item.offsetLeft - items[0].offsetLeft
+  const wrap = (n) => ((n % count) + count) % count
+  // 写真の枚数に合わせて「/ 18」とバーの長さを自動で設定
+  section.querySelector('[data-depth-total]').textContent = pad(count)
+  bar.style.width = `${100 / count}%`
+  const reduced = prefersReducedMotion()
 
-  // いま左端にある写真の番号（最後までスクロールしたら最後の番号）
-  const activeIndex = () => {
-    const max = track.scrollWidth - track.clientWidth
-    if (track.scrollLeft >= max - 2) return items.length - 1
-    let index = 0
-    items.forEach((item, i) => { if (startOf(item) <= track.scrollLeft + 4) index = i })
-    return index
+  let pos = 0
+  let target = 0
+  let frontIndex = -1
+  let frame = 0
+  let inView = false
+  let autoplayTimer = 0
+
+  // d：0 が手前、1,2,3… が奥。マイナスは「抜けていく途中」のカード
+  const place = (card, d) => {
+    const width = card.offsetWidth
+    if (d < -1 || d > 6) {
+      card.style.visibility = 'hidden'
+      return
+    }
+    card.style.visibility = 'visible'
+    let x, y, z, rotateY, rotateZ, opacity, shade
+    if (d >= 0) {
+      // 奥へ：右上にずれながら遠ざかり、少し斜めを向いて暗くなる
+      const k = Math.min(d, 1)
+      x = d * width * (window.innerWidth > 780 ? 0.34 : 0.3)
+      y = -d * 14
+      z = -d * 260
+      rotateY = -k * 16
+      rotateZ = 0
+      opacity = d > 5 ? 6 - d : 1
+      shade = Math.min(d * 0.2, 0.8)
+    } else {
+      // 手前から抜ける：左へ大きく飛びながらこちら側に迫り、傾いて消える
+      const t = -d
+      x = -t * width * 1.05
+      y = t * 30
+      z = t * 260
+      rotateY = t * 38
+      rotateZ = -t * 6
+      opacity = 1 - t * 1.2
+      shade = 0
+    }
+    card.style.transform = `translate3d(${x}px,${y}px,${z}px) rotateY(${rotateY}deg) rotateZ(${rotateZ}deg)`
+    card.style.opacity = Math.max(0, opacity)
+    card.style.zIndex = String(100 - Math.round(d * 10))
+    card.style.setProperty('--shade', shade.toFixed(3))
   }
 
-  const update = () => {
-    const max = track.scrollWidth - track.clientWidth
-    const index = activeIndex()
-    current.textContent = pad(index + 1)
-    prev.disabled = track.scrollLeft <= 2
-    next.disabled = track.scrollLeft >= max - 2
-    progress.style.setProperty('--progress', `${max > 0 ? (track.scrollLeft / max) * 100 : 100}%`)
+  const setFront = (index) => {
+    if (index === frontIndex) return
+    frontIndex = index
+    cards.forEach((card, i) => card.classList.toggle('is-front', i === index))
+    currentLabel.textContent = pad(index + 1)
+    bigNumber.textContent = pad(index + 1)
+    bar.style.setProperty('--bar', index)
+    const img = cards[index].querySelector('img')
+    bg.src = img.currentSrc || img.src
+    if (!reduced) {
+      ;[bigNumber, bg].forEach((el) => {
+        el.classList.remove('is-changing')
+        void el.offsetWidth // アニメーションをやり直すため
+        el.classList.add('is-changing')
+      })
+    }
   }
 
-  const goTo = (index) => {
-    const item = items[Math.max(0, Math.min(items.length - 1, index))]
-    track.scrollTo({ left: startOf(item), behavior: prefersReducedMotion() ? 'auto' : 'smooth' })
+  const render = () => {
+    cards.forEach((card, i) => {
+      let d = wrap(i - pos)
+      if (d > count - 1.5) d -= count // 直前に抜けたカードはマイナス側に
+      place(card, d)
+    })
+    setFront(wrap(Math.round(pos)))
   }
-  prev.addEventListener('click', () => goTo(activeIndex() - 1))
-  next.addEventListener('click', () => goTo(activeIndex() + 1))
-  track.addEventListener('keydown', (event) => {
-    if (event.key === 'ArrowRight') { event.preventDefault(); goTo(activeIndex() + 1) }
-    if (event.key === 'ArrowLeft') { event.preventDefault(); goTo(activeIndex() - 1) }
+
+  const tick = () => {
+    pos += (target - pos) * (reduced ? 1 : 0.085)
+    if (Math.abs(target - pos) < 0.0005) pos = target
+    render()
+    frame = pos === target ? 0 : requestAnimationFrame(tick)
+  }
+  const animate = () => { if (!frame) frame = requestAnimationFrame(tick) }
+
+  const goTo = (value) => {
+    target = value
+    animate()
+    restartAutoplay()
+  }
+
+  // 自動送り（画面内にあって、操作中でないときだけ）
+  const stopAutoplay = () => { clearTimeout(autoplayTimer); autoplayTimer = 0 }
+  const restartAutoplay = () => {
+    stopAutoplay()
+    if (reduced || !inView) return
+    autoplayTimer = setTimeout(() => goTo(Math.round(target) + 1), DEPTH_AUTOPLAY_MS)
+  }
+  new IntersectionObserver((entries) => {
+    inView = entries[0].isIntersecting
+    restartAutoplay()
+  }, { threshold: 0.4 }).observe(section)
+
+  section.querySelector('[data-depth-prev]').addEventListener('click', () => goTo(Math.round(target) - 1))
+  section.querySelector('[data-depth-next]').addEventListener('click', () => goTo(Math.round(target) + 1))
+  stage.addEventListener('keydown', (event) => {
+    if (event.key === 'ArrowRight') { event.preventDefault(); goTo(Math.round(target) + 1) }
+    if (event.key === 'ArrowLeft') { event.preventDefault(); goTo(Math.round(target) - 1) }
   })
 
-  // PC：マウスでつかんで横にドラッグ（タッチは標準のスワイプに任せる）
-  let dragStartX = 0
-  let dragStartScroll = 0
+  // ドラッグ／スワイプ：左に引くと次へ。指を離した勢いで1枚以上進むことも
+  let startX = 0
+  let startPos = 0
+  let lastX = 0
+  let lastTime = 0
+  let velocity = 0
   let dragging = false
-  track.addEventListener('pointerdown', (event) => {
-    if (event.pointerType !== 'mouse' || event.button !== 0) return
+  let moved = false
+  stage.addEventListener('pointerdown', (event) => {
+    if (event.pointerType === 'mouse' && event.button !== 0) return
     dragging = true
-    dragStartX = event.clientX
-    dragStartScroll = track.scrollLeft
-    track.classList.add('is-dragging')
-    track.setPointerCapture(event.pointerId)
+    moved = false
+    startX = lastX = event.clientX
+    lastTime = performance.now()
+    startPos = pos
+    velocity = 0
+    stopAutoplay()
+    stage.classList.add('is-dragging')
+    stage.setPointerCapture(event.pointerId)
   })
-  track.addEventListener('pointermove', (event) => {
+  stage.addEventListener('pointermove', (event) => {
     if (!dragging) return
-    track.scrollLeft = dragStartScroll - (event.clientX - dragStartX)
+    const width = cards[0].offsetWidth
+    const now = performance.now()
+    if (Math.abs(event.clientX - startX) > 6) moved = true
+    velocity = (event.clientX - lastX) / Math.max(now - lastTime, 1)
+    lastX = event.clientX
+    lastTime = now
+    target = startPos - (event.clientX - startX) / (width * 0.75)
+    pos = target
+    render()
   })
   const endDrag = () => {
     if (!dragging) return
     dragging = false
-    track.classList.remove('is-dragging')
-    goTo(activeIndex() + (track.scrollLeft - startOf(items[activeIndex()]) > items[activeIndex()].offsetWidth / 2 ? 1 : 0))
+    stage.classList.remove('is-dragging')
+    const fling = Math.max(-3, Math.min(3, -velocity * 1.6))
+    goTo(Math.round(target + fling))
   }
-  track.addEventListener('pointerup', endDrag)
-  track.addEventListener('pointercancel', endDrag)
+  stage.addEventListener('pointerup', endDrag)
+  stage.addEventListener('pointercancel', endDrag)
 
-  track.addEventListener('scroll', update, { passive: true })
-  window.addEventListener('resize', update)
-  update()
+  // 奥のカードをクリックすると、そのカードまで進む
+  stage.addEventListener('click', (event) => {
+    if (moved) return
+    const card = event.target.closest('.depth-card')
+    if (!card) return
+    let d = wrap(Number(card.dataset.index) - Math.round(target))
+    if (d > count / 2) d -= count
+    if (d !== 0) goTo(Math.round(target) + d)
+  })
+
+  // トラックパッドの横スクロールでも送れるように（縦スクロールは邪魔しない）
+  let wheelLock = 0
+  stage.addEventListener('wheel', (event) => {
+    if (Math.abs(event.deltaX) <= Math.abs(event.deltaY) || Math.abs(event.deltaX) < 8) return
+    event.preventDefault()
+    const now = performance.now()
+    if (now < wheelLock) return
+    wheelLock = now + 450
+    goTo(Math.round(target) + (event.deltaX > 0 ? 1 : -1))
+  }, { passive: false })
+
+  window.addEventListener('resize', render)
+  render()
 }
 
 /* Sponsor gallery carousel (mobile only; layout switches in CSS) --------- */
@@ -727,7 +848,7 @@ initCountdown()
 initScrollReveal()
 initRecordCounters()
 initGalleryCarousel()
-initPhotoGallery()
+initDepthGallery()
 initHeroVisibility()
 initVideoFacade()
 initContactForm()
