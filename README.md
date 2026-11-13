@@ -72,7 +72,7 @@ HTML / CSS / JavaScript のみで構成した静的サイトです。ビルド�
 ### 別ページ（cheer.html・shop.html）
 
 - SNS やQRコードからそのまま開いてもらうための単独ページです。オープニング演出・セクションごとのスナップはなく、普通にスクロールします
-- **ヘッダー（メニュー）とフッターは3ファイル（index.html・cheer.html・shop.html）にそれぞれ書いてあります。** メニューやSNSリンクを変えるときは3ファイルとも直してください。SNSアイコン（Instagram・X・Threads）は、メニュー内の `.menu-socials`・フッターの `.footer-socials` に加え、トップは最初の画面（スマホのみ）の `.hero-socials`、サポーター・SHOP はスマホ用ヘッダーの `.header-socials` にもあります。今いるページのメニューには `aria-current="page"` を付けます
+- **ヘッダー（メニュー）とフッターは3ファイル（index.html・cheer.html・shop.html）にそれぞれ書いてあります。** メニューやSNSリンクを変えるときは3ファイルとも直してください。SNSアイコン（Instagram・X・Threads）は、メニュー内の `.menu-socials`・フッターの `.footer-socials` に加え、トップの最初の画面（スマホのみ）の `.hero-socials` にあります。今いるページのメニューには `aria-current="page"` を付けます
 - トップのセクションへは `index.html#contact` のようにリンクします。`#` 付きで開いたトップは、オープニング演出を飛ばしてその欄へ移動します
 - CSS（`style.css`）と JS（`main.js`）は全ページ共通です
 
