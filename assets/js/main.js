@@ -54,6 +54,10 @@ const CHEER_SHEET_ENDPOINT = ''
 const CHEER_DEMO_CHECKOUT = true
 const CHEER_NAME_PERK_MIN = 3000
 const CHEER_GIFT_PERK_MIN = 10000
+// サポーターページの締め切り表示：次の試合が決まったら書く（例：{ event: 'RISE 205', date: '2027-01-25' }）。
+// 空のあいだは「試合の14日前まで」という一般的な案内だけを表示する
+const SUPPORT_NEXT_FIGHT = { event: '', date: '' }
+const SUPPORT_NAME_DEADLINE_DAYS = 14 // 試合の何日前までの申し込みで、Tシャツにお名前が間に合うか
 // Stripe の「支払い後のリダイレクト先」を cheer.html?cheer=thanks&amount=金額 にすると、お礼表示になる
 const cheerParams = new URLSearchParams(window.location.search)
 const isCheerThanks = cheerParams.get('cheer') === 'thanks'
@@ -707,7 +711,8 @@ function initCheerForm() {
   const form = document.querySelector('.cheer-form')
   if (!form) return
 
-  const submitLabel = form.querySelector('.cheer-submit-label')
+  // フォームの送信ボタンと、スマホで画面下に固定するボタンの両方の文言を変える
+  const submitLabels = document.querySelectorAll('[data-cheer-submit-label]')
   const nameInput = form.elements.name
   const anonymous = form.elements.anonymous
   const message = form.elements.message
@@ -742,7 +747,7 @@ function initCheerForm() {
 
   const update = () => {
     const amount = getAmount()
-    submitLabel.textContent = `¥${amount.toLocaleString('ja-JP')} でサポーターになる`
+    submitLabels.forEach((label) => { label.textContent = `¥${amount.toLocaleString('ja-JP')} でサポーターになる` })
     perks.forEach((perk) => perk.classList.toggle('is-active', amount >= Number(perk.dataset.perkMin)))
     nameInput.disabled = anonymous.checked
     nameHint.hidden = amount < CHEER_NAME_PERK_MIN || anonymous.checked
@@ -790,6 +795,100 @@ function initCheerForm() {
     window.location.href = checkoutUrl.toString()
   })
   update()
+}
+
+/* スマホ：画面下に固定する申し込みボタン
+   ・フォームの送信ボタンが画面に見えている間は隠す（同じボタンが2つ並ばないように）
+   ・入力中（キーボードが出ている間）とお礼画面では隠す */
+function initCheerSticky() {
+  const sticky = document.querySelector('.cheer-sticky')
+  const form = document.querySelector('.cheer-form')
+  const submit = form?.querySelector('.cheer-submit')
+  if (!sticky || !form || !submit) return
+
+  let submitVisible = false
+  let typing = false
+  const update = () => {
+    sticky.hidden = submitVisible || typing || form.hidden
+  }
+  // スクロールのたびに、送信ボタンが画面内（下の固定ボタンに隠れない範囲）にあるかを見る
+  const check = () => {
+    const box = submit.getBoundingClientRect()
+    submitVisible = box.height > 0 && box.top < window.innerHeight - 20 && box.bottom > 0
+    update()
+  }
+  window.addEventListener('scroll', check, { passive: true })
+  window.addEventListener('resize', check)
+  check()
+  form.addEventListener('focusin', (event) => {
+    typing = event.target.matches('input[type="email"], input[type="text"], textarea')
+    update()
+  })
+  form.addEventListener('focusout', () => {
+    typing = false
+    update()
+  })
+  update()
+}
+
+/* サポーターページ：名前入りTシャツのプレビュー
+   フォームのお名前欄に入力した名前を、Tシャツのプレビュー（最初の画面の大きなTシャツ・お名前欄の下の小さなTシャツ）に入れる */
+function initSupportPreview() {
+  const previews = document.querySelectorAll('[data-name-preview]')
+  const form = document.querySelector('.cheer-form')
+  if (!previews.length || !form) return
+  const nameInput = form.elements.name
+  const anonymous = form.elements.anonymous
+
+  const render = () => {
+    const name = anonymous.checked ? '' : nameInput.value.trim()
+    previews.forEach((preview) => {
+      preview.textContent = name || 'YOUR NAME'
+      preview.classList.toggle('is-empty', !name)
+      preview.classList.remove('is-pop')
+      void preview.offsetWidth // 入力のたびに小さく弾むアニメーションをやり直す
+      if (name) preview.classList.add('is-pop')
+      fitText(preview)
+    })
+  }
+  // Tシャツの幅に収まるまで文字を小さくする（長い名前でも「…」で切れないように）
+  const fitText = (element) => {
+    element.style.fontSize = ''
+    if (!element.clientWidth) return // 非表示のときは測れないので、表示されたときにやり直す
+    let size = parseFloat(window.getComputedStyle(element).fontSize)
+    while (element.scrollWidth > element.clientWidth && size > 4) {
+      size -= 0.5
+      element.style.fontSize = `${size}px`
+    }
+  }
+  form.addEventListener('input', render)
+  form.addEventListener('change', render)
+  // スマホの日本語入力（変換中）や自動入力でも確実に反映されるよう、お名前欄の変化も直接見る
+  ;['input', 'keyup', 'compositionend', 'change'].forEach((type) => nameInput.addEventListener(type, render))
+  render()
+}
+
+/* サポーターページ：締め切り（次の試合の14日前）までのカウントダウン */
+function initSupportDeadline() {
+  const box = document.querySelector('[data-support-deadline]')
+  if (!box || !/^\d{4}-\d{2}-\d{2}$/.test(SUPPORT_NEXT_FIGHT.date)) return
+  const daysToFight = getDaysUntil(SUPPORT_NEXT_FIGHT.date)
+  if (daysToFight < 0) return // 試合が終わっていれば、一般的な案内のまま
+  const [year, month, day] = SUPPORT_NEXT_FIGHT.date.split('-').map(Number)
+  const deadline = new Date(Date.UTC(year, month - 1, day - SUPPORT_NAME_DEADLINE_DAYS))
+  const md = (date) => `${date.getUTCMonth() + 1}/${date.getUTCDate()}`
+  const fightLabel = `${escapeHtml(SUPPORT_NEXT_FIGHT.event)}（${month}/${day}）`
+  const daysLeft = daysToFight - SUPPORT_NAME_DEADLINE_DAYS
+  box.classList.add('has-fight')
+  if (daysLeft > 0) {
+    box.innerHTML = `<p class="sup-deadline-text"><b>${fightLabel}</b>のTシャツに間に合う締め切りまで</p>
+      <p class="sup-deadline-count">あと<strong>${daysLeft}</strong>日<small>${md(deadline)}まで</small></p>`
+  } else if (daysLeft === 0) {
+    box.innerHTML = `<p class="sup-deadline-text"><b>${fightLabel}</b>のTシャツに間に合う締め切りは</p>
+      <p class="sup-deadline-count"><strong>本日</strong><small>${md(deadline)}まで</small></p>`
+  } else {
+    box.innerHTML = `<p class="sup-deadline-text"><b>${fightLabel}</b>の締め切り（${md(deadline)}）は過ぎました。これからのお申し込みは、その次の試合のTシャツに掲載します。</p>`
+  }
 }
 
 function initCheerThanks() {
@@ -850,5 +949,8 @@ initHeroVisibility()
 initVideoFacade()
 initContactForm()
 initCheerForm()
+initCheerSticky()
+initSupportPreview()
+initSupportDeadline()
 initIntro()
 initCheerThanks()
