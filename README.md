@@ -36,7 +36,7 @@ HTML / CSS / JavaScript のみで構成した静的サイトです。ビルド�
         ├── saigo-hero.webp       # ヒーロー用人物切り抜き（透過）
         ├── saigo-profile.webp     # プロフィール写真
         ├── gallery-01〜22.webp   # ギャラリーの写真（表示順は index.html の並び）。各セクションの背景写真にも流用
-        ├── sponsor-placement.webp # スポンサー欄「ロゴは、ここに載ります。」の写真
+        ├── sponsor-placement.webp # スポンサー欄「ロゴ掲載例」の写真
         ├── ringside-tshirt.webp  # Tシャツを着たセコンドの写真（SHOP・サポーター）
         ├── intro-1〜4.webp       # オープニングで一瞬ずつ映す写真（軽量版）
         └── og-top / og-cheer / og-shop.jpg  # SNS 共有画像（1200×630）
@@ -66,7 +66,7 @@ HTML / CSS / JavaScript のみで構成した静的サイトです。ビルド�
 | 戦績 | `#career` | 勝率リング・数値カウントアップ・試合カード一覧（5件＋もっと見る） |
 | ギャラリー | `#gallery` | 写真22枚の立体スライダー（奥の写真が前に出てくる。PCは矢印・ドラッグ、スマホはスワイプ、自動送りあり） |
 | 応援（入口） | `#support` | サポーターページ・SHOP ページへの入口カード2枚 |
-| スポンサー | `#sponsor` | 見出し・スポンサーロゴ・ロゴの掲出位置（トランクスの写真＋社名一覧）・プラン・開始までの流れ・お問い合わせボタン |
+| スポンサー | `#sponsor` | 見出し・スポンサーロゴ・ロゴ掲載例（トランクスの写真）・開始までの流れ・お問い合わせボタン |
 | お問い合わせ | `#contact` | セクション全体の背景に写真（白黒＋クリーム色を重ねた明るいトーン）・フォーム（送信機能は未実装） |
 
 ### 別ページ（cheer.html・shop.html）
@@ -152,7 +152,7 @@ python3 -m http.server 8000
 
 ### スポンサーの「ロゴの掲出位置」を変える
 
-`index.html` の `.placement`。写真は `sponsor-placement.webp`、右の社名一覧は `.placement-list` の `<li>`。スポンサーが増えたら `<li>` を1行足し、ロゴが写った新しい写真があれば差し替えます。
+`index.html` の `.placement`（見出し「ロゴ掲載例」）。写真は `sponsor-placement.webp`。ロゴが写った新しい写真があれば差し替えます。
 
 ### スポンサーのロゴを追加・変更する
 
