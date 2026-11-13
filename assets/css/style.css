@@ -174,6 +174,13 @@ main {
 }
 .logo { font: 800 26px/1 'Barlow Condensed', sans-serif; letter-spacing: .08em; }
 .logo span { color: var(--orange); }
+/* スマホ：ヘッダーに常に見えるSNSアイコン（PCではメニュー内のアイコンを使うので隠す） */
+.header-socials { display: flex; align-items: center; gap: 0; margin-left: auto; }
+.header-socials a { display: grid; width: 36px; height: 40px; place-items: center; color: #c9c7c1; transition: color .2s ease; }
+.header-socials a:hover { color: var(--orange); }
+.header-socials svg { width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.7; }
+.header-socials .icon-fill { fill: currentColor; stroke: none; }
+.header-socials + .menu-button { margin-left: 4px; }
 .menu-button {
   position: relative; z-index: 2; display: flex; width: 48px; height: 48px; margin-left: auto;
   flex-direction: column; align-items: flex-end; justify-content: center; gap: 6px;
@@ -1135,6 +1142,7 @@ footer p,footer > a:last-child { color: #777; font: 500 9px/1 'Barlow Condensed'
   .next-countdown time { margin-top: 10px; color: #77766f; font-size: 13px; }
   .next-countdown .countdown-today,.next-countdown .countdown-finished { font-size: 30px; }
   .menu-button { display: none; }
+  .header-socials { display: none; }
   .menu-panel {
     position: static; display: flex; width: auto; margin-left: auto; padding: 0;
     border: 0; background: transparent; box-shadow: none; opacity: 1; visibility: visible;
