@@ -140,7 +140,7 @@ main {
 .snap-section::-webkit-scrollbar { display: none; }
 .snap-section-long { scroll-snap-stop: always; }
 .overview-section {
-  display: grid; grid-template-columns: .9fr 1.1fr; grid-template-rows: auto auto 1fr;
+  display: grid; grid-template-columns: .9fr 1.1fr; grid-template-rows: auto auto auto 1fr;
   gap: 30px 38px; align-content: start;
   padding: 32px max(24px,calc((100vw - 1240px)/2)) 42px;
   overflow-x: hidden; overflow-y: auto; background: var(--black);
@@ -157,12 +157,9 @@ main {
   padding: 7px 11px; color: white; background: var(--orange);
   font-size: clamp(12px,1.2vw,16px); font-weight: 800; letter-spacing: .12em;
 }
-.overview-section .stats {
-  grid-column: 1; grid-template-columns: repeat(2,1fr); width: 100%;
-  margin: 0; padding: 0; align-self: start;
-}
+/* 戦績の数字を外したので、動画は横幅いっぱいの中央に */
 .overview-section .video-feature {
-  grid-column: 2; width: 100%; margin: 0; padding: 0; border-top: 0; align-self: start;
+  grid-column: 1/-1; justify-self: center; max-width: 960px; width: 100%; margin: 0; padding: 0; border-top: 0; align-self: start;
 }
 
 /* Header ------------------------------------------------------------------ */
@@ -387,13 +384,6 @@ main {
 .next-countdown .countdown-today,.next-countdown .countdown-finished { color: var(--orange); font-size: 20px; line-height: 1; }
 .next-fight > a { padding: 12px 18px; border: 1px solid #777; font-size: 10px; }
 
-.stats {
-  display: grid; grid-template-columns: repeat(4,1fr); width: min(1240px, calc(100% - 48px));
-  margin: 70px auto 0; padding-bottom: 76px;
-}
-.stats > div { min-height: 136px; padding: 28px; border: 1px solid #29292c; }
-.stats small,.stats span { display: block; color: #767570; font: 500 9px/1.4 'Barlow Condensed'; letter-spacing: .13em; }
-.stats strong { display: block; margin: 14px 0 5px; font: 700 clamp(23px,2.5vw,36px)/1 'Barlow Condensed'; }
 .video-feature {
   width: min(960px,calc(100% - 48px)); margin: 12px auto 76px; padding-top: 68px;
   border-top: 1px solid #2d2d30;
@@ -1042,11 +1032,10 @@ footer p,footer > a:last-child { color: #777; font: 500 9px/1 'Barlow Condensed'
 /* margin の % は横幅基準になるため、top で上にずらす */
 .photo-bg img[data-parallax] { position: relative; top: -12%; height: 124%; will-change: transform; }
 
-/* 次戦：背景に試合前の写真 */
-.next-fight.has-photo { position: relative; isolation: isolate; min-height: 170px; overflow: hidden; border-color: transparent; background: #0b0b0d; }
-.next-fight.has-photo .photo-bg {
-  --photo-shade: linear-gradient(90deg,rgba(8,8,10,.95) 0%,rgba(8,8,10,.8) 45%,rgba(8,8,10,.3) 78%,rgba(8,8,10,.55) 100%);
-}
+/* 次戦：告知画像を NEXT FIGHT の帯のすぐ上に */
+/* overflow: hidden を付けると PC のグリッドで高さが 0 までつぶれるので付けない */
+.next-fight-poster { grid-column: 1/-1; aspect-ratio: 1024/576; margin: 0 0 -30px; background: #000; }
+.next-fight-poster img { display: block; width: 100%; height: 100%; object-fit: cover; }
 
 /* 写真の帯（プロフィールと戦績のあいだ） */
 .photo-band {
@@ -1133,7 +1122,9 @@ footer p,footer > a:last-child { color: #777; font: 500 9px/1 'Barlow Condensed'
 
 /* Responsive -------------------------------------------------------------- */
 @media (min-width: 781px) {
-  .overview-section .stats,.overview-section .video-feature { align-self: center; }
+  .overview-section .video-feature { align-self: center; }
+  /* 告知画像が入って1画面に収まらないので、この欄だけ高さを中身に合わせる（PC） */
+  .overview-section { height: auto; min-height: calc(100svh - 82px); overflow: visible; }
   .next-fight { grid-template-columns: 105px 1fr 210px auto; }
   .next-countdown { min-height: 110px; padding-left: 24px; }
   .next-countdown > small { font-size: 13px; }
@@ -1233,6 +1224,7 @@ footer p,footer > a:last-child { color: #777; font: 500 9px/1 'Barlow Condensed'
     padding: 24px 18px 48px;
   }
   .overview-section > * { flex: 0 0 auto; }
+  .next-fight-poster { margin: 16px 0 0; }
   .fight-tagline { align-items: flex-start; flex-direction: column; gap: 12px; padding: 18px; }
   .overview-section .next-fight {
     display: flex; min-height: 0; flex-direction: column; align-items: stretch; gap: 15px;
@@ -1251,10 +1243,6 @@ footer p,footer > a:last-child { color: #777; font: 500 9px/1 'Barlow Condensed'
   .next-countdown > small { justify-self: start; }
   .next-countdown > strong { justify-self: center; margin-top: 0; font-size: 38px; }
   .next-countdown time { justify-self: end; margin-top: 0; text-align: right; }
-  .overview-section .stats {
-    grid-template-columns: 1fr 1fr; width: 100%; margin-top: 26px; padding: 0;
-  }
-  .stats > div { min-height: 112px; padding: 20px; }
   .overview-section .video-feature {
     width: 100%; margin: 32px 0 0; padding-top: 30px;
     border-top: 1px solid #2d2d30;
@@ -1357,8 +1345,6 @@ footer p,footer > a:last-child { color: #777; font: 500 9px/1 'Barlow Condensed'
   footer { flex-wrap: wrap; gap: 20px; padding-block: 32px; }
   footer p { order: 3; width: 100%; }
   /* スマホ：写真を使ったデザイン */
-  .next-fight.has-photo { min-height: 0; }
-  .next-fight.has-photo .photo-bg { --photo-shade: linear-gradient(180deg,rgba(8,8,10,.55) 0%,rgba(8,8,10,.9) 70%); }
   .photo-band { height: 72svh; min-height: 420px; padding: 0 20px; }
   .placement { grid-template-columns: 1fr; gap: 30px; margin-top: 56px; }
   .placement-photo { max-width: 320px; margin-inline: auto; }

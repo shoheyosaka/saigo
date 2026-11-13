@@ -60,10 +60,10 @@ HTML / CSS / JavaScript のみで構成した静的サイトです。ビルド�
 | --- | --- | --- |
 | オープニング | — | 試合写真のフラッシュ＋煙＋斬撃＋ロゴの演出。同じタブでは初回のみ再生（ロゴクリックで再生し直し） |
 | ヒーロー | `#top` | 筆文字ロゴ・キャッチコピー・CTA |
-| 概要 | `#next-fight` / `#career` | 次戦情報（背景に写真・カウントダウン）・戦績サマリー・紹介動画 |
+| 概要 | `#next-fight` | 次戦の告知画像・次戦情報（カウントダウン）・紹介動画 |
 | プロフィール | `#profile` | メッセージ・基本データ |
 | 写真の帯 | — | 画面いっぱいの写真に「闘いの先に、まだ見ぬ景色を。」。スクロールで写真がゆっくり動く |
-| 戦績 | — | 勝率リング・数値カウントアップ・試合カード一覧（5件＋もっと見る） |
+| 戦績 | `#career` | 勝率リング・数値カウントアップ・試合カード一覧（5件＋もっと見る） |
 | ギャラリー | `#gallery` | 写真22枚の立体スライダー（奥の写真が前に出てくる。PCは矢印・ドラッグ、スマホはスワイプ、自動送りあり） |
 | 応援（入口） | `#support` | サポーターページ・SHOP ページへの入口カード2枚 |
 | スポンサー | `#sponsor` | 見出し・スポンサーロゴ・ロゴの掲出位置（トランクスの写真＋社名一覧）・プラン・開始までの流れ・お問い合わせボタン |
@@ -104,7 +104,6 @@ python3 -m http.server 8000
 
 | 場所 | 項目 |
 | --- | --- |
-| `index.html` `.stats` | 通算試合数・勝敗・勝率・連勝数 |
 | `index.html` `.record-summary` | `13 FIGHTS`・`WINNING STREAK`・各 `data-count`（勝率・勝/敗/分/NC・KO率・直近5試合） |
 | `assets/css/style.css` `@keyframes rate-fill` と `prefers-reduced-motion` 内の `--rate` | 勝率リングの塗り（例：`61.5%`） |
 
@@ -166,7 +165,7 @@ python3 -m http.server 8000
 
 ### 次戦情報を変更する
 
-`index.html` の `.next-fight` 内を書き換えます。カウントダウンは `.next-countdown` の属性で制御しています。
+`index.html` の `.next-fight` 内を書き換えます。告知画像は `.next-fight-poster` の `<img>`（`assets/images/next-fight-*.webp`）を差し替えます。カウントダウンは `.next-countdown` の属性で制御しています。
 
 ```html
 <div class="next-countdown" ... data-fight-date="2026-11-08" data-event="RISE 203">

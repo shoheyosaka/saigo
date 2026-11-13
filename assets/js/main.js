@@ -251,7 +251,7 @@ function initCountdown() {
     const startedAt = performance.now()
     const duration = 600
     const update = (now) => {
-      const progress = Math.min((now - startedAt) / duration, 1)
+      const progress = Math.min(Math.max((now - startedAt) / duration, 0), 1) // 最初のフレームで時刻が前後してマイナス表示にならないよう 0〜1 に収める
       setDisplayedDays(Math.round(daysUntilFight * easeOutCubic(progress)))
       if (progress < 1) animationFrame = window.requestAnimationFrame(update)
     }
@@ -344,7 +344,7 @@ function initRecordCounters() {
       const startedAt = performance.now()
       const duration = 1000
       const update = (now) => {
-        const progress = Math.min((now - startedAt) / duration, 1)
+        const progress = Math.min(Math.max((now - startedAt) / duration, 0), 1) // 最初のフレームで時刻が前後してマイナス表示にならないよう 0〜1 に収める
         const eased = easeOutCubic(progress)
         counters.forEach((counter) => {
           counter.textContent = format(counter, Number(counter.dataset.count) * eased)

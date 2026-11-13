@@ -150,7 +150,7 @@
           <a class="button primary" href="cheer.html">サポーターになる <span aria-hidden="true">↗</span></a>
           <a class="button outline" href="shop.html">SHOPへ</a>
         </div>
-        <a class="scroll-cue" href="#next-fight">
+        <a class="scroll-cue" href="#next-fight-poster">
           <span></span>
           SCROLL
         </a>
@@ -161,12 +161,15 @@
           <strong>闘いの先に、まだ見ぬ景色を。</strong>
           <span>リトルラストサムライ</span>
         </div>
-        <div class="next-fight has-photo scroll-reveal reveal-up" id="next-fight">
-          <div class="photo-bg" aria-hidden="true" style="--photo-pos: 50% 38%"><img src="assets/images/gallery-09.webp" alt="" loading="lazy" decoding="async"></div>
+        <!-- 次戦の告知画像（試合が変わったら差し替える） -->
+        <figure class="next-fight-poster scroll-reveal reveal-up" id="next-fight-poster">
+          <img src="assets/images/next-fight-rise203.webp" alt="RISE 203　SAIGO vs 星憂雅　2026.11.8（日）後楽園ホール　フェザー級（-57.5kg）3分3R延長1R" loading="lazy" decoding="async" width="1024" height="576">
+        </figure>
+        <div class="next-fight scroll-reveal reveal-up" id="next-fight">
           <p class="section-label">NEXT FIGHT</p>
           <div class="next-data">
             <small>RISE 203</small>
-            <strong>SAIGO <em>VS</em> 星久保</strong>
+            <strong>SAIGO <em>VS</em> 星憂雅</strong>
             <span>フェザー級 -57.5kg / TARGET SHIBUYA</span>
           </div>
           <div class="next-venue">
@@ -183,12 +186,6 @@
           <a href="https://instagram.com/saigo0306" target="_blank" rel="noreferrer">最新情報 <span aria-hidden="true">↗</span></a>
         </div>
 
-        <div class="stats scroll-reveal reveal-up" id="career">
-          <div><small>PRO RECORD</small><strong>13戦</strong><span>TOTAL FIGHTS</span></div>
-          <div><small>WIN</small><strong>8勝</strong><span>3 KO / TKO</span></div>
-          <div><small>LOSE / DRAW</small><strong>4敗 1分</strong><span>0 NO CONTEST</span></div>
-          <div><small>WIN RATE</small><strong>61.5%</strong><span>2連勝中</span></div>
-        </div>
 
         <div class="video-feature">
           <!-- サムネイルだけ表示し、タップされたら YouTube プレーヤーを読み込む（main.js） -->
@@ -241,7 +238,7 @@
       </div>
     </section>
 
-    <section class="record-section snap-section snap-section-long scroll-reveal reveal-up" aria-labelledby="record-heading">
+    <section class="record-section snap-section snap-section-long scroll-reveal reveal-up" id="career" aria-labelledby="record-heading">
       <div class="record-heading">
         <div>
           <p class="section-label">FIGHT RECORD</p>
