@@ -55,9 +55,9 @@ const CHEER_DEMO_CHECKOUT = true
 const CHEER_NAME_PERK_MIN = 3000
 const CHEER_GIFT_PERK_MIN = 10000
 // サポーターページの締め切り表示：次の試合が決まったら書く（例：{ event: 'RISE 205', date: '2027-01-25' }）。
-// 空のあいだは「試合の14日前まで」という一般的な案内だけを表示する
+// 空のあいだは「試合の3週間前まで」という一般的な案内だけを表示する
 const SUPPORT_NEXT_FIGHT = { event: '', date: '' }
-const SUPPORT_NAME_DEADLINE_DAYS = 14 // 試合の何日前までの申し込みで、Tシャツにお名前が間に合うか
+const SUPPORT_NAME_DEADLINE_DAYS = 21 // 3週間。 試合の何日前までの申し込みで、Tシャツにお名前が間に合うか
 // Stripe の「支払い後のリダイレクト先」を cheer.html?cheer=thanks&amount=金額 にすると、お礼表示になる
 const cheerParams = new URLSearchParams(window.location.search)
 const isCheerThanks = cheerParams.get('cheer') === 'thanks'
@@ -868,7 +868,7 @@ function initSupportPreview() {
   render()
 }
 
-/* サポーターページ：締め切り（次の試合の14日前）までのカウントダウン */
+/* サポーターページ：締め切り（次の試合の3週間前）までのカウントダウン */
 function initSupportDeadline() {
   const box = document.querySelector('[data-support-deadline]')
   if (!box || !/^\d{4}-\d{2}-\d{2}$/.test(SUPPORT_NEXT_FIGHT.date)) return
