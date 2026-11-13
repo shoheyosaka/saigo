@@ -3,13 +3,13 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>激励賞を贈る | SAIGO OFFICIAL SITE</title>
-  <meta name="description" content="プロキックボクサー SAIGO（TARGET SHIBUYA）へ激励賞を贈る。¥1,000から、お名前・メッセージを添えて応援できます。">
+  <title>サポーターになる | SAIGO OFFICIAL SITE</title>
+  <meta name="description" content="プロキックボクサー SAIGO（TARGET SHIBUYA）のサポーターになる。¥1,000から、お名前・メッセージを添えて応援できます。">
   <meta name="theme-color" content="#0d0d0f">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="SAIGO OFFICIAL SITE">
-  <meta property="og:title" content="激励賞を贈る | SAIGO OFFICIAL SITE">
-  <meta property="og:description" content="リングに立つSAIGOへ、激励賞で応援を届けよう。">
+  <meta property="og:title" content="サポーターになる | SAIGO OFFICIAL SITE">
+  <meta property="og:description" content="リングに立つSAIGOを、サポーターとして支えよう。">
   <!-- 共有画像は絶対URLが必要。本番ドメインが決まったら差し替える（README「公開前チェックリスト」） -->
   <meta property="og:image" content="https://shoheyosaka.github.io/saigo/assets/images/og-cheer.jpg">
   <meta property="og:image:width" content="1200">
@@ -62,15 +62,15 @@
     <section class="cheer-section" id="cheer" aria-labelledby="cheer-heading">
       <div class="cheer-intro">
         <p class="section-label">CHEER FOR SAIGO</p>
-        <h1 id="cheer-heading">激励賞を贈る</h1>
+        <h1 id="cheer-heading">サポーターになる</h1>
         <p class="cheer-lead">
-          リングに立つSAIGOへ、応援の気持ちを激励賞として届けませんか。
-          いただいた激励賞は、試合に向けた練習・遠征・減量などの活動に使わせていただきます。
+          リングに立つSAIGOを、サポーターとして支えませんか。
+          いただいたご支援は、試合に向けた練習・遠征・減量などの活動に使わせていただきます。
         </p>
 
         <!-- 特典：選んだ金額で受け取れるものが点灯する（data-perk-min 以上で点灯。main.js が制御） -->
         <div class="cheer-perks">
-          <p class="cheer-perks-title">激励賞の特典</p>
+          <p class="cheer-perks-title">サポーター特典</p>
           <ul>
             <li data-perk-min="1000"><b>¥1,000〜</b><span>SAIGOからのお礼メッセージ</span></li>
             <li data-perk-min="10000"><b>¥10,000〜</b><span>試合毎に使用するTシャツにお名前を掲載</span></li>
@@ -83,7 +83,7 @@
         </div>
       </div>
 
-      <!-- 決済（Stripe Payment Link）とスプレッドシート保存は未実装（README「激励賞」参照） -->
+      <!-- 決済（Stripe Payment Link）とスプレッドシート保存は未実装（README「サポーター」参照） -->
       <form class="cheer-form" novalidate>
         <fieldset class="cheer-step">
           <legend><span>1</span>金額を選ぶ</legend>
@@ -121,9 +121,9 @@
           </label>
         </fieldset>
 
-        <button class="cheer-submit" type="submit"><span class="cheer-submit-label">¥5,000 の激励賞を贈る</span> <span aria-hidden="true">→</span></button>
+        <button class="cheer-submit" type="submit"><span class="cheer-submit-label">¥5,000 でサポーターになる</span> <span aria-hidden="true">→</span></button>
         <p class="cheer-secure">お支払いは Stripe の安全な決済ページで行います（クレジットカード・Apple Pay など）。</p>
-        <p class="form-notice cheer-notice" role="status" hidden>激励賞の決済機能は現在準備中です。お支払いは行われていません。</p>
+        <p class="form-notice cheer-notice" role="status" hidden>サポーターの決済機能は現在準備中です。お支払いは行われていません。</p>
       </form>
 
       <!-- 決済完了後（?cheer=thanks で戻ってきたとき）にフォームの代わりに表示。main.js が制御 -->
@@ -133,7 +133,7 @@
         </figure>
         <img class="chara" src="assets/images/chara-stand.webp" alt="" aria-hidden="true" loading="lazy" decoding="async" width="374" height="640">
         <p class="section-label">THANK YOU</p>
-        <h3>激励賞、<br>ありがとうございました！</h3>
+        <h3>サポートいただき、<br>ありがとうございました！</h3>
         <p>いただいた応援は、SAIGOの力になります。<br>リングの上で結果で応えます。引き続き応援よろしくお願いします！</p>
         <p class="cheer-thanks-perk" hidden>試合毎に使用するTシャツへのお名前掲載（匿名の方を除く）と、オフィシャルTシャツのプレゼントについては、準備ができしだいご連絡します。</p>
         <div class="cheer-thanks-actions">

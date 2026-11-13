@@ -36,7 +36,7 @@ const goods = [
 ]
 
 /* ==========================================================================
-   激励賞（決済・保存は未実装）
+   サポーター（旧：激励賞。決済・保存は未実装）
    CHEER_PAYMENT_LINKS : 金額ごとの Stripe Payment Link の URL。空のあいだは「準備中」と表示
    CHEER_SHEET_ENDPOINT: スプレッドシートに保存する Google Apps Script の URL（未設定なら空）
    CHEER_NAME_PERK_MIN : この金額以上で「試合毎に使用するTシャツにお名前」「Tシャツ1枚プレゼント」の特典がつく
@@ -103,7 +103,7 @@ function jumpTo(element) {
 function initIntro() {
   const root = document.documentElement
   const darkShell = document.querySelector('.dark-shell')
-  // 激励賞・SHOP などの別ページにはオープニング演出がない
+  // サポーター・SHOP などの別ページにはオープニング演出がない
   if (!darkShell) return
   let timer = 0
 
@@ -695,7 +695,7 @@ function initVideoFacade() {
   })
 }
 
-/* Cheer (激励賞) ----------------------------------------------------------- */
+/* Cheer (サポーター) ---------------------------------------------------------- */
 function initCheerForm() {
   const form = document.querySelector('.cheer-form')
   if (!form) return
@@ -735,7 +735,7 @@ function initCheerForm() {
 
   const update = () => {
     const amount = getAmount()
-    submitLabel.textContent = `¥${amount.toLocaleString('ja-JP')} の激励賞を贈る`
+    submitLabel.textContent = `¥${amount.toLocaleString('ja-JP')} でサポーターになる`
     perks.forEach((perk) => perk.classList.toggle('is-active', amount >= Number(perk.dataset.perkMin)))
     nameInput.disabled = anonymous.checked
     nameHint.hidden = amount < CHEER_NAME_PERK_MIN || anonymous.checked
@@ -800,7 +800,7 @@ function initCheerThanks() {
   }
 
   const pageUrl = `${window.location.origin}${window.location.pathname}`
-  const shareText = 'プロキックボクサー SAIGO 選手に激励賞を贈りました！一緒に応援しよう 🔥'
+  const shareText = 'プロキックボクサー SAIGO 選手のサポーターになりました！一緒に応援しよう 🔥'
   thanks.querySelector('.cheer-share').href =
     `https://x.com/intent/post?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(pageUrl)}`
 

@@ -772,7 +772,7 @@ html:has(.subpage) { scroll-padding-top: 82px; }
   color: rgba(255,255,255,.35); font: 600 10px/1 'Barlow Condensed',sans-serif; letter-spacing: .3em;
 }
 
-/* Support（トップの「激励賞・SHOP」入口） --------------------------------- */
+/* Support（トップの「サポーター・SHOP」入口） --------------------------------- */
 .support-section {
   display: flex; flex-direction: column; justify-content: center; gap: 44px;
   padding: 90px max(24px,calc((100vw - 1240px)/2)); background: var(--cream);
@@ -794,7 +794,7 @@ html:has(.subpage) { scroll-padding-top: 82px; }
 }
 .support-card-button span { font-size: 18px; transition: transform .2s ease; }
 .support-card:hover .support-card-button span { transform: translateX(4px); }
-/* 激励賞：黒地＋キャラ */
+/* サポーター：黒地＋キャラ */
 .support-card-cheer { color: white; background: #171719; }
 .support-card-cheer > p:not(.section-label) { color: #b2b1ad; }
 .support-card-cheer .support-card-button { color: white; background: var(--orange); }
@@ -813,7 +813,7 @@ html:has(.subpage) { scroll-padding-top: 82px; }
 }
 .support-card-shop:hover .support-card-photo { transform: scale(1.04) rotate(-2deg); }
 
-/* Cheer (激励賞) ----------------------------------------------------------- */
+/* Cheer (サポーター) ---------------------------------------------------------- */
 .cheer-section {
   display: grid; grid-template-columns: .85fr 1.15fr; gap: clamp(48px,7vw,100px); align-items: start;
   padding: 100px max(24px,calc((100vw - 1240px)/2)); background: #fff;
@@ -1074,7 +1074,7 @@ footer p,footer > a:last-child { color: #777; font: 500 9px/1 'Barlow Condensed'
 .contact-form-section:has(> .photo-bg) .contact-form-intro h2 { font-size: clamp(36px,4.4vw,64px); }
 .contact-form-intro > p.contact-catch { margin-top: 22px; color: var(--orange); font-size: 15px; font-weight: 800; line-height: 1.6; }
 
-/* 激励賞ページ：上部の写真・Tシャツのイメージ・お礼画面の写真 */
+/* サポーターページ：上部の写真・Tシャツのイメージ・お礼画面の写真 */
 .page-hero {
   position: relative; isolation: isolate; display: flex; height: clamp(220px,32vw,380px); align-items: flex-end; overflow: hidden;
   padding: 0 max(24px,calc((100vw - 1240px)/2)); background: #0b0b0d;
@@ -1298,7 +1298,7 @@ footer p,footer > a:last-child { color: #777; font: 500 9px/1 'Barlow Condensed'
   .cheer-amounts span { min-height: 58px; font-size: 19px; }
   .cheer-submit { min-height: 58px; font-size: 14px; }
   .cheer-thanks { margin-inline: -4px; padding: 30px 18px 22px; }
-  /* キャラは1行目「激励賞、」の右の空きに置き、見出しは全幅で使う */
+  /* キャラは1行目「サポートいただき、」の右の空きに置き、見出しは全幅で使う */
   .cheer-thanks .chara { top: 14px; right: 14px; width: 56px; }
   .cheer-thanks h3 { padding-right: 0; font-size: 22px; }
   .cheer-thanks > p:not(.section-label) { font-size: 11px; }

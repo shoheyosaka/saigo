@@ -14,9 +14,9 @@ HTML / CSS / JavaScript のみで構成した静的サイトです。ビルド�
 ```
 .
 ├── index.html              # トップページ（オープニング・各セクション）
-├── cheer.html              # 激励賞ページ（SNS などから直接開いてもらう用）
+├── cheer.html              # サポーターページ（SNS などから直接開いてもらう用）
 ├── shop.html               # SHOP ページ（同上）
-├── checkout-demo.html      # 激励賞の仮の決済ページ（Stripe 接続前の確認用・本番前に削除）
+├── checkout-demo.html      # サポーターの仮の決済ページ（Stripe 接続前の確認用・本番前に削除）
 ├── .nojekyll               # GitHub Pages で Jekyll 処理を無効化
 ├── README.md
 └── assets/
@@ -28,7 +28,7 @@ HTML / CSS / JavaScript のみで構成した静的サイトです。ビルド�
         ├── favicon-32.png        # ファビコン（キャラの顔・白フチ）
         ├── favicon-192.png       # ファビコン大（Android など）
         ├── apple-touch-icon.png  # iPhone のホーム画面用（黒地）
-        ├── chara-stand.webp      # キャラクター（トップの激励賞カード・お礼画面）※背景透過
+        ├── chara-stand.webp      # キャラクター（トップのサポーターカード・お礼画面）※背景透過
         ├── shop-logo.webp        # SHOP 上部のロゴ（キャラ＋ゴリラ＋SAIGO、白フチのステッカー風）
         ├── goods-tshirt.webp     # SHOP：オフィシャルTシャツ
         ├── partner-1〜4-*.webp   # 現在のスポンサーのロゴ（番号順に表示）
@@ -37,7 +37,7 @@ HTML / CSS / JavaScript のみで構成した静的サイトです。ビルド�
         ├── saigo-profile.webp     # プロフィール写真
         ├── gallery-01〜22.webp   # ギャラリーの写真（表示順は index.html の並び）。各セクションの背景写真にも流用
         ├── sponsor-placement.webp # スポンサー欄「ロゴは、ここに載ります。」の写真
-        ├── ringside-tshirt.webp  # Tシャツを着たセコンドの写真（SHOP・激励賞）
+        ├── ringside-tshirt.webp  # Tシャツを着たセコンドの写真（SHOP・サポーター）
         ├── intro-1〜4.webp       # オープニングで一瞬ずつ映す写真（軽量版）
         └── og-top / og-cheer / og-shop.jpg  # SNS 共有画像（1200×630）
 ```
@@ -65,7 +65,7 @@ HTML / CSS / JavaScript のみで構成した静的サイトです。ビルド�
 | 写真の帯 | — | 画面いっぱいの写真に「闘いの先に、まだ見ぬ景色を。」。スクロールで写真がゆっくり動く |
 | 戦績 | — | 勝率リング・数値カウントアップ・試合カード一覧（5件＋もっと見る） |
 | ギャラリー | `#gallery` | 写真22枚の立体スライダー（奥の写真が前に出てくる。PCは矢印・ドラッグ、スマホはスワイプ、自動送りあり） |
-| 応援（入口） | `#support` | 激励賞ページ・SHOP ページへの入口カード2枚 |
+| 応援（入口） | `#support` | サポーターページ・SHOP ページへの入口カード2枚 |
 | スポンサー | `#sponsor` | 見出し・スポンサーロゴ・ロゴの掲出位置（トランクスの写真＋社名一覧）・プラン・開始までの流れ・お問い合わせボタン |
 | お問い合わせ | `#contact` | セクション全体の背景に写真（白黒＋クリーム色を重ねた明るいトーン）・フォーム（送信機能は未実装） |
 
@@ -121,14 +121,16 @@ python3 -m http.server 8000
 - `image` は正方形の商品写真を `assets/images/` に置いてパスを指定（`cwebp -q 80 -resize 800 0 元画像.jpg -o goods-xxx.webp` など）。未定なら `null` でロゴ入りの仮画像を表示
 - `url` に購入ページ（BASE・STORES など）を入れるとカード全体が別タブで開くリンクになります。売り切れの商品はリンクになりません
 
-### 激励賞の金額・特典・決済リンク
+### サポーター（旧：激励賞）の金額・特典・決済リンク
+
+※ 名称は「激励賞」から「サポーター」に変更しました（ボタンは「サポーターになる」）。ファイル名・CSS/JS の名前は `cheer` のままです。Stripe の商品名なども「サポーター」にそろえてください。
 
 - **金額**：`cheer.html` の `.cheer-amounts` 内の `<label>` を増減。`value` は円単位の数値。最初に選ばれている金額は `checked` を付けたもの
 - **特典**：`cheer.html` の `.cheer-perks` の `<li data-perk-min="10000">` を編集。選んだ金額が `data-perk-min` 以上の特典が点灯します
 - **Tシャツ特典の金額**：`main.js` の `CHEER_NAME_PERK_MIN`（この金額以上で「このお名前がTシャツに入ります」と表示）。特典欄の `data-perk-min` もあわせて変更
 - **決済**：`main.js` の `CHEER_PAYMENT_LINKS` に金額ごとの Stripe Payment Link の URL を入れると、ボタンでその決済ページへ移動します。空のあいだは「準備中」と表示
 - **仮の決済ページ（デモ）**：`main.js` の `CHEER_DEMO_CHECKOUT` が `true` の間は、Stripe のリンクが未設定の金額で「贈る」を押すと `checkout-demo.html` が開きます（金額・お名前・メッセージの確認と「テスト支払いを完了する」ボタンのみ。カード入力なし・実際の決済なし）。完了ボタンで `cheer.html?cheer=thanks&amount=金額` に戻り、お礼表示まで確認できます
-- **支払い後のお礼表示**：Stripe の Payment Link 設定「支払い後」→「顧客をウェブサイトにリダイレクトする」に、`https://（本番ドメイン）/cheer.html?cheer=thanks&amount=10000` のように**金額ごと**の URL を設定します。激励賞ページに戻ると、フォームの代わりにお礼（キャラ・Xでシェア・Instagram）が表示されます。`amount` が `CHEER_NAME_PERK_MIN` 以上なら「Tシャツへのお名前掲載とTシャツプレゼントは追ってご連絡」も表示。確認用：ローカルで `http://localhost:8000/cheer.html?cheer=thanks&amount=10000` を開く
+- **支払い後のお礼表示**：Stripe の Payment Link 設定「支払い後」→「顧客をウェブサイトにリダイレクトする」に、`https://（本番ドメイン）/cheer.html?cheer=thanks&amount=10000` のように**金額ごと**の URL を設定します。サポーターページに戻ると、フォームの代わりにお礼（キャラ・Xでシェア・Instagram）が表示されます。`amount` が `CHEER_NAME_PERK_MIN` 以上なら「Tシャツへのお名前掲載とTシャツプレゼントは追ってご連絡」も表示。確認用：ローカルで `http://localhost:8000/cheer.html?cheer=thanks&amount=10000` を開く
 - **メールアドレス（必須）**：お礼メッセージ・特典の連絡先。未入力・形式違いのときは欄の下にエラーを出して先へ進ませません。Stripe の決済ページへ移動するときは `prefilled_email` を付けて、同じアドレスを最初から入力済みにします（お客様の入力は1回だけ）
 - **スプレッドシート保存**：未実装。`main.js` の `initCheerForm` 内の `record`（金額・お名前・匿名・メッセージ・メールアドレス・日時）を、Google Apps Script（`CHEER_SHEET_ENDPOINT`）へ送ってから決済ページへ移動する想定です。スプレッドシートにはこの内容が1行にまとまって残ります
 
@@ -212,8 +214,8 @@ YouTube の URL が `https://www.youtube.com/watch?v=XXXX` なら、`XXXX` の�
 
 ## 本番公開前チェックリスト
 
-- [ ] **激励賞（デモの片付け）**：`main.js` の `CHEER_DEMO_CHECKOUT` を `false` にし、`checkout-demo.html` を削除する
-- [ ] **激励賞**：Stripe Payment Link の作成と `CHEER_PAYMENT_LINKS` への設定、スプレッドシート保存（Google Apps Script）の実装。特典の内容と金額（現在：「¥1,000〜お礼メッセージ」「¥10,000〜試合毎に使用するTシャツにお名前＋オフィシャルTシャツ1枚プレゼント」）をお客様に確認。Tシャツを送るため、¥10,000以上の Payment Link では「配送先住所を収集する」をオンにする
+- [ ] **サポーター（デモの片付け）**：`main.js` の `CHEER_DEMO_CHECKOUT` を `false` にし、`checkout-demo.html` を削除する
+- [ ] **サポーター**：Stripe Payment Link の作成と `CHEER_PAYMENT_LINKS` への設定、スプレッドシート保存（Google Apps Script）の実装。特典の内容と金額（現在：「¥1,000〜お礼メッセージ」「¥10,000〜試合毎に使用するTシャツにお名前＋オフィシャルTシャツ1枚プレゼント」）をお客様に確認。Tシャツを送るため、¥10,000以上の Payment Link では「配送先住所を収集する」をオンにする
 - [ ] **お問い合わせフォーム**：現在は送信せず「準備中」メッセージを表示するだけです。Formspree・Googleフォーム・Cloudflare Workers などで送信先を実装する
 - [ ] **プロフィール写真**：現在の計量写真は 430px 程度と小さく、PC ではやや粗く見えるため、可能なら高解像度版（幅 800px 以上）に差し替える
 - [ ] **写真の使用許諾**：RISE 宣材写真・計量写真・大会写真の Web 掲載について、撮影者・主催者の許諾を確認

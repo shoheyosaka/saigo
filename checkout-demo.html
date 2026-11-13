@@ -3,9 +3,9 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <!-- 激励賞の「仮の決済ページ」。Stripe 接続前に流れを確認するためのデモ。実際の決済・カード入力は一切ない -->
+  <!-- サポーター（旧：激励賞）の「仮の決済ページ」。Stripe 接続前に流れを確認するためのデモ。実際の決済・カード入力は一切ない -->
   <meta name="robots" content="noindex, nofollow">
-  <title>激励賞のお支払い（デモ） | SAIGO OFFICIAL SITE</title>
+  <title>サポーターのお支払い（デモ） | SAIGO OFFICIAL SITE</title>
   <link rel="icon" href="assets/images/favicon-32.png" sizes="32x32" type="image/png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -53,7 +53,7 @@
     <a class="logo" href="index.html">SAIGO<span>.</span></a>
     <section class="card" aria-labelledby="checkout-title">
       <p class="label">CHEER FOR SAIGO</p>
-      <h1 id="checkout-title">激励賞のお支払い</h1>
+      <h1 id="checkout-title">サポーターのお支払い</h1>
       <p class="amount"><span data-amount>¥5,000</span><small>（税込）</small></p>
       <dl>
         <div><dt>メールアドレス</dt><dd data-email></dd></div>
@@ -99,7 +99,7 @@
     document.querySelector('[data-pay]').addEventListener('click', () => {
       window.location.href = `cheer.html?cheer=thanks&amount=${amount}`
     })
-    // 戻る：入力内容が残った状態で激励賞欄に戻れるよう、履歴があればブラウザの「戻る」を使う
+    // 戻る：入力内容が残った状態でサポーターページに戻れるよう、履歴があればブラウザの「戻る」を使う
     document.querySelector('[data-back]').addEventListener('click', (event) => {
       if (window.history.length > 1) {
         event.preventDefault()
