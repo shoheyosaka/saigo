@@ -57,44 +57,72 @@
   </header>
 
   <main id="top">
-    <!-- ページ上部の写真（入場シーン） -->
-    <div class="page-hero" aria-hidden="true">
-      <div class="photo-bg" style="--photo-pos: 50% 35%"><img src="assets/images/gallery-19.webp" alt="" decoding="async" fetchpriority="high" data-parallax></div>
-      <p class="page-hero-word">CHEER</p>
-    </div>
-    <section class="cheer-section" id="cheer" aria-labelledby="cheer-heading">
-      <div class="cheer-intro">
-        <p class="section-label">CHEER FOR SAIGO</p>
-        <h1 id="cheer-heading">サポーターになる</h1>
-        <p class="cheer-lead">
-          リングに立つSAIGOを、サポーターとして支えませんか。
-          いただいたご支援は、試合に向けた練習・遠征・減量などの活動に使わせていただきます。
-        </p>
+    <!-- ① 最初の画面：タイトル「サポーターになる」（背景に Tシャツを着た SAIGO の写真）
+         ※見出し・リード文は仮の文章。Tシャツはイメージ（実際のデザインが決まったら差し替え） -->
+    <section class="sup-hero" aria-labelledby="sup-hero-heading">
+      <!-- 背景：SAIGOのTシャツを着た SAIGO の写真を透かして敷く -->
+      <div class="photo-bg" aria-hidden="true" style="--photo-pos: 62% 28%"><img src="assets/images/supporter-perk-tshirt.webp" alt="" decoding="async" fetchpriority="high" width="1400" height="989"></div>
+      <div class="sup-hero-copy">
+        <p class="sup-hero-label">SUPPORT SAIGO</p>
+        <h1 id="sup-hero-heading">サポーターになる</h1>
+        <p class="sup-hero-catch">あなたの名前を、リングへ。</p>
+        <p class="sup-hero-lead">¥3,000から、SAIGOが試合で使うTシャツの背中に、あなたのお名前が入ります。</p>
+        <a class="cheer-hero-cta" href="#cheer">¥3,000から応援する <span aria-hidden="true">↓</span></a>
+      </div>
 
-        <!-- 特典：選んだ金額で受け取れるものが点灯する（data-perk-min 以上で点灯。main.js が制御） -->
-        <div class="cheer-perks">
-          <p class="cheer-perks-title">サポーター特典</p>
-          <ul>
-            <li data-perk-min="3000"><b>¥3,000〜</b><span>試合毎に使用するTシャツにお名前を掲載</span></li>
-            <li data-perk-min="10000"><b>¥10,000〜</b><span>＋オフィシャルTシャツを1枚プレゼント（名前刻印なし）</span></li>
-          </ul>
-          <figure class="cheer-perks-photo">
-            <img src="assets/images/supporter-perk-tshirt.webp" alt="SAIGOのTシャツを着てグローブを構えるSAIGO" loading="lazy" decoding="async" width="1400" height="989">
-            <figcaption>試合当日・練習・試合でSaigoが使用するTシャツ</figcaption>
-          </figure>
+      <span class="sup-badge" aria-hidden="true"><small>¥3,000〜</small>名前が<br>載る！</span>
+
+      <div class="sup-ticker" aria-hidden="true">
+        <div><span>YOUR NAME ON THE FIGHT SHIRT ★ SUPPORT SAIGO ★ LITTLE LAST SAMURAI ★ </span><span>YOUR NAME ON THE FIGHT SHIRT ★ SUPPORT SAIGO ★ LITTLE LAST SAMURAI ★ </span></div>
+      </div>
+    </section>
+
+    <!-- ② 締め切り（main.js の SUPPORT_NEXT_FIGHT に次の試合を書くとカウントダウン）＋申し込みまでの流れ。1本の帯にまとめる -->
+    <div class="sup-info">
+      <div class="sup-deadline" data-support-deadline>
+        <p class="sup-deadline-text">お名前は、<b>試合の14日前まで</b>にお申し込みいただいた分を、次の試合のTシャツに掲載します。</p>
+      </div>
+      <section class="sup-steps" aria-label="申し込みまでの流れ">
+        <ol>
+          <li><span class="sup-step-num">1</span><b>金額を選ぶ</b></li>
+          <li><span class="sup-step-num">2</span><b>応援を贈る</b></li>
+          <li><span class="sup-step-num">3</span><b>Tシャツに名前が載る</b></li>
+        </ol>
+      </section>
+    </div>
+
+    <section class="cheer-section" id="cheer" aria-label="サポーター特典とお申し込み">
+      <div class="cheer-intro">
+        <p class="section-label">BENEFITS</p>
+        <h2 class="cheer-perks-heading">サポーター特典</h2>
+
+        <!-- ③ 特典カード：選んだ金額で受け取れる特典が光る（data-perk-min 以上で点灯。main.js が制御） -->
+        <div class="cheer-perk-cards">
+          <article class="perk-card" data-perk-min="3000">
+            <p class="perk-card-price">¥3,000<small>〜</small></p>
+            <h3>お名前掲載</h3>
+            <p>試合毎に使用するTシャツに、あなたのお名前を掲載します。</p>
+            <span class="perk-card-badge">対象</span>
+          </article>
+          <article class="perk-card" data-perk-min="10000">
+            <p class="perk-card-price">¥10,000<small>〜</small></p>
+            <h3>＋オフィシャルTシャツ</h3>
+            <p>お名前掲載に加えて、オフィシャルTシャツを1枚プレゼント（名前刻印なし）。</p>
+            <span class="perk-card-badge">対象</span>
+          </article>
         </div>
       </div>
 
       <!-- 決済（Stripe Payment Link）とスプレッドシート保存は未実装（README「サポーター」参照） -->
-      <form class="cheer-form" novalidate>
+      <form class="cheer-form" id="cheer-form" novalidate>
         <fieldset class="cheer-step">
           <legend><span>1</span>金額を選ぶ</legend>
           <div class="cheer-amounts">
-            <label><input type="radio" name="amount" value="3000"><span>¥3,000</span></label>
-            <label><input type="radio" name="amount" value="5000" checked><span>¥5,000</span></label>
-            <label><input type="radio" name="amount" value="10000"><span>¥10,000</span></label>
-            <label><input type="radio" name="amount" value="30000"><span>¥30,000</span></label>
-            <label><input type="radio" name="amount" value="50000"><span>¥50,000</span></label>
+            <label><input type="radio" name="amount" value="3000"><span>¥3,000<small>名前掲載</small></span></label>
+            <label><input type="radio" name="amount" value="5000" checked><span>¥5,000<small>名前掲載</small></span></label>
+            <label><input type="radio" name="amount" value="10000"><span>¥10,000<small>名前＋Tシャツ</small></span></label>
+            <label><input type="radio" name="amount" value="30000"><span>¥30,000<small>名前＋Tシャツ</small></span></label>
+            <label><input type="radio" name="amount" value="50000"><span>¥50,000<small>名前＋Tシャツ</small></span></label>
           </div>
         </fieldset>
 
@@ -114,7 +142,26 @@
             <span>お名前（ニックネーム可）</span>
             <input name="name" type="text" maxlength="30" autocomplete="nickname">
           </label>
-          <p class="cheer-name-hint" hidden>このお名前が、試合毎に使用するTシャツに入ります。</p>
+          <!-- 入力した名前をその場でTシャツに入れて見せる（¥3,000未満・匿名のときは main.js が隠す） -->
+          <div class="cheer-name-hint" hidden>
+            <figure class="sup-tee-mini" aria-hidden="true">
+              <svg viewBox="0 0 400 440"><path d="M126 22 L84 34 L14 84 L48 156 L94 132 L94 424 L306 424 L306 132 L352 156 L386 84 L316 34 L274 22 Q256 40 200 40 Q144 40 126 22 Z" /></svg>
+              <!-- サポーターのお名前が背中にたくさん並ぶイメージ。入力した名前はオレンジで入る -->
+              <ul class="sup-tee-mini-names">
+                <li>NAME</li><li>NAME</li><li>NAME</li>
+                <li>NAME</li><li>NAME</li><li>NAME</li>
+                <li>NAME</li><li>NAME</li><li>NAME</li>
+                <li>NAME</li><li>NAME</li><li>NAME</li>
+                <li class="is-you" data-name-preview>YOUR NAME</li>
+                <li>NAME</li><li>NAME</li><li>NAME</li>
+                <li>NAME</li><li>NAME</li><li>NAME</li>
+                <li>NAME</li><li>NAME</li><li>NAME</li>
+                <li>NAME</li><li>NAME</li><li>NAME</li>
+                <li>NAME</li><li>NAME</li><li>NAME</li>
+              </ul>
+            </figure>
+            <p>このお名前が、試合毎に使用するTシャツの背中に入ります。<small>（イメージ）</small></p>
+          </div>
           <label class="cheer-anonymous"><input name="anonymous" type="checkbox"><span>匿名で贈る</span></label>
           <label class="cheer-field">
             <span>SAIGOへのメッセージ</span>
@@ -123,7 +170,12 @@
           </label>
         </fieldset>
 
-        <button class="cheer-submit" type="submit"><span class="cheer-submit-label">¥5,000 でサポーターになる</span> <span aria-hidden="true">→</span></button>
+        <!-- ⑥ キャラクターの応援（吹き出し） -->
+        <div class="sup-chara" aria-hidden="true">
+          <p class="sup-chara-bubble">応援よろしく！</p>
+          <img src="assets/images/cheer-chara.webp" alt="" loading="lazy" decoding="async" width="296" height="460">
+        </div>
+        <button class="cheer-submit" type="submit"><span class="cheer-submit-label" data-cheer-submit-label>¥5,000 でサポーターになる</span> <span aria-hidden="true">→</span></button>
         <p class="cheer-secure">お支払いは Stripe の安全な決済ページで行います（クレジットカード・Apple Pay など）。</p>
         <p class="form-notice cheer-notice" role="status" hidden>サポーターの決済機能は現在準備中です。お支払いは行われていません。</p>
       </form>
@@ -145,6 +197,29 @@
         </div>
       </div>
     </section>
+
+    <!-- ⑤ 一番下：SAIGO からのメッセージ（背景は着物の柄）
+         ※メッセージ本文は仮の文章です。SAIGO 本人に確認して差し替えてください -->
+    <section class="cheer-message" aria-labelledby="cheer-message-heading">
+      <figure class="cheer-message-photo">
+        <img src="assets/images/saigo-profile.webp" alt="和装で刀を手にするSAIGO" loading="lazy" decoding="async" width="718" height="1740">
+      </figure>
+      <div class="cheer-message-body">
+        <p class="section-label">MESSAGE</p>
+        <h2 id="cheer-message-heading">応援してくれる皆さんへ</h2>
+        <p class="cheer-message-text">
+          いつも応援ありがとうございます。リングに立てるのは、支えてくれる皆さんがいるからです。
+          いただいたご支援は、次の試合で勝つための練習・遠征・減量に、大切に使わせていただきます。
+          一緒に、まだ見ぬ景色を見に行きましょう。
+        </p>
+        <img class="cheer-message-sign" src="assets/images/saigo-brush.webp" alt="SAIGO" loading="lazy" decoding="async" width="1400" height="511">
+      </div>
+    </section>
+
+    <!-- ⑤ スマホ：画面下に固定する申し込みボタン（フォームの送信ボタンと同じ働き。main.js が表示・非表示を制御） -->
+    <div class="cheer-sticky" hidden>
+      <button class="cheer-sticky-button" type="submit" form="cheer-form"><span data-cheer-submit-label>¥5,000 でサポーターになる</span> <span aria-hidden="true">→</span></button>
+    </div>
 
     <footer>
       <a class="logo" href="index.html">SAIGO<span>.</span></a>

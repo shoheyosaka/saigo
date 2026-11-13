@@ -830,24 +830,130 @@ html:has(.subpage) { scroll-padding-top: 82px; }
 .support-card-shop:hover .chara { transform: translateY(calc(-50% - 6px)) rotate(6deg); }
 
 /* Cheer (サポーター) ---------------------------------------------------------- */
+/* ④ 着物の柄（入場で着ている着物の「#」のような十字柄）。背景に薄く敷いて使う */
+:root {
+  --kimono-beige: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56'%3E%3Cg fill='none' stroke='%23d9c6a0' stroke-width='2.4' stroke-linecap='round'%3E%3Cpath d='M11 6v16M17 6v16M6 11h16M6 17h16M39 34v16M45 34v16M34 39h16M34 45h16'/%3E%3C/g%3E%3C/svg%3E");
+  --kimono-navy: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56'%3E%3Cg fill='none' stroke='%23182446' stroke-width='2.4' stroke-linecap='round'%3E%3Cpath d='M11 6v16M17 6v16M6 11h16M6 17h16M39 34v16M45 34v16M34 39h16M34 45h16'/%3E%3C/g%3E%3C/svg%3E");
+}
+
+/* ① 最初の画面：「あなたの名前を、リングへ。」（紺地に着物の柄）＋名前入りTシャツのプレビュー */
+.sup-hero {
+  position: relative; isolation: isolate; display: flex; align-items: center;
+  min-height: clamp(460px,62svh,580px); overflow: hidden;
+  padding: 40px max(24px,calc((100vw - 1240px)/2)) 96px; color: #f4f2ed; background: #111a33;
+}
+.sup-hero > .photo-bg { --photo-shade: linear-gradient(90deg,rgba(13,19,40,.94) 0%,rgba(13,19,40,.78) 40%,rgba(13,19,40,.25) 75%,rgba(13,19,40,.4) 100%); }
+.sup-hero-copy { position: relative; z-index: 1; max-width: 620px; }
+.sup-hero-label {
+  display: inline-block; padding: 7px 12px; color: #111a33; background: #d9c6a0;
+  font: 700 12px/1 'Barlow Condensed',sans-serif; letter-spacing: .24em; transform: rotate(-2deg);
+}
+.sup-hero h1 { margin-top: 20px; font-size: clamp(42px,5.6vw,80px); font-weight: 800; line-height: 1.12; letter-spacing: -.06em; }
+.sup-hero-catch { margin-top: 14px; color: var(--orange); font-size: clamp(18px,2vw,26px); font-weight: 800; letter-spacing: -.02em; }
+.sup-hero-lead { max-width: 30em; margin-top: 20px; color: #d6d4cf; font-size: 15px; font-weight: 600; line-height: 1.9; }
+@keyframes sup-name-pop { from { transform: scale(.8); } }
+/* ステッカー風のバッジ */
+.sup-badge {
+  position: absolute; top: 40px; right: max(24px,calc((100vw - 1240px)/2)); display: grid; width: 116px; height: 116px; place-items: center; align-content: center;
+  border: 3px solid #fff; border-radius: 50%; color: #fff; background: var(--orange);
+  font-size: 17px; font-weight: 900; line-height: 1.15; text-align: center; transform: rotate(12deg);
+  box-shadow: 0 10px 24px rgba(0,0,0,.35); animation: sup-badge-float 3.6s ease-in-out infinite;
+}
+.sup-badge small { display: block; margin-bottom: 4px; font: 800 15px/1 'Barlow Condensed',sans-serif; letter-spacing: .04em; }
+@keyframes sup-badge-float { 50% { transform: rotate(8deg) translateY(-6px); } }
+/* 下端を流れる帯 */
+.sup-ticker {
+  position: absolute; right: -2%; bottom: 22px; left: -2%; overflow: hidden; padding: 9px 0;
+  background: var(--orange); transform: rotate(-1.5deg); box-shadow: 0 8px 20px rgba(0,0,0,.25);
+}
+.sup-ticker > div { display: flex; width: max-content; animation: shop-ticker 28s linear infinite; }
+.sup-ticker span { color: #fff; font: 800 15px/1 'Barlow Condensed',sans-serif; letter-spacing: .14em; white-space: pre; }
+
+/* ② 締め切り（次の試合の14日前まで） */
+/* ② 締め切り＋申し込みまでの流れ（1本の帯。PC は左右に、スマホは上下に） */
+.sup-info {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 32px;
+  padding: 18px max(24px,calc((100vw - 1240px)/2)); color: #171717; background: #d9c6a0;
+}
+.sup-deadline { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 18px; }
+.sup-deadline-text { font-size: 13px; font-weight: 700; line-height: 1.7; }
+.sup-deadline-text b { color: #111a33; font-weight: 900; }
+.sup-deadline-count { display: flex; align-items: baseline; gap: 6px; font-size: 15px; font-weight: 800; }
+.sup-deadline-count strong { color: var(--orange); font: 800 34px/1 'Barlow Condensed',sans-serif; }
+.sup-deadline-count small { margin-left: 8px; color: #5f5b54; font-size: 12px; }
+
+/* ③ 申し込みまでの流れ（1行のコンパクトな帯） */
+.sup-steps { flex: 0 0 auto; }
+.sup-steps ol { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 10px 14px; list-style: none; }
+.sup-steps li { display: flex; align-items: center; gap: 10px; }
+.sup-steps li:not(:last-child)::after { margin-left: 4px; color: var(--orange); font-size: 16px; font-weight: 800; content: '→'; }
+.sup-step-num {
+  display: grid; width: 26px; height: 26px; place-items: center; border-radius: 50%;
+  color: #fff; background: #111a33; font: 700 14px/1 'Barlow Condensed',sans-serif;
+}
+.sup-steps b { font-size: 13px; font-weight: 800; white-space: nowrap; }
+
+/* ⑥ キャラクターの応援（フォームの右上から顔を出す） */
+.cheer-form { position: relative; }
+.sup-chara { position: absolute; top: -78px; right: 16px; width: 96px; pointer-events: none; }
+.sup-chara img { display: block; width: 100%; height: auto; filter: drop-shadow(0 6px 10px rgba(0,0,0,.18)); animation: sup-chara-bob 2.8s ease-in-out infinite; }
+@keyframes sup-chara-bob { 50% { transform: translateY(-5px) rotate(-3deg); } }
+.sup-chara-bubble {
+  position: absolute; top: 14px; right: calc(100% + 10px); padding: 8px 12px; border: 2px solid #171717; border-radius: 14px;
+  color: #171717; background: #fff; font-size: 12px; font-weight: 800; white-space: nowrap;
+}
+.sup-chara-bubble::after {
+  position: absolute; top: 50%; right: -8px; width: 12px; height: 12px; border-top: 2px solid #171717; border-right: 2px solid #171717;
+  background: #fff; transform: translateY(-50%) rotate(45deg); content: '';
+}
+
+/* 「¥3,000から応援する」ボタン（メッセージ欄の中） */
+.cheer-hero-cta {
+  display: inline-flex; align-items: center; gap: 18px; margin-top: 18px; padding: 16px 22px;
+  color: white; background: var(--orange); font-size: 14px; font-weight: 800; transition: background .2s ease;
+}
+.cheer-hero-cta:hover { background: #d93a21; }
+
+/* ② SAIGO からのメッセージ＋ご支援の使いみち（紺地に着物の柄） */
+.cheer-message {
+  position: relative; isolation: isolate; display: grid; grid-template-columns: 200px min(560px,100%); justify-content: center; align-items: center;
+  gap: clamp(32px,5vw,64px); overflow: hidden; padding: 64px max(24px,calc((100vw - 1240px)/2));
+  color: #f4f2ed; background: #111a33;
+}
+.cheer-message::before { position: absolute; inset: 0; z-index: -1; background: var(--kimono-beige) 0 0/56px 56px; opacity: .12; content: ''; }
+.cheer-message-photo { max-width: 200px; margin: 0 auto; }
+.cheer-message-photo img { display: block; width: 100%; height: auto; filter: drop-shadow(18px 22px 30px rgba(0,0,0,.45)); }
+.cheer-message-body h2 { margin-top: 14px; font-size: clamp(24px,2.6vw,32px); font-weight: 800; line-height: 1.3; letter-spacing: -.04em; }
+.cheer-message-text { margin-top: 18px; color: #d6d4cf; font-size: 13px; line-height: 2; }
+.cheer-message-sign { display: block; width: 130px; height: auto; margin: 14px 0 0 auto; transform: rotate(-6deg); opacity: .9; }
+
+/* ③ 特典カード＋申し込みフォーム（背景にごく薄く着物の柄） */
 .cheer-section {
-  display: grid; grid-template-columns: .85fr 1.15fr; gap: clamp(48px,7vw,100px); align-items: start;
-  padding: 100px max(24px,calc((100vw - 1240px)/2)); background: #fff;
+  position: relative; isolation: isolate;
+  display: grid; grid-template-columns: min(720px,100%); justify-content: center; align-content: start; gap: 56px;
+  padding: 64px max(24px,calc((100vw - 1240px)/2)) 80px; background: var(--cream);
 }
-.cheer-intro h1,.cheer-intro h2 { margin-top: 20px; font-size: clamp(40px,5vw,68px); font-weight: 800; line-height: 1.2; letter-spacing: -.065em; }
-.cheer-lead { margin-top: 24px; color: #66625b; font-size: 12px; line-height: 2; }
-.cheer-perks { margin-top: 36px; padding: 22px 24px; border-left: 4px solid var(--orange); background: var(--cream); }
-.cheer-perks-title { color: var(--orange); font-size: 11px; font-weight: 700; letter-spacing: .1em; }
-.cheer-perks ul { display: grid; gap: 10px; margin-top: 14px; }
-.cheer-perks li {
-  display: flex; align-items: baseline; gap: 14px; color: #a19d95; font-size: 12px; font-weight: 600;
-  transition: color .2s ease;
+.cheer-section::before { position: absolute; inset: 0; z-index: -1; background: var(--kimono-navy) 0 0/56px 56px; opacity: .05; content: ''; }
+.cheer-perks-heading { margin-top: 12px; font-size: clamp(24px,2.6vw,32px); font-weight: 800; letter-spacing: -.05em; }
+.cheer-perk-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 18px; }
+.perk-card {
+  position: relative; padding: 16px 18px; border: 1px solid #dcd8ce; background: #fff;
+  opacity: .55; transition: opacity .25s ease,border-color .25s ease,box-shadow .25s ease,transform .25s ease;
 }
-.cheer-perks li b { flex: 0 0 72px; font: 700 15px/1 'Barlow Condensed'; letter-spacing: .02em; }
-.cheer-perks li::before { flex: 0 0 auto; width: 16px; color: #cfcbc2; content: '○'; }
-.cheer-perks li.is-active { color: #171717; }
-.cheer-perks li.is-active b { color: var(--orange); }
-.cheer-perks li.is-active::before { color: var(--orange); content: '●'; }
+.perk-card-price { color: #8a867e; font: 800 26px/1 'Barlow Condensed',sans-serif; letter-spacing: .01em; transition: color .25s ease; }
+.perk-card-price small { margin-left: 2px; font-size: 16px; }
+.perk-card h3 { margin-top: 8px; font-size: 15px; font-weight: 800; }
+.perk-card > p:not(.perk-card-price) { margin-top: 6px; color: #66625b; font-size: 11px; line-height: 1.7; }
+.perk-card-badge {
+  position: absolute; top: 18px; right: 18px; padding: 5px 9px; color: white; background: var(--orange);
+  font-size: 11px; font-weight: 800; opacity: 0; transform: scale(.8); transition: opacity .25s ease,transform .25s ease;
+}
+/* 選んだ金額で受け取れる特典は光らせる */
+.perk-card.is-active { border-color: var(--orange); opacity: 1; box-shadow: 0 14px 30px rgba(241,72,45,.18),0 0 0 1px var(--orange); transform: translateY(-2px); }
+.perk-card.is-active .perk-card-price { color: var(--orange); }
+.perk-card.is-active .perk-card-badge { opacity: 1; transform: none; }
+/* ⑤ 画面下に固定する申し込みボタン（スマホのみ。PC では使わない） */
+.cheer-sticky { display: none; }
 
 .cheer-form { display: flex; flex-direction: column; gap: 26px; padding: 32px; border: 1px solid #e3e0d8; background: #faf9f6; }
 .cheer-step { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
@@ -873,6 +979,16 @@ html:has(.subpage) { scroll-padding-top: 82px; }
   font: 700 20px/1 'Barlow Condensed'; letter-spacing: .02em;
   transition: border-color .15s ease,background .15s ease,color .15s ease;
 }
+/* ④ 金額はチケット風（左右に切り欠き、特典はスタンプ風） */
+.cheer-amounts span {
+  -webkit-mask: radial-gradient(circle at 0 50%,transparent 7px,#000 7.5px) 0 0/51% 100% no-repeat,radial-gradient(circle at 100% 50%,transparent 7px,#000 7.5px) 100% 0/51% 100% no-repeat;
+  mask: radial-gradient(circle at 0 50%,transparent 7px,#000 7.5px) 0 0/51% 100% no-repeat,radial-gradient(circle at 100% 50%,transparent 7px,#000 7.5px) 100% 0/51% 100% no-repeat;
+}
+.cheer-amounts span small {
+  padding: 3px 6px; border: 1px dashed currentColor; border-radius: 3px; color: #8a867e;
+  font: 700 10px/1 'Hiragino Sans','Noto Sans JP',sans-serif; letter-spacing: 0; transform: rotate(-3deg);
+}
+.cheer-amounts input:checked + span small { color: rgba(255,255,255,.85); }
 .cheer-amounts label:hover span { border-color: #171717; }
 .cheer-amounts input:checked + span { border-color: var(--orange); color: white; background: var(--orange); }
 .cheer-amounts input:focus-visible + span { outline: 2px solid #171717; outline-offset: 2px; }
@@ -887,7 +1003,25 @@ html:has(.subpage) { scroll-padding-top: 82px; }
 .cheer-field input:focus,.cheer-field textarea:focus { border-color: var(--orange); }
 .cheer-field input:disabled { color: #a19d95; background: #eeece6; }
 .cheer-count { align-self: flex-end; color: #a19d95; font-size: 10px; }
-.cheer-name-hint { margin-top: -6px; color: var(--orange); font-size: 11px; font-weight: 600; }
+.cheer-name-hint { display: flex; align-items: center; gap: 14px; margin-top: -4px; padding: 12px 14px; border: 1px dashed rgba(241,72,45,.5); background: #fff6f2; }
+.cheer-name-hint[hidden] { display: none; }
+.cheer-name-hint p { color: var(--orange); font-size: 12px; font-weight: 700; line-height: 1.6; }
+.cheer-name-hint small { color: #a19d95; font-weight: 500; }
+/* お名前欄の下の小さなTシャツ（背中） */
+.sup-tee-mini { position: relative; flex: 0 0 120px; margin: 0; }
+.sup-tee-mini svg { display: block; width: 100%; height: auto; fill: #cfd3d8; }
+/* 背中に名前がたくさん並ぶ（3列）。自分の名前だけ横いっぱい・オレンジ */
+.sup-tee-mini-names {
+  position: absolute; top: 25%; right: 25%; left: 25%; display: grid; grid-template-columns: repeat(3,1fr);
+  gap: 2px 3px; list-style: none; text-align: center;
+}
+.sup-tee-mini-names li { overflow: hidden; color: rgba(27,37,71,.5); font: 700 5.5px/1.25 'Barlow Condensed',sans-serif; letter-spacing: .04em; }
+.sup-tee-mini-names li.is-you {
+  grid-column: 1/-1; margin-block: 1px; color: var(--orange);
+  font: 800 8px/1.2 'Hiragino Sans','Noto Sans JP',sans-serif; text-overflow: ellipsis; white-space: nowrap;
+}
+.sup-tee-mini-names li.is-you.is-empty { color: rgba(27,37,71,.75); font: 800 7px/1.2 'Barlow Condensed',sans-serif; letter-spacing: .1em; }
+.sup-tee-mini-names li.is-you.is-pop { animation: sup-name-pop .35s cubic-bezier(.3,1.6,.5,1); }
 .cheer-anonymous { display: flex; align-items: center; gap: 8px; width: fit-content; color: #5f5b54; font-size: 12px; cursor: pointer; }
 .cheer-anonymous input { width: 16px; height: 16px; accent-color: var(--orange); }
 .cheer-submit {
@@ -1068,20 +1202,8 @@ footer p,footer > a:last-child { color: #777; font: 500 9px/1 'Barlow Condensed'
 .contact-form-section:has(> .photo-bg) .contact-form-intro h2 { font-size: clamp(36px,4.4vw,64px); }
 .contact-form-intro > p.contact-catch { margin-top: 22px; color: var(--orange); font-size: 15px; font-weight: 800; line-height: 1.6; }
 
-/* サポーターページ：上部の写真・Tシャツのイメージ・お礼画面の写真 */
-.page-hero {
-  position: relative; isolation: isolate; display: flex; height: clamp(220px,32vw,380px); align-items: flex-end; overflow: hidden;
-  padding: 0 max(24px,calc((100vw - 1240px)/2)); background: #0b0b0d;
-}
-.page-hero .photo-bg { --photo-shade: linear-gradient(180deg,rgba(8,8,10,.1) 25%,rgba(8,8,10,.78) 100%); }
-.page-hero-word {
-  margin-bottom: 26px; color: transparent; -webkit-text-stroke: 1.5px rgba(255,255,255,.6);
-  font: 800 clamp(90px,16vw,230px)/.8 'Barlow Condensed',sans-serif; letter-spacing: .02em;
-}
+/* サポーターページ：Tシャツのイメージ・お礼画面の写真 */
 /* 横長の写真を特典欄の幅いっぱいに、説明はその下に */
-.cheer-perks-photo { display: grid; gap: 8px; margin: 18px 0 0; padding-top: 16px; border-top: 1px solid #dedad1; }
-.cheer-perks-photo img { display: block; width: 100%; height: auto; }
-.cheer-perks-photo figcaption { color: #66625b; font-size: 11px; line-height: 1.7; }
 .cheer-thanks-photo { height: 220px; margin: -44px -40px 28px; overflow: hidden; }
 .cheer-thanks-photo img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: center 30%; }
 .cheer-thanks:has(.cheer-thanks-photo) .chara { top: 190px; }
@@ -1301,8 +1423,47 @@ footer p,footer > a:last-child { color: #777; font: 500 9px/1 'Barlow Condensed'
   .support-card-tee figcaption { margin-top: 6px; font-size: 8.5px; }
   .support-card-tee figcaption b { font-size: 12px; }
   .support-card-shop .chara { top: 56%; right: 14px; width: 80px; }
-  .cheer-section { grid-template-columns: 1fr; gap: 36px; padding: 70px 20px; }
-  .cheer-perks { margin-top: 26px; padding: 18px; }
+  .cheer-section { grid-template-columns: 1fr; gap: 80px; padding: 48px 20px 64px; } /* 特典とフォームの間は、フォーム右上のキャラの分だけ広め */
+  .sup-hero { align-items: flex-end; min-height: 520px; padding: 32px 20px 96px; }
+  .sup-hero > .photo-bg { --photo-pos: 70% 18% !important; --photo-shade: linear-gradient(180deg,rgba(13,19,40,.15) 0%,rgba(13,19,40,.55) 40%,rgba(13,19,40,.95) 78%); }
+  .sup-hero h1 { font-size: clamp(34px,10vw,44px); }
+  .sup-hero-lead { font-size: 13px; }
+    .sup-badge { top: 20px; right: 16px; width: 84px; height: 84px; font-size: 13px; }
+  .sup-badge small { font-size: 12px; }
+  .sup-ticker { bottom: 24px; }
+  .sup-ticker span { font-size: 15px; }
+  .sup-info { flex-direction: column; align-items: stretch; gap: 12px; padding: 16px 16px; }
+  .sup-deadline { justify-content: center; text-align: center; }
+  .sup-deadline-text { font-size: 12px; }
+  .sup-deadline-count strong { font-size: 30px; }
+  .sup-steps ol { justify-content: center; }
+  .sup-steps ol { flex-wrap: nowrap; gap: 6px; }
+  .sup-steps li { gap: 5px; }
+  .sup-steps li:not(:last-child)::after { margin-left: 1px; font-size: 12px; }
+  .sup-step-num { width: 20px; height: 20px; font-size: 12px; }
+  .sup-steps b { font-size: 11px; white-space: nowrap; }
+  .sup-chara { top: -60px; right: 10px; width: 74px; }
+  .sup-chara-bubble { top: 8px; font-size: 11px; }
+  .cheer-message { grid-template-columns: 110px 1fr; gap: 18px; align-items: start; padding: 48px 20px; }
+  .cheer-message-photo { max-width: 110px; }
+  .cheer-message-text { font-size: 13px; }
+  .cheer-message-sign { width: 130px; }
+        .perk-card { padding: 14px 12px; }
+  .perk-card-price { font-size: 22px; }
+  .perk-card h3 { font-size: 13px; }
+  .perk-card-badge { top: 10px; right: 10px; padding: 3px 6px; font-size: 10px; }
+  /* ⑤ 画面下に固定する申し込みボタン */
+  .cheer-sticky:not([hidden]) { display: block; }
+  .cheer-sticky {
+    position: fixed; right: 0; bottom: 0; left: 0; z-index: 90; padding: 10px 16px calc(10px + env(safe-area-inset-bottom));
+    background: rgba(13,13,15,.92); backdrop-filter: blur(10px); box-shadow: 0 -8px 24px rgba(0,0,0,.25);
+  }
+  .cheer-sticky-button {
+    display: flex; width: 100%; min-height: 52px; align-items: center; justify-content: space-between; padding: 0 18px;
+    border: 0; color: white; background: var(--orange); font-size: 14px; font-weight: 800; cursor: pointer;
+  }
+  .cheer-sticky-button > span:last-child { font-size: 18px; }
+  .subpage:has(.cheer-sticky:not([hidden])) footer { padding-bottom: 96px; }
   .cheer-form { gap: 24px; margin-inline: -4px; padding: 22px 16px; }
   /* 金額はスマホでは上段2つ＋下段3つ */
   .cheer-amounts span { min-height: 58px; font-size: 19px; }
@@ -1392,6 +1553,7 @@ footer p,footer > a:last-child { color: #777; font: 500 9px/1 'Barlow Condensed'
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .sup-badge,.sup-ticker > div,.sup-chara img { animation: none; }
   .rate-ring { --rate: 61.5%; }
   .scroll-reveal,.scroll-reveal * { animation: none !important; transition: none !important; }
   .scroll-reveal { opacity: 1; transform: none; }
