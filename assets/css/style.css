@@ -1106,6 +1106,9 @@ footer p,footer > a:last-child { color: #777; font: 500 9px/1 'Barlow Condensed'
 .intro-flash img:nth-child(2) { animation-delay: .45s; }
 .intro-flash img:nth-child(3) { animation-delay: .8s; }
 .intro-flash img:nth-child(4) { animation-delay: 1.15s; }
+/* スマホ（縦長の画面）では写真の中央しか映らないので、本人が写る位置に寄せる */
+.intro-flash img:nth-child(2) { object-position: 70% center; }
+.intro-flash img:nth-child(3) { object-position: 18% center; }
 @keyframes intro-flash {
   0% { opacity: 0; transform: scale(1.14); }
   12% { opacity: .8; }
