@@ -637,45 +637,6 @@ function initDepthGallery() {
   render()
 }
 
-/* Sponsor gallery carousel (mobile only; layout switches in CSS) --------- */
-function initGalleryCarousel() {
-  const gallery = document.querySelector('.sponsor-gallery')
-  const dots = document.querySelector('.gallery-dots')
-  if (!gallery || !dots) return
-
-  const slides = Array.from(gallery.querySelectorAll('figure'))
-  const buttons = slides.map((slide, index) => {
-    const button = document.createElement('button')
-    button.type = 'button'
-    button.setAttribute('aria-label', `${index + 1}枚目の写真を表示`)
-    button.addEventListener('click', () => {
-      gallery.scrollTo({ left: slide.offsetLeft - slides[0].offsetLeft, behavior: prefersReducedMotion() ? 'auto' : 'smooth' })
-    })
-    dots.append(button)
-    return button
-  })
-
-  const updateActive = () => {
-    const maxScroll = gallery.scrollWidth - gallery.clientWidth
-    // 最後の1枚は左端まで寄り切らないため、末尾に達したら最後を選択扱いにする
-    const active = gallery.scrollLeft >= maxScroll - 2
-      ? slides.length - 1
-      : slides.reduce((closest, slide, index) => {
-        const distance = Math.abs(slide.offsetLeft - slides[0].offsetLeft - gallery.scrollLeft)
-        const closestDistance = Math.abs(slides[closest].offsetLeft - slides[0].offsetLeft - gallery.scrollLeft)
-        return distance < closestDistance ? index : closest
-      }, 0)
-    buttons.forEach((button, index) => button.setAttribute('aria-current', String(index === active)))
-  }
-
-  let frame = 0
-  gallery.addEventListener('scroll', () => {
-    window.cancelAnimationFrame(frame)
-    frame = window.requestAnimationFrame(updateActive)
-  }, { passive: true })
-  updateActive()
-}
-
 /* Hero smoke: stop animating while the hero is off screen ---------------- */
 function initHeroVisibility() {
   const hero = document.querySelector('.hero')
@@ -847,7 +808,6 @@ initGoodsList()
 initCountdown()
 initScrollReveal()
 initRecordCounters()
-initGalleryCarousel()
 initDepthGallery()
 initHeroVisibility()
 initVideoFacade()

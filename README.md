@@ -34,10 +34,7 @@ HTML / CSS / JavaScript のみで構成した静的サイトです。ビルド�
         ├── saigo-brush.webp      # 筆文字ロゴ（透過）
         ├── saigo-hero.webp       # ヒーロー用人物切り抜き（透過）
         ├── saigo-profile.webp     # プロフィール写真
-        ├── sponsor-champion.webp  # ギャラリー 01
-        ├── sponsor-victory.webp   # ギャラリー 02
-        ├── sponsor-ring.webp      # ギャラリー 03
-        └── sponsor-entrance.webp  # ギャラリー 04
+        └── gallery-01〜22.webp   # ギャラリーの写真（表示順は index.html の並び）
 ```
 
 外部読み込みは Google Fonts（Barlow Condensed / Noto Sans JP）と YouTube 埋め込みのみです。
@@ -61,9 +58,9 @@ HTML / CSS / JavaScript のみで構成した静的サイトです。ビルド�
 | 概要 | `#next-fight` / `#career` | 次戦情報（カウントダウン）・戦績サマリー・紹介動画 |
 | プロフィール | `#profile` | メッセージ・基本データ |
 | 戦績 | — | 勝率リング・数値カウントアップ・試合カード一覧（5件＋もっと見る） |
-| ギャラリー | `#gallery` | 写真18枚の立体スライダー（奥の写真が前に出てくる。PCは矢印・ドラッグ、スマホはスワイプ、自動送りあり） |
+| ギャラリー | `#gallery` | 写真22枚の立体スライダー（奥の写真が前に出てくる。PCは矢印・ドラッグ、スマホはスワイプ、自動送りあり） |
 | 応援（入口） | `#support` | 激励賞ページ・SHOP ページへの入口カード2枚 |
-| スポンサー | `#sponsor` | 見出し・ギャラリー・プラン・開始までの流れ・お問い合わせボタン |
+| スポンサー | `#sponsor` | 見出し・スポンサーロゴ・プラン・開始までの流れ・お問い合わせボタン |
 | お問い合わせ | `#contact` | フォーム（送信機能は未実装） |
 
 ### 別ページ（cheer.html・shop.html）
