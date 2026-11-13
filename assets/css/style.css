@@ -168,7 +168,7 @@ main {
 /* Header ------------------------------------------------------------------ */
 .site-header {
   position: fixed; z-index: 100; top: 0; left: 0; display: flex; align-items: center;
-  width: 100%; height: 82px; padding: 0 max(24px,calc((100vw - 1240px)/2));
+  width: 100%; height: 82px; padding: 0 max(24px,calc((100vw - 1240px)/2)); color: #f4f2ed;
   background: rgba(13,13,15,.82); backdrop-filter: blur(14px);
   box-shadow: 0 1px 0 rgba(255,255,255,.05);
 }
@@ -577,7 +577,7 @@ main {
 /* Goods ------------------------------------------------------------------- */
 .goods-section { padding: 110px max(24px, calc((100vw - 1240px)/2)); background: var(--cream); }
 .goods-head { display: grid; grid-template-columns: 1fr .8fr; gap: 80px; align-items: end; }
-.goods-head h2 { margin-top: 18px; font: 800 clamp(64px,8vw,112px)/.9 'Barlow Condensed',sans-serif; letter-spacing: .02em; }
+.goods-head h1,.goods-head h2 { margin-top: 18px; font: 800 clamp(64px,8vw,112px)/.9 'Barlow Condensed',sans-serif; letter-spacing: .02em; }
 .goods-head > p { color: #66625b; font-size: 12px; line-height: 2; }
 .goods-list { display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; margin-top: 60px; }
 .goods-card {
@@ -617,12 +617,60 @@ a.goods-card:hover .goods-image > img:not(.goods-placeholder) { transform: scale
 .goods-note { margin-top: 26px; color: #85817a; font-size: 10px; line-height: 1.8; }
 .goods-note a { color: var(--orange); text-decoration: underline; text-underline-offset: 3px; }
 
+/* Sub pages（cheer.html・shop.html） ------------------------------------- */
+/* 単独ページは普通のページスクロール（トップのセクションスナップ・入れ子スクロールは使わない） */
+.subpage { height: auto; overflow: visible; }
+.subpage main { height: auto; padding-top: 82px; overflow: visible; scroll-snap-type: none; }
+html:has(.subpage) { scroll-padding-top: 82px; }
+.subpage .goods-section,.subpage .cheer-section { min-height: calc(100svh - 82px - 120px); }
+
+/* Support（トップの「激励賞・SHOP」入口） --------------------------------- */
+.support-section {
+  display: flex; flex-direction: column; justify-content: center; gap: 44px;
+  padding: 90px max(24px,calc((100vw - 1240px)/2)); background: var(--cream);
+}
+.support-head h2 { margin-top: 18px; font-size: clamp(36px,4.6vw,62px); font-weight: 800; line-height: 1.2; letter-spacing: -.06em; }
+.support-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.support-card {
+  position: relative; display: flex; min-height: 340px; flex-direction: column; overflow: hidden;
+  padding: 36px 36px 32px; transition: transform .25s ease,box-shadow .25s ease;
+}
+.support-card:hover { transform: translateY(-4px); box-shadow: 0 22px 40px rgba(20,18,15,.16); }
+.support-card h3 { position: relative; margin-top: 14px; font-size: clamp(26px,3vw,40px); font-weight: 800; line-height: 1.25; letter-spacing: -.05em; }
+.support-card > p:not(.section-label) { position: relative; max-width: 58%; margin-top: 16px; font-size: 12px; line-height: 1.9; }
+.support-card .section-label { position: relative; }
+.support-card-button {
+  position: relative; display: flex; width: fit-content; min-width: 210px; margin-top: auto;
+  align-items: center; justify-content: space-between; gap: 20px; padding: 16px 20px;
+  font-size: 13px; font-weight: 800;
+}
+.support-card-button span { font-size: 18px; transition: transform .2s ease; }
+.support-card:hover .support-card-button span { transform: translateX(4px); }
+/* 激励賞：黒地＋キャラ */
+.support-card-cheer { color: white; background: #171719; }
+.support-card-cheer > p:not(.section-label) { color: #b2b1ad; }
+.support-card-cheer .support-card-button { color: white; background: var(--orange); }
+.support-card-cheer .chara {
+  position: absolute; right: 30px; bottom: 26px; width: clamp(110px,12vw,150px);
+  filter: drop-shadow(0 12px 18px rgba(0,0,0,.4)); transform-origin: bottom center;
+}
+.support-card-cheer:hover .chara { transform: rotate(6deg) translateY(-6px); }
+/* SHOP：白地＋Tシャツ */
+.support-card-shop { color: #171717; background: #fff; }
+.support-card-shop > p:not(.section-label) { color: #66625b; }
+.support-card-shop .support-card-button { color: white; background: #171717; }
+.support-card-photo {
+  position: absolute; right: -10px; bottom: -6px; width: clamp(190px,21vw,270px);
+  transition: transform .5s cubic-bezier(.2,.7,.2,1);
+}
+.support-card-shop:hover .support-card-photo { transform: scale(1.04) rotate(-2deg); }
+
 /* Cheer (激励賞) ----------------------------------------------------------- */
 .cheer-section {
   display: grid; grid-template-columns: .85fr 1.15fr; gap: clamp(48px,7vw,100px); align-items: start;
   padding: 100px max(24px,calc((100vw - 1240px)/2)); background: #fff;
 }
-.cheer-intro h2 { margin-top: 20px; font-size: clamp(40px,5vw,68px); font-weight: 800; line-height: 1.2; letter-spacing: -.065em; }
+.cheer-intro h1,.cheer-intro h2 { margin-top: 20px; font-size: clamp(40px,5vw,68px); font-weight: 800; line-height: 1.2; letter-spacing: -.065em; }
 .cheer-lead { margin-top: 24px; color: #66625b; font-size: 12px; line-height: 2; }
 .cheer-perks { margin-top: 36px; padding: 22px 24px; border-left: 4px solid var(--orange); background: var(--cream); }
 .cheer-perks-title { color: var(--orange); font-size: 11px; font-weight: 700; letter-spacing: .1em; }
@@ -854,8 +902,9 @@ footer p,footer > a:last-child { color: #777; font: 500 9px/1 'Barlow Condensed'
     font: 700 10px/1 'Barlow Condensed'; letter-spacing: .14em;
   }
   .menu-panel > a small { display: none; }
-  .menu-panel > a:first-child { color: var(--orange); }
-  .menu-panel > a:first-child::after {
+  /* 今いるページ（aria-current="page"）を強調 */
+  .menu-panel > a[aria-current="page"] { color: var(--orange); }
+  .menu-panel > a[aria-current="page"]::after {
     position: absolute; right: 0; bottom: -12px; left: 0; height: 2px; background: var(--orange); content: '';
   }
   .menu-panel { align-items: center; }
@@ -994,6 +1043,16 @@ footer p,footer > a:last-child { color: #777; font: 500 9px/1 'Barlow Condensed'
   .fight-card-main h3 { font-size: 31px; }
   /* スマホ：戦績のキックは見出しの右に、SHOP・お問い合わせのキャラは小さめに */
   .goods-title .chara-stand { width: 68px; }
+  .subpage main { padding-top: 68px; }
+  html:has(.subpage) { scroll-padding-top: 68px; }
+  .subpage .goods-section,.subpage .cheer-section { min-height: 0; }
+  .support-section { gap: 32px; padding: 70px 20px; }
+  .support-cards { grid-template-columns: 1fr; gap: 12px; }
+  .support-card { min-height: 0; padding: 28px 22px 24px; }
+  .support-card > p:not(.section-label) { max-width: 62%; font-size: 11px; }
+  .support-card-button { min-width: 0; margin-top: 22px; padding: 14px 18px; font-size: 12px; }
+  .support-card-cheer .chara { right: 18px; bottom: 20px; width: 92px; }
+  .support-card-photo { right: -14px; bottom: -8px; width: 160px; }
   .cheer-section { grid-template-columns: 1fr; gap: 36px; padding: 70px 20px; }
   .cheer-perks { margin-top: 26px; padding: 18px; }
   .cheer-form { gap: 24px; margin-inline: -4px; padding: 22px 16px; }

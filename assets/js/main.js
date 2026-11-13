@@ -52,7 +52,7 @@ const CHEER_SHEET_ENDPOINT = ''
 // true の間、Stripe のリンクが未設定の金額は仮の決済ページ（checkout-demo.html）へ移動する。本番公開前に false にする
 const CHEER_DEMO_CHECKOUT = true
 const CHEER_NAME_PERK_MIN = 10000
-// Stripe の「支払い後のリダイレクト先」を ?cheer=thanks&amount=金額 にすると、お礼表示になる
+// Stripe の「支払い後のリダイレクト先」を cheer.html?cheer=thanks&amount=金額 にすると、お礼表示になる
 const cheerParams = new URLSearchParams(window.location.search)
 const isCheerThanks = cheerParams.get('cheer') === 'thanks'
 
@@ -85,9 +85,26 @@ function focusTop() {
   })
 }
 
+/* 指定した要素へ瞬時に移動する（CSS の scroll-behavior: smooth を上書き）。
+   画像・フォントの読み込みで上の高さが変わり位置がずれるため、読み込み完了後にもう一度合わせる */
+function jumpTo(element) {
+  if (!element) return
+  // 表示アニメーション（下から浮き上がる）の途中だと移動先がずれるので、移動先のセクションは即表示にする
+  const section = element.closest('.scroll-reveal')
+  if (section) {
+    section.style.transition = 'none'
+    section.classList.add('is-visible')
+  }
+  const jump = () => element.scrollIntoView({ block: 'start', behavior: 'instant' })
+  window.requestAnimationFrame(jump)
+  if (document.readyState !== 'complete') window.addEventListener('load', jump, { once: true })
+}
+
 function initIntro() {
   const root = document.documentElement
   const darkShell = document.querySelector('.dark-shell')
+  // 激励賞・SHOP などの別ページにはオープニング演出がない
+  if (!darkShell) return
   let timer = 0
 
   const finishIntro = () => {
@@ -124,9 +141,12 @@ function initIntro() {
     })
   })
 
-  // 激励賞の決済から戻ってきたときは、トップへ戻さずお礼表示（initCheerThanks）に任せる
-  if (isCheerThanks) {
+  // 別ページから「index.html#contact」などで来たときは、トップへ戻さずその欄へ移動する
+  const hashTarget = window.location.hash.length > 1 ? document.getElementById(window.location.hash.slice(1)) : null
+  if (hashTarget) {
+    root.classList.remove('intro-active')
     darkShell.classList.add('top-ready')
+    jumpTo(hashTarget)
     return
   }
 
@@ -578,22 +598,11 @@ function initCheerThanks() {
   thanks.hidden = false
 
   // 再読み込みでお礼が出続けないよう、URL から ?cheer=thanks を外す
-  window.history.replaceState(null, '', `${window.location.pathname}#cheer`)
+  window.history.replaceState(null, '', window.location.pathname)
 
-  const section = document.querySelector('#cheer')
-  // 表示アニメーション（下から少し浮き上がる）の途中だと移動先がずれるので、このセクションだけ即表示にする
-  section.style.transition = 'none'
-  section.classList.add('is-visible')
-  // CSS の scroll-behavior: smooth を上書きして瞬時に移動（ページ先頭から長くスクロールする演出を見せない）
   // スマホは縦積みでお礼カードが説明の下にあるため、カードの位置まで移動する
-  const target = window.matchMedia('(max-width: 780px)').matches ? thanks : section
-  const scrollToCheer = () => target.scrollIntoView({ block: 'start', behavior: 'instant' })
-  window.requestAnimationFrame(() => {
-    scrollToCheer()
-    thanks.focus({ preventScroll: true })
-  })
-  // 画像・フォントの読み込みで上のセクションの高さが変わり位置がずれるため、読み込み完了後にもう一度合わせる
-  if (document.readyState !== 'complete') window.addEventListener('load', scrollToCheer, { once: true })
+  jumpTo(window.matchMedia('(max-width: 780px)').matches ? thanks : document.querySelector('#cheer'))
+  thanks.focus({ preventScroll: true })
 }
 
 /* Contact form ----------------------------------------------------------- */

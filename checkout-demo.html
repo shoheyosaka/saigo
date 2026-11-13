@@ -65,7 +65,7 @@
         このデモではカード情報の入力はありません。
       </p>
       <button class="pay" type="button" data-pay>テスト支払いを完了する <span aria-hidden="true">→</span></button>
-      <a class="back" href="index.html" data-back>← 戻って内容を変更する</a>
+      <a class="back" href="cheer.html" data-back>← 戻って内容を変更する</a>
     </section>
   </main>
 
@@ -92,7 +92,7 @@
 
     // Stripe の「支払い後のリダイレクト先」と同じ URL に戻す
     document.querySelector('[data-pay]').addEventListener('click', () => {
-      window.location.href = `index.html?cheer=thanks&amount=${amount}`
+      window.location.href = `cheer.html?cheer=thanks&amount=${amount}`
     })
     // 戻る：入力内容が残った状態で激励賞欄に戻れるよう、履歴があればブラウザの「戻る」を使う
     document.querySelector('[data-back]').addEventListener('click', (event) => {

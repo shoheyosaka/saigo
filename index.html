@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>SAIGO OFFICIAL SITE | 初代STRIKE NEXUSフェザー級チャンピオン</title>
-  <meta name="description" content="プロキックボクサー SAIGO（TARGET SHIBUYA）の公式サイト。初代STRIKE NEXUSフェザー級チャンピオン。試合情報・戦績・プロフィール・グッズ・スポンサー募集。">
+  <meta name="description" content="プロキックボクサー SAIGO（TARGET SHIBUYA）の公式サイト。初代STRIKE NEXUSフェザー級チャンピオン。試合情報・戦績・プロフィール・激励賞・グッズ・スポンサー募集。">
   <meta name="theme-color" content="#0d0d0f">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="SAIGO OFFICIAL SITE">
@@ -28,9 +28,9 @@
     (function () {
       var seen = false
       try { seen = sessionStorage.getItem('saigo-intro-seen') === '1' } catch (e) {}
-      // 激励賞の決済から戻ってきたとき（?cheer=thanks）は演出を飛ばしてお礼をすぐ見せる
-      var fromCheer = /[?&]cheer=thanks/.test(location.search)
-      if (!seen && !fromCheer && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      // 別ページから「index.html#contact」などで来たときは演出を飛ばしてその欄を見せる
+      var hasTarget = location.hash.length > 1
+      if (!seen && !hasTarget && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
         document.documentElement.classList.add('intro-active')
       }
     })()
@@ -63,11 +63,11 @@
           <span></span><span></span><span></span>
         </button>
         <nav id="main-menu" class="menu-panel" aria-label="メインナビゲーション">
-          <a href="#top"><small>01</small>HOME</a>
+          <a href="#top" aria-current="page"><small>01</small>HOME</a>
           <a href="#profile"><small>02</small>PROFILE</a>
           <a href="#career"><small>03</small>FIGHT RECORD</a>
-          <a href="#shop"><small>04</small>SHOP</a>
-          <a href="#cheer"><small>05</small>CHEER</a>
+          <a href="cheer.html"><small>04</small>CHEER</a>
+          <a href="shop.html"><small>05</small>SHOP</a>
           <a href="#sponsor"><small>06</small>SPONSOR</a>
           <a href="#contact"><small>07</small>CONTACT</a>
           <div class="menu-socials">
@@ -240,93 +240,26 @@
       </button>
     </section>
 
-    <section class="goods-section snap-section scroll-reveal reveal-up" id="shop" aria-labelledby="shop-heading">
-      <div class="goods-head">
-        <div>
-          <p class="section-label">OFFICIAL GOODS</p>
-          <div class="goods-title">
-            <h2 id="shop-heading">SHOP</h2>
-            <img class="chara chara-stand" src="assets/images/chara-stand.webp" alt="" aria-hidden="true" loading="lazy" decoding="async" width="374" height="640">
-          </div>
-        </div>
-        <p>
-          SAIGOオフィシャルグッズ。会場やSNSで一緒に応援してください。
-          販売情報は Instagram・X でもお知らせします。
-        </p>
+    <section class="support-section snap-section scroll-reveal reveal-up" id="support" aria-labelledby="support-heading">
+      <div class="support-head">
+        <p class="section-label">SUPPORT SAIGO</p>
+        <h2 id="support-heading">SAIGOを応援する</h2>
       </div>
-
-      <!-- グッズカードは main.js の goods 配列から描画 -->
-      <div class="goods-list"></div>
-
-      <p class="goods-note">
-        価格はすべて税込です。会場販売の在庫や通信販売については
-        <a href="#contact">お問い合わせ</a>ください。
-      </p>
-    </section>
-
-    <section class="cheer-section snap-section scroll-reveal reveal-up" id="cheer" aria-labelledby="cheer-heading">
-      <div class="cheer-intro">
-        <p class="section-label">CHEER FOR SAIGO</p>
-        <h2 id="cheer-heading">激励賞を贈る</h2>
-        <p class="cheer-lead">
-          リングに立つSAIGOへ、応援の気持ちを激励賞として届けませんか。
-          いただいた激励賞は、試合に向けた練習・遠征・減量などの活動に使わせていただきます。
-        </p>
-
-        <!-- 特典：選んだ金額で受け取れるものが点灯する（data-perk-min 以上で点灯。main.js が制御） -->
-        <div class="cheer-perks">
-          <p class="cheer-perks-title">激励賞の特典</p>
-          <ul>
-            <li data-perk-min="1000"><b>¥1,000〜</b><span>SAIGOからのお礼メッセージ</span></li>
-            <li data-perk-min="10000"><b>¥10,000〜</b><span>試合で使うTシャツにお名前を掲載</span></li>
-          </ul>
-        </div>
-      </div>
-
-      <!-- 決済（Stripe Payment Link）とスプレッドシート保存は未実装（README「激励賞」参照） -->
-      <form class="cheer-form" novalidate>
-        <fieldset class="cheer-step">
-          <legend><span>1</span>金額を選ぶ</legend>
-          <div class="cheer-amounts">
-            <label><input type="radio" name="amount" value="1000"><span>¥1,000</span></label>
-            <label><input type="radio" name="amount" value="5000" checked><span>¥5,000</span></label>
-            <label><input type="radio" name="amount" value="10000"><span>¥10,000</span></label>
-            <label><input type="radio" name="amount" value="30000"><span>¥30,000</span></label>
-            <label><input type="radio" name="amount" value="50000"><span>¥50,000</span></label>
-          </div>
-        </fieldset>
-
-        <fieldset class="cheer-step">
-          <legend><span>2</span>お名前・メッセージ <em>どちらも任意</em></legend>
-          <label class="cheer-field">
-            <span>お名前（ニックネーム可）</span>
-            <input name="name" type="text" maxlength="30" autocomplete="nickname">
-          </label>
-          <p class="cheer-name-hint" hidden>このお名前が、試合で使うTシャツに入ります。</p>
-          <label class="cheer-anonymous"><input name="anonymous" type="checkbox"><span>匿名で贈る</span></label>
-          <label class="cheer-field">
-            <span>SAIGOへのメッセージ</span>
-            <textarea name="message" rows="3" maxlength="200" placeholder="応援メッセージをどうぞ"></textarea>
-            <small class="cheer-count" aria-live="polite">0 / 200</small>
-          </label>
-        </fieldset>
-
-        <button class="cheer-submit" type="submit"><span class="cheer-submit-label">¥5,000 の激励賞を贈る</span> <span aria-hidden="true">→</span></button>
-        <p class="cheer-secure">お支払いは Stripe の安全な決済ページで行います（クレジットカード・Apple Pay など）。</p>
-        <p class="form-notice cheer-notice" role="status" hidden>激励賞の決済機能は現在準備中です。お支払いは行われていません。</p>
-      </form>
-
-      <!-- 決済完了後（?cheer=thanks で戻ってきたとき）にフォームの代わりに表示。main.js が制御 -->
-      <div class="cheer-thanks" role="status" tabindex="-1" hidden>
-        <img class="chara" src="assets/images/chara-stand.webp" alt="" aria-hidden="true" loading="lazy" decoding="async" width="374" height="640">
-        <p class="section-label">THANK YOU</p>
-        <h3>激励賞、<br>ありがとうございました！</h3>
-        <p>いただいた応援は、SAIGOの力になります。<br>リングの上で結果で応えます。引き続き応援よろしくお願いします！</p>
-        <p class="cheer-thanks-perk" hidden>試合で使うTシャツへのお名前掲載は、準備ができしだい SNS でお知らせします。</p>
-        <div class="cheer-thanks-actions">
-          <a class="cheer-share" href="https://x.com/intent/post" target="_blank" rel="noreferrer">X で応援をシェアする <span aria-hidden="true">↗</span></a>
-          <a class="cheer-follow" href="https://instagram.com/saigo0306" target="_blank" rel="noreferrer">Instagram をフォロー <span aria-hidden="true">↗</span></a>
-        </div>
+      <div class="support-cards">
+        <a class="support-card support-card-cheer" href="cheer.html">
+          <img class="chara" src="assets/images/chara-stand.webp" alt="" aria-hidden="true" loading="lazy" decoding="async" width="374" height="640">
+          <p class="section-label">CHEER</p>
+          <h3>激励賞を贈る</h3>
+          <p>リングに立つSAIGOへ、応援の気持ちを激励賞で。¥1,000から、お名前・メッセージを添えて贈れます。</p>
+          <span class="support-card-button">激励賞を贈る <span aria-hidden="true">→</span></span>
+        </a>
+        <a class="support-card support-card-shop" href="shop.html">
+          <img class="support-card-photo" src="assets/images/goods-tshirt.webp" alt="" aria-hidden="true" loading="lazy" decoding="async" width="800" height="800">
+          <p class="section-label">SHOP</p>
+          <h3>オフィシャルグッズ</h3>
+          <p>SAIGOオフィシャルTシャツなど。会場やSNSで一緒に応援してください。</p>
+          <span class="support-card-button">SHOPを見る <span aria-hidden="true">→</span></span>
+        </a>
       </div>
     </section>
 

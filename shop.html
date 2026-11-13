@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SHOP | SAIGO OFFICIAL SITE</title>
+  <meta name="description" content="SAIGO（TARGET SHIBUYA）のオフィシャルグッズ。Tシャツなどの販売情報。">
+  <meta name="theme-color" content="#0d0d0f">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="SAIGO OFFICIAL SITE">
+  <meta property="og:title" content="SHOP | SAIGO OFFICIAL SITE">
+  <meta property="og:description" content="SAIGOオフィシャルグッズで、一緒に応援しよう。">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="assets/images/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="icon" href="assets/images/favicon-192.png" sizes="192x192" type="image/png">
+  <link rel="apple-touch-icon" href="assets/images/apple-touch-icon.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800;900&family=Noto+Sans+JP:wght@400..800&display=swap">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <script src="assets/js/main.js" defer></script>
+</head>
+<!-- SNS などから直接開いてもらう単独ページ（オープニング演出・セクションスナップなし） -->
+<body class="subpage">
+  <header class="site-header">
+    <a class="logo" href="index.html">SAIGO<span>.</span></a>
+    <button class="menu-button" type="button" aria-label="メニューを開く" aria-expanded="false" aria-controls="main-menu">
+      <span></span><span></span><span></span>
+    </button>
+    <nav id="main-menu" class="menu-panel" aria-label="メインナビゲーション">
+          <a href="index.html#top"><small>01</small>HOME</a>
+          <a href="index.html#profile"><small>02</small>PROFILE</a>
+          <a href="index.html#career"><small>03</small>FIGHT RECORD</a>
+          <a href="cheer.html"><small>04</small>CHEER</a>
+          <a href="shop.html" aria-current="page"><small>05</small>SHOP</a>
+          <a href="index.html#sponsor"><small>06</small>SPONSOR</a>
+          <a href="index.html#contact"><small>07</small>CONTACT</a>
+          <div class="menu-socials">
+            <a href="https://instagram.com/saigo0306" target="_blank" rel="noreferrer" aria-label="Instagram @saigo0306">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5" /><circle cx="12" cy="12" r="4" /><circle cx="17.5" cy="6.5" r=".8" class="icon-fill" /></svg>
+            </a>
+            <a href="https://x.com/saigo0306" target="_blank" rel="noreferrer" aria-label="X @saigo0306">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path class="icon-fill" d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" /></svg>
+            </a>
+          </div>
+    </nav>
+  </header>
+
+  <main id="top">
+    <section class="goods-section" id="shop" aria-labelledby="shop-heading">
+      <div class="goods-head">
+        <div>
+          <p class="section-label">OFFICIAL GOODS</p>
+          <div class="goods-title">
+            <h1 id="shop-heading">SHOP</h1>
+            <img class="chara chara-stand" src="assets/images/chara-stand.webp" alt="" aria-hidden="true" loading="lazy" decoding="async" width="374" height="640">
+          </div>
+        </div>
+        <p>
+          SAIGOオフィシャルグッズ。会場やSNSで一緒に応援してください。
+          販売情報は Instagram・X でもお知らせします。
+        </p>
+      </div>
+
+      <!-- グッズカードは main.js の goods 配列から描画 -->
+      <div class="goods-list"></div>
+
+      <p class="goods-note">
+        価格はすべて税込です。会場販売の在庫や通信販売については
+        <a href="index.html#contact">お問い合わせ</a>ください。
+      </p>
+    </section>
+
+    <footer>
+      <a class="logo" href="index.html">SAIGO<span>.</span></a>
+      <div class="footer-socials" aria-label="SAIGO 連絡先">
+        <a href="https://instagram.com/saigo0306" target="_blank" rel="noreferrer" aria-label="Instagram @saigo0306">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5" /><circle cx="12" cy="12" r="4" /><circle cx="17.5" cy="6.5" r=".8" class="icon-fill" /></svg>
+        </a>
+        <a href="https://x.com/saigo0306" target="_blank" rel="noreferrer" aria-label="X @saigo0306">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path class="icon-fill" d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" /></svg>
+        </a>
+        <a href="tel:09015823255" aria-label="電話 090-1582-3255">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.3 3.8 9.7 8 7.9 9.6c.8 2.8 3 5 5.8 5.9l1.7-1.9 4.2 2.4-.7 3.1c-.2.8-.9 1.3-1.7 1.3C9.7 20.4 3.6 14.3 3.6 6.8c0-.8.6-1.5 1.3-1.7l2.4-.6v-.7Z" /></svg>
+        </a>
+        <a href="https://line.me/ti/p/~tkms0306" target="_blank" rel="noreferrer" aria-label="LINE tkms0306">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 10.7c0-4-3.8-7.2-8.5-7.2s-8.5 3.2-8.5 7.2c0 3.6 3.2 6.7 7.4 7.2.3.1.7.2.8.5.1.2.1.6 0 1l-.1.9c0 .3-.2 1.1 1 .6 1.2-.5 6.3-3.7 7.2-6.3.5-1 .7-2.4.7-3.9Z" /></svg>
+        </a>
+      </div>
+      <p>© SAIGO. ALL RIGHTS RESERVED.</p>
+      <a href="#top">BACK TO TOP ↑</a>
+    </footer>
+  </main>
+</body>
+</html>

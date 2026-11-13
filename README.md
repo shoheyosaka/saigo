@@ -13,7 +13,9 @@ HTML / CSS / JavaScript のみで構成した静的サイトです。ビルド�
 
 ```
 .
-├── index.html              # ページ本体（全セクション）
+├── index.html              # トップページ（オープニング・各セクション）
+├── cheer.html              # 激励賞ページ（SNS などから直接開いてもらう用）
+├── shop.html               # SHOP ページ（同上）
 ├── checkout-demo.html      # 激励賞の仮の決済ページ（Stripe 接続前の確認用・本番前に削除）
 ├── .nojekyll               # GitHub Pages で Jekyll 処理を無効化
 ├── README.md
@@ -58,10 +60,16 @@ HTML / CSS / JavaScript のみで構成した静的サイトです。ビルド�
 | 概要 | `#next-fight` / `#career` | 次戦情報（カウントダウン）・戦績サマリー・紹介動画 |
 | プロフィール | `#profile` | メッセージ・基本データ |
 | 戦績 | — | 勝率リング・数値カウントアップ・試合カード一覧（5件＋もっと見る） |
-| ショップ | `#shop` | 商品カード一覧（`main.js` の `goods` 配列から描画） |
-| 激励賞 | `#cheer` | 金額選択・お名前／メッセージ（任意・匿名可）・特典（決済・保存は未実装） |
+| 応援（入口） | `#support` | 激励賞ページ・SHOP ページへの入口カード2枚 |
 | スポンサー | `#sponsor` | 見出し・ギャラリー・プラン・開始までの流れ・お問い合わせボタン |
 | お問い合わせ | `#contact` | フォーム（送信機能は未実装） |
+
+### 別ページ（cheer.html・shop.html）
+
+- SNS やQRコードからそのまま開いてもらうための単独ページです。オープニング演出・セクションごとのスナップはなく、普通にスクロールします
+- **ヘッダー（メニュー）とフッターは3ファイル（index.html・cheer.html・shop.html）にそれぞれ書いてあります。** メニューやSNSリンクを変えるときは3ファイルとも直してください。今いるページのメニューには `aria-current="page"` を付けます
+- トップのセクションへは `index.html#contact` のようにリンクします。`#` 付きで開いたトップは、オープニング演出を飛ばしてその欄へ移動します
+- CSS（`style.css`）と JS（`main.js`）は全ページ共通です
 
 `prefers-reduced-motion`（OS の「視差効果を減らす」設定）が有効な場合は、オープニングや各種アニメーションを省略して表示します。
 
@@ -110,12 +118,12 @@ python3 -m http.server 8000
 
 ### 激励賞の金額・特典・決済リンク
 
-- **金額**：`index.html` の `.cheer-amounts` 内の `<label>` を増減。`value` は円単位の数値。最初に選ばれている金額は `checked` を付けたもの
-- **特典**：`index.html` の `.cheer-perks` の `<li data-perk-min="10000">` を編集。選んだ金額が `data-perk-min` 以上の特典が点灯します
+- **金額**：`cheer.html` の `.cheer-amounts` 内の `<label>` を増減。`value` は円単位の数値。最初に選ばれている金額は `checked` を付けたもの
+- **特典**：`cheer.html` の `.cheer-perks` の `<li data-perk-min="10000">` を編集。選んだ金額が `data-perk-min` 以上の特典が点灯します
 - **Tシャツ特典の金額**：`main.js` の `CHEER_NAME_PERK_MIN`（この金額以上で「このお名前がTシャツに入ります」と表示）。特典欄の `data-perk-min` もあわせて変更
 - **決済**：`main.js` の `CHEER_PAYMENT_LINKS` に金額ごとの Stripe Payment Link の URL を入れると、ボタンでその決済ページへ移動します。空のあいだは「準備中」と表示
-- **仮の決済ページ（デモ）**：`main.js` の `CHEER_DEMO_CHECKOUT` が `true` の間は、Stripe のリンクが未設定の金額で「贈る」を押すと `checkout-demo.html` が開きます（金額・お名前・メッセージの確認と「テスト支払いを完了する」ボタンのみ。カード入力なし・実際の決済なし）。完了ボタンで `index.html?cheer=thanks&amount=金額` に戻り、お礼表示まで確認できます
-- **支払い後のお礼表示**：Stripe の Payment Link 設定「支払い後」→「顧客をウェブサイトにリダイレクトする」に、`https://（本番ドメイン）/?cheer=thanks&amount=10000` のように**金額ごと**の URL を設定します。サイトに戻ると、オープニング演出を飛ばして激励賞欄へ移動し、フォームの代わりにお礼（キャラ・Xでシェア・Instagram）が表示されます。`amount` が `CHEER_NAME_PERK_MIN` 以上なら「Tシャツへのお名前掲載はSNSでお知らせ」も表示。確認用：ローカルで `http://localhost:8000/?cheer=thanks&amount=10000` を開く
+- **仮の決済ページ（デモ）**：`main.js` の `CHEER_DEMO_CHECKOUT` が `true` の間は、Stripe のリンクが未設定の金額で「贈る」を押すと `checkout-demo.html` が開きます（金額・お名前・メッセージの確認と「テスト支払いを完了する」ボタンのみ。カード入力なし・実際の決済なし）。完了ボタンで `cheer.html?cheer=thanks&amount=金額` に戻り、お礼表示まで確認できます
+- **支払い後のお礼表示**：Stripe の Payment Link 設定「支払い後」→「顧客をウェブサイトにリダイレクトする」に、`https://（本番ドメイン）/cheer.html?cheer=thanks&amount=10000` のように**金額ごと**の URL を設定します。激励賞ページに戻ると、フォームの代わりにお礼（キャラ・Xでシェア・Instagram）が表示されます。`amount` が `CHEER_NAME_PERK_MIN` 以上なら「Tシャツへのお名前掲載はSNSでお知らせ」も表示。確認用：ローカルで `http://localhost:8000/cheer.html?cheer=thanks&amount=10000` を開く
 - **スプレッドシート保存**：未実装。`main.js` の `initCheerForm` 内の `record`（金額・お名前・匿名・メッセージ・日時）を、Google Apps Script（`CHEER_SHEET_ENDPOINT`）へ送ってから決済ページへ移動する想定です
 
 ### 次戦情報を変更する
@@ -174,7 +182,7 @@ YouTube の URL が `https://www.youtube.com/watch?v=XXXX` なら、`XXXX` の�
 - [ ] **プロフィール写真**：現在の計量写真は 430px 程度と小さく、PC ではやや粗く見えるため、可能なら高解像度版（幅 800px 以上）に差し替える
 - [ ] **写真の使用許諾**：RISE 宣材写真・計量写真・大会写真の Web 掲載について、撮影者・主催者の許諾を確認
 - [ ] **フッターの電話番号・LINE ID**：公開して問題ないかお客様に確認
-- [ ] **OGP 画像**：`og:image` は絶対 URL が必要なため、本番ドメイン確定後に `index.html` の `<head>` に追加する（例：`<meta property="og:image" content="https://example.com/assets/images/ogp.jpg">`、1200×630px 推奨）
+- [ ] **OGP 画像**：`og:image` は絶対 URL が必要なため、本番ドメイン確定後に `index.html`・`cheer.html`・`shop.html` の `<head>` に追加する（激励賞・SHOP は SNS で共有されるので、それぞれ専用の画像があると効果的）（例：`<meta property="og:image" content="https://example.com/assets/images/ogp.jpg">`、1200×630px 推奨）
 - [ ] **プロフィールの年齢・年数**：「29歳」「4年目」は固定値のため、誕生日・年明けに更新する
 - [ ] **スポンサーロゴ**：スポンサーが決まったら、スポンサー欄にロゴを掲載する枠を追加する（募集中の空き枠は 2026-11 に削除済み）
 - [ ] **グッズ**：現在の4商品（Tシャツ・タオル・キャップ・ステッカー）は仮の内容です。実際の商品名・価格・写真・購入ページに差し替える
