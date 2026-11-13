@@ -378,15 +378,38 @@
           <p class="section-label">MOVIE</p>
           <h3>試合動画</h3>
         </div>
-        <div class="video-feature">
-          <!-- サムネイルだけ表示し、タップされたら YouTube プレーヤーを読み込む（main.js） -->
-          <div class="video-frame">
-            <button class="video-facade" type="button" data-video-id="kZ74_njNdtU" data-video-title="拳剛 vs SAIGO｜2026.8.30 RISE EVOL OSAKA Vol.3" aria-label="動画を再生：拳剛 vs SAIGO｜2026.8.30 RISE EVOL OSAKA Vol.3">
-              <img src="https://i.ytimg.com/vi/kZ74_njNdtU/sddefault.jpg" alt="" loading="lazy" decoding="async" width="640" height="480">
-              <span class="video-play" aria-hidden="true"></span>
-            </button>
-          </div>
-        </div>
+        <!-- 試合動画は横スクロール。新しい順に並べる。
+             軽さのため、最初はサムネイル（hqdefault・約40KB）だけ表示し、押されたら YouTube を読み込む（main.js）。
+             追加するときは <li class="movie-card"> を1つコピーして、動画ID・試合名・日付と大会名を書き換える -->
+        <ul class="movie-list" tabindex="0" aria-label="試合動画（横にスクロールできます）">
+          <li class="movie-card">
+            <div class="video-frame">
+              <button class="video-facade" type="button" data-video-id="kZ74_njNdtU" data-video-title="拳剛 vs SAIGO｜2026.8.30 RISE EVOL OSAKA Vol.3" aria-label="動画を再生：拳剛 vs SAIGO｜2026.8.30 RISE EVOL OSAKA Vol.3">
+                <img src="https://i.ytimg.com/vi/kZ74_njNdtU/hqdefault.jpg" alt="" loading="lazy" decoding="async" width="480" height="360">
+                <span class="video-play" aria-hidden="true"></span>
+              </button>
+            </div>
+            <p class="movie-meta"><span>2026.8.30 RISE EVOL OSAKA Vol.3</span><b>拳剛 vs SAIGO</b></p>
+          </li>
+          <li class="movie-card">
+            <div class="video-frame">
+              <button class="video-facade" type="button" data-video-id="qQ0_x3USdrg" data-video-title="SAIGO vs 歩希｜2025.10.30 NEXT GOAT" aria-label="動画を再生：SAIGO vs 歩希｜2025.10.30 NEXT GOAT">
+                <img src="https://i.ytimg.com/vi/qQ0_x3USdrg/hqdefault.jpg" alt="" loading="lazy" decoding="async" width="480" height="360">
+                <span class="video-play" aria-hidden="true"></span>
+              </button>
+            </div>
+            <p class="movie-meta"><span>2025.10.30 NEXT GOAT</span><b>SAIGO vs 歩希</b></p>
+          </li>
+          <li class="movie-card">
+            <div class="video-frame">
+              <button class="video-facade" type="button" data-video-id="Gz5kQK3z9-Y" data-video-title="白石 舜 vs SAIGO｜2025.2.23 RISE 186" aria-label="動画を再生：白石 舜 vs SAIGO｜2025.2.23 RISE 186">
+                <img src="https://i.ytimg.com/vi/Gz5kQK3z9-Y/hqdefault.jpg" alt="" loading="lazy" decoding="async" width="480" height="360">
+                <span class="video-play" aria-hidden="true"></span>
+              </button>
+            </div>
+            <p class="movie-meta"><span>2025.2.23 RISE 186</span><b>白石 舜 vs SAIGO</b></p>
+          </li>
+        </ul>
       </div>
     </section>
 

@@ -681,17 +681,22 @@ function initHeroVisibility() {
   observer.observe(hero)
 }
 
-/* Video: load the YouTube player only after a tap ----------------------- */
+/* Video: load the YouTube player only after a tap -----------------------
+   ページを開いただけでは YouTube を読み込まない（サムネイル画像だけ）。
+   別の動画を再生したら、前の動画はサムネイルに戻して止める（同時に何本も再生しない） */
 function initVideoFacade() {
+  let playing = null // { iframe, facade }
   document.querySelectorAll('.video-facade').forEach((facade) => {
     facade.addEventListener('click', () => {
+      if (playing) playing.iframe.replaceWith(playing.facade)
       const iframe = document.createElement('iframe')
       iframe.src = `https://www.youtube-nocookie.com/embed/${facade.dataset.videoId}?autoplay=1&playsinline=1`
       iframe.title = facade.dataset.videoTitle
       iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
       iframe.allowFullscreen = true
       facade.replaceWith(iframe)
-    }, { once: true })
+      playing = { iframe, facade }
+    })
   })
 }
 
