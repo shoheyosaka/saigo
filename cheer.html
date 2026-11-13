@@ -62,7 +62,8 @@
           <p class="cheer-perks-title">激励賞の特典</p>
           <ul>
             <li data-perk-min="1000"><b>¥1,000〜</b><span>SAIGOからのお礼メッセージ</span></li>
-            <li data-perk-min="10000"><b>¥10,000〜</b><span>試合で使うTシャツにお名前を掲載</span></li>
+            <li data-perk-min="10000"><b>¥10,000〜</b><span>試合毎に使用するTシャツにお名前を掲載</span></li>
+            <li data-perk-min="10000"><b>¥10,000〜</b><span>オフィシャルTシャツを1枚プレゼント</span></li>
           </ul>
         </div>
       </div>
@@ -81,12 +82,22 @@
         </fieldset>
 
         <fieldset class="cheer-step">
-          <legend><span>2</span>お名前・メッセージ <em>どちらも任意</em></legend>
+          <legend><span>2</span>お礼の送付先 <b class="cheer-required">必須</b></legend>
+          <label class="cheer-field">
+            <span>メールアドレス</span>
+            <input name="email" type="email" inputmode="email" autocomplete="email" maxlength="254" required aria-describedby="cheer-email-note cheer-email-error">
+          </label>
+          <p class="cheer-field-error" id="cheer-email-error" role="alert" hidden></p>
+          <p class="cheer-field-note" id="cheer-email-note">SAIGOからのお礼メッセージや特典のご連絡をお送りします。公開されることはありません。</p>
+        </fieldset>
+
+        <fieldset class="cheer-step">
+          <legend><span>3</span>お名前・メッセージ <em>どちらも任意</em></legend>
           <label class="cheer-field">
             <span>お名前（ニックネーム可）</span>
             <input name="name" type="text" maxlength="30" autocomplete="nickname">
           </label>
-          <p class="cheer-name-hint" hidden>このお名前が、試合で使うTシャツに入ります。</p>
+          <p class="cheer-name-hint" hidden>このお名前が、試合毎に使用するTシャツに入ります。</p>
           <label class="cheer-anonymous"><input name="anonymous" type="checkbox"><span>匿名で贈る</span></label>
           <label class="cheer-field">
             <span>SAIGOへのメッセージ</span>
@@ -106,7 +117,7 @@
         <p class="section-label">THANK YOU</p>
         <h3>激励賞、<br>ありがとうございました！</h3>
         <p>いただいた応援は、SAIGOの力になります。<br>リングの上で結果で応えます。引き続き応援よろしくお願いします！</p>
-        <p class="cheer-thanks-perk" hidden>試合で使うTシャツへのお名前掲載は、準備ができしだい SNS でお知らせします。</p>
+        <p class="cheer-thanks-perk" hidden>試合毎に使用するTシャツへのお名前掲載（匿名の方を除く）と、オフィシャルTシャツのプレゼントについては、準備ができしだいご連絡します。</p>
         <div class="cheer-thanks-actions">
           <a class="cheer-share" href="https://x.com/intent/post" target="_blank" rel="noreferrer">X で応援をシェアする <span aria-hidden="true">↗</span></a>
           <a class="cheer-follow" href="https://instagram.com/saigo0306" target="_blank" rel="noreferrer">Instagram をフォロー <span aria-hidden="true">↗</span></a>

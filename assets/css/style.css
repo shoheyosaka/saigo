@@ -693,6 +693,10 @@ html:has(.subpage) { scroll-padding-top: 82px; }
   color: white; background: #171717; font: 700 13px/1 'Barlow Condensed';
 }
 .cheer-step legend em { color: #8a867e; font-size: 11px; font-style: normal; font-weight: 500; }
+.cheer-required { padding: 3px 7px; color: white; background: var(--orange); font-size: 10px; font-weight: 700; line-height: 1; }
+.cheer-field-note { margin-top: -4px; color: #8a867e; font-size: 11px; line-height: 1.7; }
+.cheer-field-error { margin-top: -6px; color: #d12d14; font-size: 12px; font-weight: 700; }
+.cheer-field input.is-invalid { border-color: #d12d14; background: #fff6f4; }
 .cheer-amounts { display: grid; grid-template-columns: repeat(5,1fr); gap: 8px; }
 .cheer-amounts label { position: relative; cursor: pointer; }
 .cheer-amounts input { position: absolute; opacity: 0; pointer-events: none; }

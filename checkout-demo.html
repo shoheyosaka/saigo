@@ -56,10 +56,12 @@
       <h1 id="checkout-title">激励賞のお支払い</h1>
       <p class="amount"><span data-amount>¥5,000</span><small>（税込）</small></p>
       <dl>
+        <div><dt>メールアドレス</dt><dd data-email></dd></div>
         <div><dt>お名前</dt><dd data-name></dd></div>
         <div><dt>メッセージ</dt><dd data-message></dd></div>
       </dl>
-      <p class="perk" data-perk hidden>このお名前が、試合で使うTシャツに入ります。</p>
+      <p class="perk" data-perk hidden>このお名前が、試合毎に使用するTシャツに入ります。</p>
+      <p class="perk" data-perk-gift hidden>特典：オフィシャルTシャツを1枚プレゼント</p>
       <p class="note">
         Stripe の決済リンクを設定すると、このページの代わりに Stripe の決済ページ（クレジットカード・Apple Pay など）が開きます。
         このデモではカード情報の入力はありません。
@@ -78,6 +80,7 @@
     const anonymous = params.get('anonymous') === '1'
     const name = (params.get('name') || '').trim()
     const message = (params.get('message') || '').trim()
+    const email = (params.get('email') || '').trim()
 
     const setText = (selector, value, emptyText) => {
       const element = document.querySelector(selector)
@@ -86,9 +89,11 @@
     }
 
     document.querySelector('[data-amount]').textContent = `¥${amount.toLocaleString('ja-JP')}`
+    setText('[data-email]', email, '（未入力）')
     setText('[data-name]', anonymous ? '' : name, anonymous ? '匿名' : '（未入力）')
     setText('[data-message]', message, '（未入力）')
     document.querySelector('[data-perk]').hidden = !(amount >= NAME_PERK_MIN && !anonymous && name)
+    document.querySelector('[data-perk-gift]').hidden = amount < NAME_PERK_MIN
 
     // Stripe の「支払い後のリダイレクト先」と同じ URL に戻す
     document.querySelector('[data-pay]').addEventListener('click', () => {

@@ -39,7 +39,7 @@ const goods = [
    激励賞（決済・保存は未実装）
    CHEER_PAYMENT_LINKS : 金額ごとの Stripe Payment Link の URL。空のあいだは「準備中」と表示
    CHEER_SHEET_ENDPOINT: スプレッドシートに保存する Google Apps Script の URL（未設定なら空）
-   CHEER_NAME_PERK_MIN : この金額以上で「Tシャツにお名前」の特典がつく
+   CHEER_NAME_PERK_MIN : この金額以上で「試合毎に使用するTシャツにお名前」「Tシャツ1枚プレゼント」の特典がつく
    ========================================================================== */
 const CHEER_PAYMENT_LINKS = {
   1000: '',
@@ -530,8 +530,30 @@ function initCheerForm() {
   const nameHint = form.querySelector('.cheer-name-hint')
   const perks = document.querySelectorAll('[data-perk-min]')
   const notice = form.querySelector('.cheer-notice')
+  const emailInput = form.elements.email
+  const emailError = form.querySelector('.cheer-field-error')
+  // 一度「贈る」を押すか欄から離れるまでは、入力途中でエラーを出さない
+  let emailTouched = false
 
   const getAmount = () => Number(form.elements.amount.value)
+
+  // メールアドレス（必須）のチェック。エラーは欄の下に表示する
+  const validateEmail = () => {
+    emailInput.value = emailInput.value.trim()
+    let error = ''
+    if (!emailInput.value) error = 'メールアドレスを入力してください。'
+    else if (!emailInput.checkValidity()) error = 'メールアドレスの形式が正しくありません（例：name@example.com）。'
+    emailError.textContent = error
+    emailError.hidden = !error
+    emailInput.classList.toggle('is-invalid', Boolean(error))
+    emailInput.setAttribute('aria-invalid', String(Boolean(error)))
+    return !error
+  }
+  emailInput.addEventListener('blur', () => {
+    if (!emailInput.value.trim()) return
+    emailTouched = true
+    validateEmail()
+  })
 
   const update = () => {
     const amount = getAmount()
@@ -541,25 +563,33 @@ function initCheerForm() {
     nameHint.hidden = amount < CHEER_NAME_PERK_MIN || anonymous.checked
     count.textContent = `${message.value.length} / ${message.maxLength}`
     notice.hidden = true
+    // エラー表示中は、直したらすぐ消えるようにする
+    if (emailTouched) validateEmail()
   }
 
   form.addEventListener('input', update)
   form.addEventListener('change', update)
   form.addEventListener('submit', (event) => {
     event.preventDefault()
+    emailTouched = true
+    if (!validateEmail()) {
+      emailInput.focus()
+      return
+    }
     const amount = getAmount()
-    // 保存する内容（スプレッドシート連携時にこのまま送る想定）
+    // 保存する内容（スプレッドシートの1行：金額・お名前・匿名・メッセージ・メールアドレス・日時）
     const record = {
       amount,
       name: anonymous.checked ? '' : nameInput.value.trim(),
       anonymous: anonymous.checked,
       message: message.value.trim(),
+      email: emailInput.value,
       createdAt: new Date().toISOString(),
     }
     const paymentLink = CHEER_PAYMENT_LINKS[amount]
     if (!paymentLink && CHEER_DEMO_CHECKOUT) {
       // 仮の決済ページへ。入力内容は確認表示用に URL で渡す（実際の決済・保存はしない）
-      const params = new URLSearchParams({ amount: String(amount), name: record.name, message: record.message })
+      const params = new URLSearchParams({ amount: String(amount), email: record.email, name: record.name, message: record.message })
       if (record.anonymous) params.set('anonymous', '1')
       window.location.href = `checkout-demo.html?${params}`
       return
@@ -569,8 +599,10 @@ function initCheerForm() {
       return
     }
     // TODO: CHEER_SHEET_ENDPOINT に record を送ってから、Stripe の決済ページへ移動する
-    void record
-    window.location.href = paymentLink
+    // Stripe の決済ページのメール欄には、ここで入力したアドレスを最初から入れておく（二度入力させない）
+    const checkoutUrl = new URL(paymentLink)
+    checkoutUrl.searchParams.set('prefilled_email', record.email)
+    window.location.href = checkoutUrl.toString()
   })
   update()
 }
