@@ -624,6 +624,55 @@ a.goods-card:hover .goods-image > img:not(.goods-placeholder) { transform: scale
 html:has(.subpage) { scroll-padding-top: 82px; }
 .subpage .goods-section,.subpage .cheer-section { min-height: calc(100svh - 82px - 120px); }
 
+/* Gallery（横スクロールの写真ギャラリー） --------------------------------- */
+.photo-section {
+  --gutter: max(24px,calc((100vw - 1240px)/2));
+  display: flex; flex-direction: column; justify-content: center; gap: 36px;
+  padding: 60px 0; color: #f4f2ed; background: var(--black);
+}
+.photo-head { display: flex; align-items: end; justify-content: space-between; gap: 24px; padding: 0 var(--gutter); }
+.photo-head h2 { margin-top: 18px; font-size: clamp(36px,4.6vw,62px); font-weight: 800; line-height: 1.2; letter-spacing: -.06em; }
+.photo-controls { display: flex; align-items: center; gap: 10px; }
+.photo-count { margin-right: 14px; color: #8b8a87; white-space: nowrap; font: 600 15px/1 'Barlow Condensed',sans-serif; letter-spacing: .12em; }
+.photo-count b { color: #f4f2ed; font-size: 26px; font-weight: 700; }
+.photo-arrow {
+  display: grid; width: 52px; height: 52px; place-items: center;
+  border: 1px solid #3a3a3e; color: #f4f2ed; background: transparent; font-size: 18px; cursor: pointer;
+  transition: border-color .2s ease,background .2s ease,opacity .2s ease;
+}
+.photo-arrow:hover:not(:disabled) { border-color: var(--orange); background: var(--orange); }
+.photo-arrow:disabled { opacity: .3; cursor: default; }
+.photo-track {
+  display: flex; gap: 12px; overflow-x: auto; overscroll-behavior-x: contain;
+  padding: 0 var(--gutter); scroll-padding-inline: var(--gutter);
+  scroll-snap-type: x mandatory; scrollbar-width: none; list-style: none;
+  cursor: grab;
+}
+.photo-track::-webkit-scrollbar { display: none; }
+.photo-track.is-dragging { cursor: grabbing; scroll-snap-type: none; }
+.photo-track.is-dragging img { pointer-events: none; }
+.photo-track:focus-visible { outline: 2px solid var(--orange); outline-offset: 4px; }
+.photo-item {
+  position: relative; flex: 0 0 auto; height: clamp(240px,calc(100svh - 82px - 330px),560px); overflow: hidden;
+  scroll-snap-align: start; background: #242426;
+}
+.photo-item img {
+  display: block; width: auto; height: 100%; user-select: none; -webkit-user-drag: none;
+  filter: saturate(.92); transition: transform .6s cubic-bezier(.2,.7,.2,1),filter .4s ease;
+}
+.photo-item:hover img { transform: scale(1.035); filter: saturate(1.05); }
+.photo-item::after {
+  position: absolute; inset: auto 0 0; height: 38%; pointer-events: none;
+  background: linear-gradient(to top,rgba(0,0,0,.6),transparent); content: '';
+}
+.photo-caption {
+  position: absolute; bottom: 16px; left: 18px; z-index: 1;
+  color: white; font: 700 12px/1 'Barlow Condensed',sans-serif; letter-spacing: .2em;
+}
+.photo-caption b { margin-right: 10px; color: var(--orange); }
+.photo-progress { height: 2px; margin: 0 var(--gutter); background: #2c2c30; }
+.photo-progress span { display: block; width: var(--progress,0%); min-width: 8%; height: 100%; background: var(--orange); transition: width .15s linear; }
+
 /* Support（トップの「激励賞・SHOP」入口） --------------------------------- */
 .support-section {
   display: flex; flex-direction: column; justify-content: center; gap: 44px;
@@ -1059,6 +1108,16 @@ footer p,footer > a:last-child { color: #777; font: 500 9px/1 'Barlow Condensed'
   .subpage main { padding-top: 68px; }
   html:has(.subpage) { scroll-padding-top: 68px; }
   .subpage .goods-section,.subpage .cheer-section { min-height: 0; }
+  /* スマホ：ギャラリーは指でスワイプ。矢印は隠して枚数だけ表示 */
+  .photo-section { --gutter: 20px; gap: 26px; padding: 70px 0; }
+  .photo-head { align-items: end; }
+  .photo-arrow { display: none; }
+  .photo-count { margin-right: 0; }
+  .photo-track { gap: 8px; cursor: auto; }
+  /* スマホ：次の写真が少し見えるよう、幅を画面の84%・3:2にそろえる */
+  .photo-item { width: 84vw; height: auto; aspect-ratio: 3/2; }
+  .photo-item img { width: 100%; height: 100%; object-fit: cover; }
+  .photo-caption { bottom: 12px; left: 14px; font-size: 11px; }
   .support-section { gap: 32px; padding: 70px 20px; }
   .support-cards { grid-template-columns: 1fr; gap: 12px; }
   .support-card { min-height: 0; padding: 28px 22px 24px; }

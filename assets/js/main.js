@@ -444,6 +444,78 @@ function initGoodsList() {
   list.innerHTML = goods.map(renderGoodsCard).join('')
 }
 
+/* Photo gallery (横スクロール：矢印・枚数・進捗バー・マウスでドラッグ) ------- */
+function initPhotoGallery() {
+  const track = document.querySelector('.photo-track')
+  if (!track) return
+  const section = track.closest('.photo-section')
+  const items = Array.from(track.querySelectorAll('.photo-item'))
+  const current = section.querySelector('[data-photo-current]')
+  const prev = section.querySelector('[data-photo-prev]')
+  const next = section.querySelector('[data-photo-next]')
+  const progress = section.querySelector('.photo-progress')
+  const pad = (n) => String(n).padStart(2, '0')
+  const startOf = (item) => item.offsetLeft - items[0].offsetLeft
+
+  // いま左端にある写真の番号（最後までスクロールしたら最後の番号）
+  const activeIndex = () => {
+    const max = track.scrollWidth - track.clientWidth
+    if (track.scrollLeft >= max - 2) return items.length - 1
+    let index = 0
+    items.forEach((item, i) => { if (startOf(item) <= track.scrollLeft + 4) index = i })
+    return index
+  }
+
+  const update = () => {
+    const max = track.scrollWidth - track.clientWidth
+    const index = activeIndex()
+    current.textContent = pad(index + 1)
+    prev.disabled = track.scrollLeft <= 2
+    next.disabled = track.scrollLeft >= max - 2
+    progress.style.setProperty('--progress', `${max > 0 ? (track.scrollLeft / max) * 100 : 100}%`)
+  }
+
+  const goTo = (index) => {
+    const item = items[Math.max(0, Math.min(items.length - 1, index))]
+    track.scrollTo({ left: startOf(item), behavior: prefersReducedMotion() ? 'auto' : 'smooth' })
+  }
+  prev.addEventListener('click', () => goTo(activeIndex() - 1))
+  next.addEventListener('click', () => goTo(activeIndex() + 1))
+  track.addEventListener('keydown', (event) => {
+    if (event.key === 'ArrowRight') { event.preventDefault(); goTo(activeIndex() + 1) }
+    if (event.key === 'ArrowLeft') { event.preventDefault(); goTo(activeIndex() - 1) }
+  })
+
+  // PC：マウスでつかんで横にドラッグ（タッチは標準のスワイプに任せる）
+  let dragStartX = 0
+  let dragStartScroll = 0
+  let dragging = false
+  track.addEventListener('pointerdown', (event) => {
+    if (event.pointerType !== 'mouse' || event.button !== 0) return
+    dragging = true
+    dragStartX = event.clientX
+    dragStartScroll = track.scrollLeft
+    track.classList.add('is-dragging')
+    track.setPointerCapture(event.pointerId)
+  })
+  track.addEventListener('pointermove', (event) => {
+    if (!dragging) return
+    track.scrollLeft = dragStartScroll - (event.clientX - dragStartX)
+  })
+  const endDrag = () => {
+    if (!dragging) return
+    dragging = false
+    track.classList.remove('is-dragging')
+    goTo(activeIndex() + (track.scrollLeft - startOf(items[activeIndex()]) > items[activeIndex()].offsetWidth / 2 ? 1 : 0))
+  }
+  track.addEventListener('pointerup', endDrag)
+  track.addEventListener('pointercancel', endDrag)
+
+  track.addEventListener('scroll', update, { passive: true })
+  window.addEventListener('resize', update)
+  update()
+}
+
 /* Sponsor gallery carousel (mobile only; layout switches in CSS) --------- */
 function initGalleryCarousel() {
   const gallery = document.querySelector('.sponsor-gallery')
@@ -655,6 +727,7 @@ initCountdown()
 initScrollReveal()
 initRecordCounters()
 initGalleryCarousel()
+initPhotoGallery()
 initHeroVisibility()
 initVideoFacade()
 initContactForm()

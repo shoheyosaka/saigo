@@ -61,6 +61,7 @@ HTML / CSS / JavaScript のみで構成した静的サイトです。ビルド�
 | 概要 | `#next-fight` / `#career` | 次戦情報（カウントダウン）・戦績サマリー・紹介動画 |
 | プロフィール | `#profile` | メッセージ・基本データ |
 | 戦績 | — | 勝率リング・数値カウントアップ・試合カード一覧（5件＋もっと見る） |
+| ギャラリー | `#gallery` | 写真18枚の横スクロール（PCは矢印・ドラッグ、スマホはスワイプ） |
 | 応援（入口） | `#support` | 激励賞ページ・SHOP ページへの入口カード2枚 |
 | スポンサー | `#sponsor` | 見出し・ギャラリー・プラン・開始までの流れ・お問い合わせボタン |
 | お問い合わせ | `#contact` | フォーム（送信機能は未実装） |
@@ -127,6 +128,13 @@ python3 -m http.server 8000
 - **支払い後のお礼表示**：Stripe の Payment Link 設定「支払い後」→「顧客をウェブサイトにリダイレクトする」に、`https://（本番ドメイン）/cheer.html?cheer=thanks&amount=10000` のように**金額ごと**の URL を設定します。激励賞ページに戻ると、フォームの代わりにお礼（キャラ・Xでシェア・Instagram）が表示されます。`amount` が `CHEER_NAME_PERK_MIN` 以上なら「Tシャツへのお名前掲載とTシャツプレゼントは追ってご連絡」も表示。確認用：ローカルで `http://localhost:8000/cheer.html?cheer=thanks&amount=10000` を開く
 - **メールアドレス（必須）**：お礼メッセージ・特典の連絡先。未入力・形式違いのときは欄の下にエラーを出して先へ進ませません。Stripe の決済ページへ移動するときは `prefilled_email` を付けて、同じアドレスを最初から入力済みにします（お客様の入力は1回だけ）
 - **スプレッドシート保存**：未実装。`main.js` の `initCheerForm` 内の `record`（金額・お名前・匿名・メッセージ・メールアドレス・日時）を、Google Apps Script（`CHEER_SHEET_ENDPOINT`）へ送ってから決済ページへ移動する想定です。スプレッドシートにはこの内容が1行にまとまって残ります
+
+### ギャラリーの写真を追加・入れ替える
+
+`index.html` の `.photo-track` に `<li class="photo-item">…</li>` を追加・削除します（並び順＝表示順。枚数表示は自動）。
+
+- 画像は `assets/images/gallery-番号.webp`。横幅 1400px 程度の WebP にする（例：`cwebp -q 78 -resize 1400 0 元画像.jpg -o gallery-19.webp`）
+- `<img>` の `width`・`height` は画像の実寸、`alt` は写真の説明、`.photo-caption` は番号と英字ラベル（ENTRANCE / FIGHT など）
 
 ### スポンサーのロゴを追加・変更する
 
