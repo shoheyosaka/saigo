@@ -1024,13 +1024,6 @@ footer p,footer > a:last-child { color: #777; font: 500 9px/1 'Barlow Condensed'
 .next-fight-poster { grid-column: 1/-1; aspect-ratio: 1024/576; margin: 0 0 -30px; background: #000; }
 .next-fight-poster img { display: block; width: 100%; height: 100%; object-fit: cover; }
 
-/* 写真の帯（プロフィールと戦績のあいだ） */
-.photo-band {
-  position: relative; isolation: isolate; display: flex; align-items: center; overflow: hidden;
-  padding: 0 max(24px,calc((100vw - 1240px)/2)); color: #f4f2ed; background: #0b0b0d;
-}
-.photo-band .photo-bg { --photo-shade: linear-gradient(90deg,rgba(8,8,10,.88) 0%,rgba(8,8,10,.45) 60%,rgba(8,8,10,.15) 100%); }
-.photo-band-text { margin-top: 22px; font-size: clamp(40px,6.4vw,96px); font-weight: 800; line-height: 1.18; letter-spacing: -.06em; }
 
 /* スポンサー：ロゴの掲出位置 */
 .placement { display: grid; grid-template-columns: minmax(0,.75fr) 1.25fr; gap: clamp(36px,6vw,80px); align-items: center; margin-top: 70px; }
@@ -1325,7 +1318,6 @@ footer p,footer > a:last-child { color: #777; font: 500 9px/1 'Barlow Condensed'
   footer { flex-wrap: wrap; gap: 20px; padding-block: 32px; }
   footer p { order: 3; width: 100%; }
   /* スマホ：写真を使ったデザイン */
-  .photo-band { height: 72svh; min-height: 420px; padding: 0 20px; }
   .placement { grid-template-columns: 1fr; gap: 30px; margin-top: 56px; }
   .placement-photo { max-width: 320px; margin-inline: auto; }
   .cheer-thanks-photo { height: 170px; margin: -30px -18px 22px; }
