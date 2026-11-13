@@ -38,7 +38,8 @@ HTML / CSS / JavaScript のみで構成した静的サイトです。ビルド�
         ├── saigo-profile.webp     # プロフィール写真
         ├── gallery-01〜22.webp   # ギャラリーの写真（表示順は index.html の並び）。各セクションの背景写真にも流用
         ├── sponsor-placement.webp # スポンサー欄「ロゴ掲載例」の写真
-        ├── supporter-team-tshirt.webp # SAIGOとTシャツを着たセコンド2人（サポーターページの特典欄・SHOPの「リングサイドでも」。STRIKEロゴは切り落とし済み）
+        ├── supporter-team-tshirt.webp # SAIGOとTシャツを着たセコンド2人（SHOPの「リングサイドでも」。STRIKEロゴは切り落とし済み）
+        ├── supporter-perk-tshirt.webp # Tシャツを着てグローブを構えるSAIGO（サポーターページの特典欄）
         ├── intro-1〜4.webp       # オープニングで一瞬ずつ映す写真（軽量版）
         └── og-top / og-cheer / og-shop.jpg  # SNS 共有画像（1200×630）
 ```
