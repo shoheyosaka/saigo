@@ -191,17 +191,6 @@
           </div>
           <a href="https://instagram.com/saigo0306" target="_blank" rel="noreferrer">最新情報 <span aria-hidden="true">↗</span></a>
         </div>
-
-
-        <div class="video-feature">
-          <!-- サムネイルだけ表示し、タップされたら YouTube プレーヤーを読み込む（main.js） -->
-          <div class="video-frame">
-            <button class="video-facade" type="button" data-video-id="kZ74_njNdtU" data-video-title="拳剛 vs SAIGO｜2026.8.30 RISE EVOL OSAKA Vol.3" aria-label="動画を再生：拳剛 vs SAIGO｜2026.8.30 RISE EVOL OSAKA Vol.3">
-              <img src="https://i.ytimg.com/vi/kZ74_njNdtU/sddefault.jpg" alt="" loading="lazy" decoding="async" width="640" height="480">
-              <span class="video-play" aria-hidden="true"></span>
-            </button>
-          </div>
-        </div>
       </section>
     </section>
 
@@ -223,7 +212,7 @@
           <div><dt>デビュー</dt><dd>2022/11/03 <small>（4年目）</small></dd></div>
           <div><dt>生年月日</dt><dd>1997/03/06 <small>（29歳）</small></dd></div>
           <div><dt>身長</dt><dd>162cm</dd></div>
-          <div><dt>試合体重</dt><dd>57.5kg～57.5kg</dd></div>
+          <div><dt>試合体重</dt><dd>57.5kg</dd></div>
           <div><dt>血液型</dt><dd>A</dd></div>
           <div><dt>出身地</dt><dd>大阪府</dd></div>
           <div><dt>構え</dt><dd>スイッチ</dd></div>
@@ -273,113 +262,134 @@
     </section>
 
     <!-- ギャラリー（立体スライダー）。写真は assets/images/gallery-番号.webp、並び順＝表示順 -->
-    <section class="depth-section snap-section scroll-reveal reveal-up" id="gallery" aria-labelledby="gallery-heading">
-      <div class="depth-bg" aria-hidden="true"><img src="assets/images/gallery-01.webp" alt="" data-depth-bg></div>
-      <p class="depth-number" aria-hidden="true" data-depth-number>01</p>
-      <div class="depth-head">
-        <div>
-          <p class="section-label">GALLERY</p>
-          <h2 id="gallery-heading">ギャラリー</h2>
+    <!-- GALLERY：写真の立体スライダー（上）と試合動画（下）をひとつのセクションに -->
+    <section class="gallery-section snap-section scroll-reveal reveal-up" id="gallery" aria-labelledby="gallery-heading">
+      <div class="depth-section">
+        <div class="depth-bg" aria-hidden="true"><img src="assets/images/gallery-01.webp" alt="" data-depth-bg></div>
+        <p class="depth-number" aria-hidden="true" data-depth-number>01</p>
+        <div class="depth-head">
+          <div>
+            <p class="section-label">GALLERY</p>
+            <h2 id="gallery-heading">ギャラリー</h2>
+          </div>
+          <div class="depth-controls">
+            <p class="depth-count" aria-live="polite"><b data-depth-current>01</b> / <span data-depth-total>22</span></p>
+            <button class="depth-arrow" type="button" data-depth-prev aria-label="前の写真"><span aria-hidden="true">←</span></button>
+            <button class="depth-arrow" type="button" data-depth-next aria-label="次の写真"><span aria-hidden="true">→</span></button>
+          </div>
         </div>
-        <div class="depth-controls">
-          <p class="depth-count" aria-live="polite"><b data-depth-current>01</b> / <span data-depth-total>22</span></p>
-          <button class="depth-arrow" type="button" data-depth-prev aria-label="前の写真"><span aria-hidden="true">←</span></button>
-          <button class="depth-arrow" type="button" data-depth-next aria-label="次の写真"><span aria-hidden="true">→</span></button>
+        <ul class="depth-stage" tabindex="0" aria-label="SAIGO 写真ギャラリー（左右にスワイプ・矢印キーで切り替え）">
+          <li class="depth-card" data-index="0">
+            <img src="assets/images/gallery-01.webp" alt="和装で入場し、リング上で跳ねるSAIGO" loading="lazy" decoding="async" width="1400" height="933" draggable="false">
+            <span class="depth-caption"><b>01</b>ENTRANCE</span>
+          </li>
+          <li class="depth-card" data-index="1">
+            <img src="assets/images/gallery-02.webp" alt="和装でリングに入るSAIGO" loading="lazy" decoding="async" width="1400" height="933" draggable="false">
+            <span class="depth-caption"><b>02</b>ENTRANCE</span>
+          </li>
+          <li class="depth-card" data-index="2">
+            <img src="assets/images/gallery-03.webp" alt="和装でグローブを掲げるSAIGO" loading="lazy" decoding="async" width="1400" height="933" draggable="false">
+            <span class="depth-caption"><b>03</b>ENTRANCE</span>
+          </li>
+          <li class="depth-card" data-index="3">
+            <img src="assets/images/gallery-19.webp" alt="和装で入場するSAIGO" loading="lazy" decoding="async" width="1000" height="548" draggable="false">
+            <span class="depth-caption"><b>04</b>ENTRANCE</span>
+          </li>
+          <li class="depth-card" data-index="4">
+            <img src="assets/images/gallery-04.webp" alt="記者会見でマイクを握るSAIGO" loading="lazy" decoding="async" width="1400" height="933" draggable="false">
+            <span class="depth-caption"><b>05</b>PRESS</span>
+          </li>
+          <li class="depth-card" data-index="5">
+            <img src="assets/images/gallery-05.webp" alt="計量で対戦相手と並ぶSAIGO" loading="lazy" decoding="async" width="1400" height="933" draggable="false">
+            <span class="depth-caption"><b>06</b>WEIGH-IN</span>
+          </li>
+          <li class="depth-card" data-index="6">
+            <img src="assets/images/gallery-06.webp" alt="計量でポーズをとるSAIGO" loading="lazy" decoding="async" width="1400" height="933" draggable="false">
+            <span class="depth-caption"><b>07</b>WEIGH-IN</span>
+          </li>
+          <li class="depth-card" data-index="7">
+            <img src="assets/images/gallery-07.webp" alt="計量で拳を握るSAIGO" loading="lazy" decoding="async" width="1024" height="683" draggable="false">
+            <span class="depth-caption"><b>08</b>WEIGH-IN</span>
+          </li>
+          <li class="depth-card" data-index="8">
+            <img src="assets/images/gallery-08.webp" alt="コーナーで試合開始を待つSAIGO" loading="lazy" decoding="async" width="1400" height="933" draggable="false">
+            <span class="depth-caption"><b>09</b>READY</span>
+          </li>
+          <li class="depth-card" data-index="9">
+            <img src="assets/images/gallery-09.webp" alt="構えて相手と向き合うSAIGO" loading="lazy" decoding="async" width="1400" height="933" draggable="false">
+            <span class="depth-caption"><b>10</b>FIGHT</span>
+          </li>
+          <li class="depth-card" data-index="10">
+            <img src="assets/images/gallery-10.webp" alt="リング中央で相手と対峙するSAIGO" loading="lazy" decoding="async" width="1400" height="933" draggable="false">
+            <span class="depth-caption"><b>11</b>FIGHT</span>
+          </li>
+          <li class="depth-card" data-index="11">
+            <img src="assets/images/gallery-11.webp" alt="ケージで蹴りをガードするSAIGO" loading="lazy" decoding="async" width="1400" height="918" draggable="false">
+            <span class="depth-caption"><b>12</b>FIGHT</span>
+          </li>
+          <li class="depth-card" data-index="12">
+            <img src="assets/images/gallery-12.webp" alt="ケージで右ストレートを放つSAIGO" loading="lazy" decoding="async" width="1400" height="1020" draggable="false">
+            <span class="depth-caption"><b>13</b>FIGHT</span>
+          </li>
+          <li class="depth-card" data-index="13">
+            <img src="assets/images/gallery-13.webp" alt="ケージで相手に打ち込むSAIGO" loading="lazy" decoding="async" width="1400" height="955" draggable="false">
+            <span class="depth-caption"><b>14</b>FIGHT</span>
+          </li>
+          <li class="depth-card" data-index="14">
+            <img src="assets/images/gallery-14.webp" alt="相手にボディを打ち込むSAIGO" loading="lazy" decoding="async" width="1024" height="683" draggable="false">
+            <span class="depth-caption"><b>15</b>FIGHT</span>
+          </li>
+          <li class="depth-card" data-index="15">
+            <img src="assets/images/gallery-15.webp" alt="クリンチで組み合うSAIGO" loading="lazy" decoding="async" width="1400" height="996" draggable="false">
+            <span class="depth-caption"><b>16</b>FIGHT</span>
+          </li>
+          <li class="depth-card" data-index="16">
+            <img src="assets/images/gallery-20.webp" alt="リングで試合に臨むSAIGO" loading="lazy" decoding="async" width="1000" height="551" draggable="false">
+            <span class="depth-caption"><b>17</b>FIGHT</span>
+          </li>
+          <li class="depth-card" data-index="17">
+            <img src="assets/images/gallery-16.webp" alt="リング上でパフォーマンスをするSAIGO" loading="lazy" decoding="async" width="1400" height="934" draggable="false">
+            <span class="depth-caption"><b>18</b>PERFORMANCE</span>
+          </li>
+          <li class="depth-card" data-index="18">
+            <img src="assets/images/gallery-17.webp" alt="腰を落として観客をあおるSAIGO" loading="lazy" decoding="async" width="1400" height="933" draggable="false">
+            <span class="depth-caption"><b>19</b>PERFORMANCE</span>
+          </li>
+          <li class="depth-card" data-index="19">
+            <img src="assets/images/gallery-18.webp" alt="レフェリーに手を挙げられる勝利の瞬間" loading="lazy" decoding="async" width="1400" height="933" draggable="false">
+            <span class="depth-caption"><b>20</b>VICTORY</span>
+          </li>
+          <li class="depth-card" data-index="20">
+            <img src="assets/images/gallery-21.webp" alt="海外大会で勝利したSAIGO" loading="lazy" decoding="async" width="1000" height="621" draggable="false">
+            <span class="depth-caption"><b>21</b>VICTORY</span>
+          </li>
+          <li class="depth-card" data-index="21">
+            <img src="assets/images/gallery-22.webp" alt="トロフィーを手にリングに立つSAIGO" loading="lazy" decoding="async" width="1000" height="744" draggable="false">
+            <span class="depth-caption"><b>22</b>CHAMPION</span>
+          </li>
+        </ul>
+        <div class="depth-bar" aria-hidden="true"><span data-depth-bar></span></div>
+        <p class="depth-hint" aria-hidden="true">DRAG / SWIPE</p>
+      </div>
+
+      <!-- 試合動画（YouTube）。サムネイルを押すと再生 -->
+      <div class="movie-block">
+        <div class="movie-head">
+          <p class="section-label">MOVIE</p>
+          <h3>試合動画</h3>
+        </div>
+        <div class="video-feature">
+          <!-- サムネイルだけ表示し、タップされたら YouTube プレーヤーを読み込む（main.js） -->
+          <div class="video-frame">
+            <button class="video-facade" type="button" data-video-id="kZ74_njNdtU" data-video-title="拳剛 vs SAIGO｜2026.8.30 RISE EVOL OSAKA Vol.3" aria-label="動画を再生：拳剛 vs SAIGO｜2026.8.30 RISE EVOL OSAKA Vol.3">
+              <img src="https://i.ytimg.com/vi/kZ74_njNdtU/sddefault.jpg" alt="" loading="lazy" decoding="async" width="640" height="480">
+              <span class="video-play" aria-hidden="true"></span>
+            </button>
+          </div>
         </div>
       </div>
-      <ul class="depth-stage" tabindex="0" aria-label="SAIGO 写真ギャラリー（左右にスワイプ・矢印キーで切り替え）">
-        <li class="depth-card" data-index="0">
-          <img src="assets/images/gallery-01.webp" alt="和装で入場し、リング上で跳ねるSAIGO" loading="lazy" decoding="async" width="1400" height="933" draggable="false">
-          <span class="depth-caption"><b>01</b>ENTRANCE</span>
-        </li>
-        <li class="depth-card" data-index="1">
-          <img src="assets/images/gallery-02.webp" alt="和装でリングに入るSAIGO" loading="lazy" decoding="async" width="1400" height="933" draggable="false">
-          <span class="depth-caption"><b>02</b>ENTRANCE</span>
-        </li>
-        <li class="depth-card" data-index="2">
-          <img src="assets/images/gallery-03.webp" alt="和装でグローブを掲げるSAIGO" loading="lazy" decoding="async" width="1400" height="933" draggable="false">
-          <span class="depth-caption"><b>03</b>ENTRANCE</span>
-        </li>
-        <li class="depth-card" data-index="3">
-          <img src="assets/images/gallery-19.webp" alt="和装で入場するSAIGO" loading="lazy" decoding="async" width="1000" height="548" draggable="false">
-          <span class="depth-caption"><b>04</b>ENTRANCE</span>
-        </li>
-        <li class="depth-card" data-index="4">
-          <img src="assets/images/gallery-04.webp" alt="記者会見でマイクを握るSAIGO" loading="lazy" decoding="async" width="1400" height="933" draggable="false">
-          <span class="depth-caption"><b>05</b>PRESS</span>
-        </li>
-        <li class="depth-card" data-index="5">
-          <img src="assets/images/gallery-05.webp" alt="計量で対戦相手と並ぶSAIGO" loading="lazy" decoding="async" width="1400" height="933" draggable="false">
-          <span class="depth-caption"><b>06</b>WEIGH-IN</span>
-        </li>
-        <li class="depth-card" data-index="6">
-          <img src="assets/images/gallery-06.webp" alt="計量でポーズをとるSAIGO" loading="lazy" decoding="async" width="1400" height="933" draggable="false">
-          <span class="depth-caption"><b>07</b>WEIGH-IN</span>
-        </li>
-        <li class="depth-card" data-index="7">
-          <img src="assets/images/gallery-07.webp" alt="計量で拳を握るSAIGO" loading="lazy" decoding="async" width="1024" height="683" draggable="false">
-          <span class="depth-caption"><b>08</b>WEIGH-IN</span>
-        </li>
-        <li class="depth-card" data-index="8">
-          <img src="assets/images/gallery-08.webp" alt="コーナーで試合開始を待つSAIGO" loading="lazy" decoding="async" width="1400" height="933" draggable="false">
-          <span class="depth-caption"><b>09</b>READY</span>
-        </li>
-        <li class="depth-card" data-index="9">
-          <img src="assets/images/gallery-09.webp" alt="構えて相手と向き合うSAIGO" loading="lazy" decoding="async" width="1400" height="933" draggable="false">
-          <span class="depth-caption"><b>10</b>FIGHT</span>
-        </li>
-        <li class="depth-card" data-index="10">
-          <img src="assets/images/gallery-10.webp" alt="リング中央で相手と対峙するSAIGO" loading="lazy" decoding="async" width="1400" height="933" draggable="false">
-          <span class="depth-caption"><b>11</b>FIGHT</span>
-        </li>
-        <li class="depth-card" data-index="11">
-          <img src="assets/images/gallery-11.webp" alt="ケージで蹴りをガードするSAIGO" loading="lazy" decoding="async" width="1400" height="918" draggable="false">
-          <span class="depth-caption"><b>12</b>FIGHT</span>
-        </li>
-        <li class="depth-card" data-index="12">
-          <img src="assets/images/gallery-12.webp" alt="ケージで右ストレートを放つSAIGO" loading="lazy" decoding="async" width="1400" height="1020" draggable="false">
-          <span class="depth-caption"><b>13</b>FIGHT</span>
-        </li>
-        <li class="depth-card" data-index="13">
-          <img src="assets/images/gallery-13.webp" alt="ケージで相手に打ち込むSAIGO" loading="lazy" decoding="async" width="1400" height="955" draggable="false">
-          <span class="depth-caption"><b>14</b>FIGHT</span>
-        </li>
-        <li class="depth-card" data-index="14">
-          <img src="assets/images/gallery-14.webp" alt="相手にボディを打ち込むSAIGO" loading="lazy" decoding="async" width="1024" height="683" draggable="false">
-          <span class="depth-caption"><b>15</b>FIGHT</span>
-        </li>
-        <li class="depth-card" data-index="15">
-          <img src="assets/images/gallery-15.webp" alt="クリンチで組み合うSAIGO" loading="lazy" decoding="async" width="1400" height="996" draggable="false">
-          <span class="depth-caption"><b>16</b>FIGHT</span>
-        </li>
-        <li class="depth-card" data-index="16">
-          <img src="assets/images/gallery-20.webp" alt="リングで試合に臨むSAIGO" loading="lazy" decoding="async" width="1000" height="551" draggable="false">
-          <span class="depth-caption"><b>17</b>FIGHT</span>
-        </li>
-        <li class="depth-card" data-index="17">
-          <img src="assets/images/gallery-16.webp" alt="リング上でパフォーマンスをするSAIGO" loading="lazy" decoding="async" width="1400" height="934" draggable="false">
-          <span class="depth-caption"><b>18</b>PERFORMANCE</span>
-        </li>
-        <li class="depth-card" data-index="18">
-          <img src="assets/images/gallery-17.webp" alt="腰を落として観客をあおるSAIGO" loading="lazy" decoding="async" width="1400" height="933" draggable="false">
-          <span class="depth-caption"><b>19</b>PERFORMANCE</span>
-        </li>
-        <li class="depth-card" data-index="19">
-          <img src="assets/images/gallery-18.webp" alt="レフェリーに手を挙げられる勝利の瞬間" loading="lazy" decoding="async" width="1400" height="933" draggable="false">
-          <span class="depth-caption"><b>20</b>VICTORY</span>
-        </li>
-        <li class="depth-card" data-index="20">
-          <img src="assets/images/gallery-21.webp" alt="海外大会で勝利したSAIGO" loading="lazy" decoding="async" width="1000" height="621" draggable="false">
-          <span class="depth-caption"><b>21</b>VICTORY</span>
-        </li>
-        <li class="depth-card" data-index="21">
-          <img src="assets/images/gallery-22.webp" alt="トロフィーを手にリングに立つSAIGO" loading="lazy" decoding="async" width="1000" height="744" draggable="false">
-          <span class="depth-caption"><b>22</b>CHAMPION</span>
-        </li>
-      </ul>
-      <div class="depth-bar" aria-hidden="true"><span data-depth-bar></span></div>
-      <p class="depth-hint" aria-hidden="true">DRAG / SWIPE</p>
     </section>
+
 
     <section class="support-section snap-section scroll-reveal reveal-up" id="support" aria-labelledby="support-heading">
       <div class="support-head">

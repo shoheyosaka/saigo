@@ -157,10 +157,6 @@ main {
   padding: 7px 11px; color: white; background: var(--orange);
   font-size: clamp(12px,1.2vw,16px); font-weight: 800; letter-spacing: .12em;
 }
-/* 戦績の数字を外したので、動画は横幅いっぱいの中央に */
-.overview-section .video-feature {
-  grid-column: 1/-1; justify-self: center; max-width: 960px; width: 100%; margin: 0; padding: 0; border-top: 0; align-self: start;
-}
 
 /* Header ------------------------------------------------------------------ */
 .site-header {
@@ -402,6 +398,17 @@ main {
 .video-play::after {
   position: absolute; top: 50%; left: 54%; border-block: 10px solid transparent; border-left: 17px solid white;
   transform: translate(-50%,-50%); content: '';
+}
+
+/* GALLERY セクション：上に写真の立体スライダー、下に試合動画（背景は同じ黒で続ける） */
+.gallery-section { background: #050506; }
+/* スライダーのぼかし背景を下に向かって消し、下の試合動画と境目なくつなげる */
+.gallery-section .depth-bg { -webkit-mask-image: linear-gradient(to bottom,#000 70%,transparent); mask-image: linear-gradient(to bottom,#000 70%,transparent); }
+.movie-block { display: flex; flex-direction: column; gap: 28px; padding: 20px max(24px,calc((100vw - 1240px)/2)) 90px; color: #f4f2ed; }
+.movie-head h3 { margin-top: 14px; font-size: clamp(25px,3vw,40px); font-weight: 800; line-height: 1.3; letter-spacing: -.04em; }
+/* 動画は16:9。画面の高さに収まる大きさ（最大960px）で中央に */
+.movie-block .video-feature {
+  width: min(960px,100%,calc((100svh - 82px - 220px) * 16 / 9)); margin: 0 auto; padding: 0; border-top: 0;
 }
 
 /* Profile ----------------------------------------------------------------- */
@@ -1096,7 +1103,9 @@ footer p,footer > a:last-child { color: #777; font: 500 9px/1 'Barlow Condensed'
 
 /* Responsive -------------------------------------------------------------- */
 @media (min-width: 781px) {
-  .overview-section .video-feature { align-self: center; }
+  /* GALLERY は写真スライダー（1画面分）＋試合動画なので、高さを中身に合わせる（PC） */
+  .gallery-section { height: auto; min-height: calc(100svh - 82px); overflow: visible; }
+  .gallery-section > .depth-section { min-height: calc(100svh - 82px); }
   /* 告知画像が入って1画面に収まらないので、この欄だけ高さを中身に合わせる（PC） */
   .overview-section { height: auto; min-height: calc(100svh - 82px); overflow: visible; }
   .next-fight { grid-template-columns: 105px 1fr 210px auto; }
@@ -1219,10 +1228,8 @@ footer p,footer > a:last-child { color: #777; font: 500 9px/1 'Barlow Condensed'
   .next-countdown > small { justify-self: start; }
   .next-countdown > strong { justify-self: center; margin-top: 0; font-size: 38px; }
   .next-countdown time { justify-self: end; margin-top: 0; text-align: right; }
-  .overview-section .video-feature {
-    width: 100%; margin: 32px 0 0; padding-top: 30px;
-    border-top: 1px solid #2d2d30;
-  }
+  .movie-block { gap: 20px; padding: 10px 20px 70px; }
+  .movie-block .video-feature { width: 100%; }
   .profile-section,.sponsor-section { padding: 75px 20px; }
   .profile-section,.sponsor-head { grid-template-columns: 1fr; gap: 45px; }
   .profile-photo { display: none; }
