@@ -1259,7 +1259,17 @@ footer p,footer > a:last-child { color: #777; font: 500 9px/1 'Barlow Condensed'
   .movie-meta b { font-size: 14px; }
   .profile-section,.sponsor-section { padding: 75px 20px; }
   .profile-section,.sponsor-head { grid-template-columns: 1fr; gap: 45px; }
-  .profile-photo { display: none; }
+  /* スマホ：PCと同じプロフィール写真を、見出し〜メッセージの背景に透かして敷く */
+  .profile-section { position: relative; isolation: isolate; overflow: hidden; }
+  .profile-photo {
+    position: absolute; top: 0; right: -6%; z-index: -1; width: 82%; max-width: none; margin: 0;
+    background: none; opacity: .2; pointer-events: none;
+    -webkit-mask-image: linear-gradient(to bottom,#000 55%,transparent 100%),linear-gradient(to left,#000 60%,transparent 100%);
+    -webkit-mask-composite: source-in; mask-image: linear-gradient(to bottom,#000 55%,transparent 100%),linear-gradient(to left,#000 60%,transparent 100%);
+    mask-composite: intersect;
+  }
+  .profile-photo::after,.profile-photo figcaption { display: none; }
+  .profile-photo img { filter: grayscale(.3) contrast(1.05); }
   .record-section { padding: 75px 20px; }
   .record-heading { grid-template-columns: 1fr; gap: 35px; }
   .record-summary { grid-template-columns: 132px 1fr; min-height: 0; gap: 13px; padding: 68px 16px 22px; }
