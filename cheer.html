@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>サポーターになる | SAIGO OFFICIAL SITE</title>
-  <meta name="description" content="プロキックボクサー SAIGO（TARGET SHIBUYA）のサポーターになる。¥1,000から、お名前・メッセージを添えて応援できます。">
+  <meta name="description" content="プロキックボクサー SAIGO（TARGET SHIBUYA）のサポーターになる。¥3,000から、お名前・メッセージを添えて応援できます。">
   <meta name="theme-color" content="#0d0d0f">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="SAIGO OFFICIAL SITE">
@@ -75,9 +75,8 @@
         <div class="cheer-perks">
           <p class="cheer-perks-title">サポーター特典</p>
           <ul>
-            <li data-perk-min="1000"><b>¥1,000〜</b><span>SAIGOからのお礼メッセージ</span></li>
-            <li data-perk-min="10000"><b>¥10,000〜</b><span>試合毎に使用するTシャツにお名前を掲載</span></li>
-            <li data-perk-min="10000"><b>¥10,000〜</b><span>オフィシャルTシャツを1枚プレゼント</span></li>
+            <li data-perk-min="3000"><b>¥3,000〜</b><span>試合毎に使用するTシャツにお名前を掲載</span></li>
+            <li data-perk-min="10000"><b>¥10,000〜</b><span>＋オフィシャルTシャツを1枚プレゼント（名前刻印なし）</span></li>
           </ul>
           <figure class="cheer-perks-photo">
             <img src="assets/images/supporter-team-tshirt.webp" alt="チャンピオンベルトを巻いたSAIGOと、SAIGOのTシャツを着たセコンド2人" loading="lazy" decoding="async" width="1340" height="754">
@@ -91,7 +90,7 @@
         <fieldset class="cheer-step">
           <legend><span>1</span>金額を選ぶ</legend>
           <div class="cheer-amounts">
-            <label><input type="radio" name="amount" value="1000"><span>¥1,000</span></label>
+            <label><input type="radio" name="amount" value="3000"><span>¥3,000</span></label>
             <label><input type="radio" name="amount" value="5000" checked><span>¥5,000</span></label>
             <label><input type="radio" name="amount" value="10000"><span>¥10,000</span></label>
             <label><input type="radio" name="amount" value="30000"><span>¥30,000</span></label>
@@ -138,7 +137,8 @@
         <p class="section-label">THANK YOU</p>
         <h3>サポートいただき、<br>ありがとうございました！</h3>
         <p>いただいた応援は、SAIGOの力になります。<br>リングの上で結果で応えます。引き続き応援よろしくお願いします！</p>
-        <p class="cheer-thanks-perk" hidden>試合毎に使用するTシャツへのお名前掲載（匿名の方を除く）と、オフィシャルTシャツのプレゼントについては、準備ができしだいご連絡します。</p>
+        <!-- 文言は金額に応じて main.js が切り替える（¥3,000〜：お名前掲載／¥10,000〜：＋Tシャツのプレゼント） -->
+        <p class="cheer-thanks-perk" hidden>試合毎に使用するTシャツへのお名前掲載（匿名の方を除く）について、準備ができしだいご連絡します。</p>
         <div class="cheer-thanks-actions">
           <a class="cheer-share" href="https://x.com/intent/post" target="_blank" rel="noreferrer">X で応援をシェアする <span aria-hidden="true">↗</span></a>
           <a class="cheer-follow" href="https://instagram.com/saigo0306" target="_blank" rel="noreferrer">Instagram をフォロー <span aria-hidden="true">↗</span></a>

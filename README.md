@@ -125,11 +125,11 @@ python3 -m http.server 8000
 ※ 名称は「激励賞」から「サポーター」に変更しました（ボタンは「サポーターになる」）。ファイル名・CSS/JS の名前は `cheer` のままです。Stripe の商品名なども「サポーター」にそろえてください。
 
 - **金額**：`cheer.html` の `.cheer-amounts` 内の `<label>` を増減。`value` は円単位の数値。最初に選ばれている金額は `checked` を付けたもの
-- **特典**：`cheer.html` の `.cheer-perks` の `<li data-perk-min="10000">` を編集。選んだ金額が `data-perk-min` 以上の特典が点灯します
-- **Tシャツ特典の金額**：`main.js` の `CHEER_NAME_PERK_MIN`（この金額以上で「このお名前がTシャツに入ります」と表示）。特典欄の `data-perk-min` もあわせて変更
+- **特典**：`cheer.html` の `.cheer-perks` の `<li data-perk-min="3000">` を編集。選んだ金額が `data-perk-min` 以上の特典が点灯します
+- **特典の金額**：`main.js` の `CHEER_NAME_PERK_MIN`（今は ¥3,000。この金額以上で「このお名前がTシャツに入ります」と表示）と `CHEER_GIFT_PERK_MIN`（今は ¥10,000。オフィシャルTシャツのプレゼント）。特典欄の `data-perk-min`、`checkout-demo.html` の同じ名前の値、トップのサポーターカードの「¥3,000〜」もあわせて変更
 - **決済**：`main.js` の `CHEER_PAYMENT_LINKS` に金額ごとの Stripe Payment Link の URL を入れると、ボタンでその決済ページへ移動します。空のあいだは「準備中」と表示
 - **仮の決済ページ（デモ）**：`main.js` の `CHEER_DEMO_CHECKOUT` が `true` の間は、Stripe のリンクが未設定の金額で「贈る」を押すと `checkout-demo.html` が開きます（金額・お名前・メッセージの確認と「テスト支払いを完了する」ボタンのみ。カード入力なし・実際の決済なし）。完了ボタンで `cheer.html?cheer=thanks&amount=金額` に戻り、お礼表示まで確認できます
-- **支払い後のお礼表示**：Stripe の Payment Link 設定「支払い後」→「顧客をウェブサイトにリダイレクトする」に、`https://（本番ドメイン）/cheer.html?cheer=thanks&amount=10000` のように**金額ごと**の URL を設定します。サポーターページに戻ると、フォームの代わりにお礼（キャラ・Xでシェア・Instagram）が表示されます。`amount` が `CHEER_NAME_PERK_MIN` 以上なら「Tシャツへのお名前掲載とTシャツプレゼントは追ってご連絡」も表示。確認用：ローカルで `http://localhost:8000/cheer.html?cheer=thanks&amount=10000` を開く
+- **支払い後のお礼表示**：Stripe の Payment Link 設定「支払い後」→「顧客をウェブサイトにリダイレクトする」に、`https://（本番ドメイン）/cheer.html?cheer=thanks&amount=10000` のように**金額ごと**の URL を設定します。サポーターページに戻ると、フォームの代わりにお礼（キャラ・Xでシェア・Instagram）が表示されます。`amount` が `CHEER_NAME_PERK_MIN` 以上なら「Tシャツへのお名前掲載は追ってご連絡」、`CHEER_GIFT_PERK_MIN` 以上なら「お名前掲載とTシャツのプレゼントは追ってご連絡」も表示。確認用：ローカルで `http://localhost:8000/cheer.html?cheer=thanks&amount=10000` を開く
 - **メールアドレス（必須）**：お礼メッセージ・特典の連絡先。未入力・形式違いのときは欄の下にエラーを出して先へ進ませません。Stripe の決済ページへ移動するときは `prefilled_email` を付けて、同じアドレスを最初から入力済みにします（お客様の入力は1回だけ）
 - **スプレッドシート保存**：未実装。`main.js` の `initCheerForm` 内の `record`（金額・お名前・匿名・メッセージ・メールアドレス・日時）を、Google Apps Script（`CHEER_SHEET_ENDPOINT`）へ送ってから決済ページへ移動する想定です。スプレッドシートにはこの内容が1行にまとまって残ります
 
@@ -213,7 +213,7 @@ YouTube の URL が `https://www.youtube.com/watch?v=XXXX` なら、`XXXX` の�
 ## 本番公開前チェックリスト
 
 - [ ] **サポーター（デモの片付け）**：`main.js` の `CHEER_DEMO_CHECKOUT` を `false` にし、`checkout-demo.html` を削除する
-- [ ] **サポーター**：Stripe Payment Link の作成と `CHEER_PAYMENT_LINKS` への設定、スプレッドシート保存（Google Apps Script）の実装。特典の内容と金額（現在：「¥1,000〜お礼メッセージ」「¥10,000〜試合毎に使用するTシャツにお名前＋オフィシャルTシャツ1枚プレゼント」）をお客様に確認。Tシャツを送るため、¥10,000以上の Payment Link では「配送先住所を収集する」をオンにする
+- [ ] **サポーター**：Stripe Payment Link の作成と `CHEER_PAYMENT_LINKS` への設定、スプレッドシート保存（Google Apps Script）の実装。特典の内容と金額（現在：「¥3,000〜試合毎に使用するTシャツにお名前を掲載」「¥10,000〜＋オフィシャルTシャツを1枚プレゼント（名前刻印なし）」。金額の選択肢は ¥3,000／5,000／10,000／30,000／50,000）をお客様に確認。Tシャツを送るため、¥10,000以上の Payment Link では「配送先住所を収集する」をオンにする
 - [ ] **お問い合わせフォーム**：現在は送信せず「準備中」メッセージを表示するだけです。Formspree・Googleフォーム・Cloudflare Workers などで送信先を実装する
 - [ ] **プロフィール写真**：現在の計量写真は 430px 程度と小さく、PC ではやや粗く見えるため、可能なら高解像度版（幅 800px 以上）に差し替える
 - [ ] **写真の使用許諾**：RISE 宣材写真・計量写真・大会写真の Web 掲載について、撮影者・主催者の許諾を確認

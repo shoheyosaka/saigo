@@ -61,7 +61,7 @@
         <div><dt>メッセージ</dt><dd data-message></dd></div>
       </dl>
       <p class="perk" data-perk hidden>このお名前が、試合毎に使用するTシャツに入ります。</p>
-      <p class="perk" data-perk-gift hidden>特典：オフィシャルTシャツを1枚プレゼント</p>
+      <p class="perk" data-perk-gift hidden>特典：オフィシャルTシャツを1枚プレゼント（名前刻印なし）</p>
       <p class="note">
         Stripe の決済リンクを設定すると、このページの代わりに Stripe の決済ページ（クレジットカード・Apple Pay など）が開きます。
         このデモではカード情報の入力はありません。
@@ -73,8 +73,9 @@
 
   <script>
     'use strict'
-    // サイト側（main.js の CHEER_NAME_PERK_MIN）と同じ値にする
-    const NAME_PERK_MIN = 10000
+    // サイト側（main.js の CHEER_NAME_PERK_MIN・CHEER_GIFT_PERK_MIN）と同じ値にする
+    const NAME_PERK_MIN = 3000
+    const GIFT_PERK_MIN = 10000
     const params = new URLSearchParams(window.location.search)
     const amount = Number(params.get('amount')) || 5000
     const anonymous = params.get('anonymous') === '1'
@@ -93,7 +94,7 @@
     setText('[data-name]', anonymous ? '' : name, anonymous ? '匿名' : '（未入力）')
     setText('[data-message]', message, '（未入力）')
     document.querySelector('[data-perk]').hidden = !(amount >= NAME_PERK_MIN && !anonymous && name)
-    document.querySelector('[data-perk-gift]').hidden = amount < NAME_PERK_MIN
+    document.querySelector('[data-perk-gift]').hidden = amount < GIFT_PERK_MIN
 
     // Stripe の「支払い後のリダイレクト先」と同じ URL に戻す
     document.querySelector('[data-pay]').addEventListener('click', () => {

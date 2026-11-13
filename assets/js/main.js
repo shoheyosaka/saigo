@@ -39,10 +39,11 @@ const goods = [
    サポーター（旧：激励賞。決済・保存は未実装）
    CHEER_PAYMENT_LINKS : 金額ごとの Stripe Payment Link の URL。空のあいだは「準備中」と表示
    CHEER_SHEET_ENDPOINT: スプレッドシートに保存する Google Apps Script の URL（未設定なら空）
-   CHEER_NAME_PERK_MIN : この金額以上で「試合毎に使用するTシャツにお名前」「Tシャツ1枚プレゼント」の特典がつく
+   CHEER_NAME_PERK_MIN : この金額以上で「試合毎に使用するTシャツにお名前を掲載」の特典がつく
+   CHEER_GIFT_PERK_MIN : この金額以上で、さらに「オフィシャルTシャツを1枚プレゼント（名前刻印なし）」がつく
    ========================================================================== */
 const CHEER_PAYMENT_LINKS = {
-  1000: '',
+  3000: '',
   5000: '',
   10000: '',
   30000: '',
@@ -51,7 +52,8 @@ const CHEER_PAYMENT_LINKS = {
 const CHEER_SHEET_ENDPOINT = ''
 // true の間、Stripe のリンクが未設定の金額は仮の決済ページ（checkout-demo.html）へ移動する。本番公開前に false にする
 const CHEER_DEMO_CHECKOUT = true
-const CHEER_NAME_PERK_MIN = 10000
+const CHEER_NAME_PERK_MIN = 3000
+const CHEER_GIFT_PERK_MIN = 10000
 // Stripe の「支払い後のリダイレクト先」を cheer.html?cheer=thanks&amount=金額 にすると、お礼表示になる
 const cheerParams = new URLSearchParams(window.location.search)
 const isCheerThanks = cheerParams.get('cheer') === 'thanks'
@@ -796,7 +798,12 @@ function initCheerThanks() {
   if (!isCheerThanks || !thanks || !form) return
 
   const amount = Number(cheerParams.get('amount'))
-  thanks.querySelector('.cheer-thanks-perk').hidden = !(amount >= CHEER_NAME_PERK_MIN)
+  // 特典のご連絡：¥3,000〜はお名前掲載、¥10,000〜はTシャツのプレゼントも
+  const perkNote = thanks.querySelector('.cheer-thanks-perk')
+  perkNote.hidden = !(amount >= CHEER_NAME_PERK_MIN)
+  if (amount >= CHEER_GIFT_PERK_MIN) {
+    perkNote.textContent = '試合毎に使用するTシャツへのお名前掲載（匿名の方を除く）と、オフィシャルTシャツのプレゼントについて、準備ができしだいご連絡します。'
+  }
   // 左側の「特典」も、贈っていただいた金額の状態で点灯させる
   const amountInput = form.querySelector(`input[name="amount"][value="${amount}"]`)
   if (amountInput) {
