@@ -30,6 +30,7 @@ HTML / CSS / JavaScript のみで構成した静的サイトです。ビルド�
         ├── apple-touch-icon.png  # iPhone のホーム画面用（黒地）
         ├── chara-stand.webp      # キャラクター（SHOP の見出し横）※背景透過
         ├── goods-tshirt.webp     # SHOP：オフィシャルTシャツ
+        ├── partner-1〜4-*.webp   # 現在のスポンサーのロゴ（番号順に表示）
         ├── saigo-brush.webp      # 筆文字ロゴ（透過）
         ├── saigo-hero.webp       # ヒーロー用人物切り抜き（透過）
         ├── saigo-profile.webp     # プロフィール写真
@@ -127,6 +128,14 @@ python3 -m http.server 8000
 - **メールアドレス（必須）**：お礼メッセージ・特典の連絡先。未入力・形式違いのときは欄の下にエラーを出して先へ進ませません。Stripe の決済ページへ移動するときは `prefilled_email` を付けて、同じアドレスを最初から入力済みにします（お客様の入力は1回だけ）
 - **スプレッドシート保存**：未実装。`main.js` の `initCheerForm` 内の `record`（金額・お名前・匿名・メッセージ・メールアドレス・日時）を、Google Apps Script（`CHEER_SHEET_ENDPOINT`）へ送ってから決済ページへ移動する想定です。スプレッドシートにはこの内容が1行にまとまって残ります
 
+### スポンサーのロゴを追加・変更する
+
+`index.html` の `.partner-logos` に `<li><img …></li>` を1行追加します（並び順＝表示順）。
+
+- ロゴ画像は `assets/images/partner-番号-名前.webp`。余白を詰めて切り取り、横幅 800px 程度にしてから置く
+- 白いカードの中央に表示されます。背景色つきのロゴ（Re:SHAL の赤など）は、`<li>` にクラスを付けてカードの背景色をロゴと同じ色にする（`.partner-logo-red` 参照）
+- .ai / .pdf のロゴは、Mac なら `qlmanage -t -s 3000 -o 出力先 ファイル.pdf` で PNG にできます（.ai は PDF 互換で保存されている場合）
+
 ### 次戦情報を変更する
 
 `index.html` の `.next-fight` 内を書き換えます。カウントダウンは `.next-countdown` の属性で制御しています。
@@ -185,5 +194,4 @@ YouTube の URL が `https://www.youtube.com/watch?v=XXXX` なら、`XXXX` の�
 - [ ] **フッターの電話番号・LINE ID**：公開して問題ないかお客様に確認
 - [ ] **OGP 画像**：`og:image` は絶対 URL が必要なため、本番ドメイン確定後に `index.html`・`cheer.html`・`shop.html` の `<head>` に追加する（激励賞・SHOP は SNS で共有されるので、それぞれ専用の画像があると効果的）（例：`<meta property="og:image" content="https://example.com/assets/images/ogp.jpg">`、1200×630px 推奨）
 - [ ] **プロフィールの年齢・年数**：「29歳」「4年目」は固定値のため、誕生日・年明けに更新する
-- [ ] **スポンサーロゴ**：スポンサーが決まったら、スポンサー欄にロゴを掲載する枠を追加する（募集中の空き枠は 2026-11 に削除済み）
 - [ ] **グッズ**：現在の4商品（Tシャツ・タオル・キャップ・ステッカー）は仮の内容です。実際の商品名・価格・写真・購入ページに差し替える
