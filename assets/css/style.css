@@ -432,15 +432,11 @@ main {
   position: relative; max-width: 600px; padding: 3px 0 3px 22px; color: #3f3d39;
   border-left: 3px solid var(--orange); font-size: 14px; font-weight: 600; line-height: 2.15;
 }
-.profile-photo { position: relative; max-width: 390px; margin-top: 35px; overflow: hidden; background: #d8d4ca; }
-.profile-photo img { display: block; width: 100%; aspect-ratio: 1/1.18; object-fit: cover; object-position: center top; filter: saturate(.82) contrast(1.04); }
-.profile-photo::after {
-  position: absolute; inset: 60% 0 0; pointer-events: none;
-  background: linear-gradient(transparent,rgba(15,15,16,.62)); content: '';
-}
+/* 人物だけを切り抜いた全身の写真を、枠なしでそのまま立たせる */
+.profile-photo { position: relative; max-width: 300px; margin-top: 35px; }
+.profile-photo img { display: block; width: 100%; height: auto; filter: drop-shadow(14px 18px 22px rgba(30,25,15,.22)); }
 .profile-photo figcaption {
-  position: absolute; right: 15px; bottom: 14px; left: 15px; z-index: 1;
-  color: white; font: 600 8px/1 'Barlow Condensed'; letter-spacing: .16em;
+  margin-top: 16px; color: #8a867e; font: 600 9px/1 'Barlow Condensed'; letter-spacing: .16em;
 }
 .profile-content dl { margin-top: 45px; border-top: 2px solid #161616; }
 .profile-content dl div { display: grid; grid-template-columns: 30% 70%; padding: 17px 0; border-bottom: 1px solid #c7c4bb; font-size: 12px; }
@@ -1257,13 +1253,13 @@ footer p,footer > a:last-child { color: #777; font: 500 9px/1 'Barlow Condensed'
   /* スマホ：PCと同じプロフィール写真を、見出し〜メッセージの背景に透かして敷く */
   .profile-section { position: relative; isolation: isolate; overflow: hidden; }
   .profile-photo {
-    position: absolute; top: 0; right: -6%; z-index: -1; width: 82%; max-width: none; margin: 0;
+    position: absolute; top: 20px; right: -4%; z-index: -1; width: 62%; max-width: none; margin: 0;
     background: none; opacity: .2; pointer-events: none;
-    -webkit-mask-image: linear-gradient(to bottom,#000 55%,transparent 100%),linear-gradient(to left,#000 60%,transparent 100%);
-    -webkit-mask-composite: source-in; mask-image: linear-gradient(to bottom,#000 55%,transparent 100%),linear-gradient(to left,#000 60%,transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom,#000 22%,transparent 48%),linear-gradient(to left,#000 60%,transparent 100%);
+    -webkit-mask-composite: source-in; mask-image: linear-gradient(to bottom,#000 22%,transparent 48%),linear-gradient(to left,#000 60%,transparent 100%);
     mask-composite: intersect;
   }
-  .profile-photo::after,.profile-photo figcaption { display: none; }
+  .profile-photo figcaption { display: none; }
   .profile-photo img { filter: grayscale(.3) contrast(1.05); }
   .record-section { padding: 75px 20px; }
   .record-heading { grid-template-columns: 1fr; gap: 35px; }
