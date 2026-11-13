@@ -72,7 +72,7 @@ HTML / CSS / JavaScript のみで構成した静的サイトです。ビルド�
 ### 別ページ（cheer.html・shop.html）
 
 - SNS やQRコードからそのまま開いてもらうための単独ページです。オープニング演出・セクションごとのスナップはなく、普通にスクロールします
-- **ヘッダー（メニュー）とフッターは3ファイル（index.html・cheer.html・shop.html）にそれぞれ書いてあります。** メニューやSNSリンクを変えるときは3ファイルとも直してください。SNSアイコン（Instagram・X・Threads）は1ファイルにつき3か所（スマホ用ヘッダーの `.header-socials`、メニュー内の `.menu-socials`、フッターの `.footer-socials`）にあります。今いるページのメニューには `aria-current="page"` を付けます
+- **ヘッダー（メニュー）とフッターは3ファイル（index.html・cheer.html・shop.html）にそれぞれ書いてあります。** メニューやSNSリンクを変えるときは3ファイルとも直してください。SNSアイコン（Instagram・X・Threads）は、メニュー内の `.menu-socials`・フッターの `.footer-socials` に加え、トップは最初の画面（スマホのみ）の `.hero-socials`、サポーター・SHOP はスマホ用ヘッダーの `.header-socials` にもあります。今いるページのメニューには `aria-current="page"` を付けます
 - トップのセクションへは `index.html#contact` のようにリンクします。`#` 付きで開いたトップは、オープニング演出を飛ばしてその欄へ移動します
 - CSS（`style.css`）と JS（`main.js`）は全ページ共通です
 
@@ -217,7 +217,6 @@ YouTube の URL が `https://www.youtube.com/watch?v=XXXX` なら、`XXXX` の�
 - [ ] **お問い合わせフォーム**：現在は送信せず「準備中」メッセージを表示するだけです。Formspree・Googleフォーム・Cloudflare Workers などで送信先を実装する
 - [ ] **プロフィール写真**：現在の計量写真は 430px 程度と小さく、PC ではやや粗く見えるため、可能なら高解像度版（幅 800px 以上）に差し替える
 - [ ] **写真の使用許諾**：RISE 宣材写真・計量写真・大会写真の Web 掲載について、撮影者・主催者の許諾を確認
-- [ ] **フッターの電話番号・LINE ID**：公開して問題ないかお客様に確認
 - [ ] **OGP 画像のURL**：共有画像（`og-top.jpg`・`og-cheer.jpg`・`og-shop.jpg`）は作成済み。`og:image` は絶対 URL が必要なため、今は確認用の `https://shoheyosaka.github.io/saigo/…` を指定している。本番ドメインが決まったら `index.html`・`cheer.html`・`shop.html` の `og:image` と `twitter:image` を本番の URL に書き換える
 - [ ] **写真の利用確認**：RISE の写真（©RISE / Chiyo Yamamoto）を背景・切り抜き・共有画像に使っているので、加工しての利用が問題ないか確認する
 - [ ] **プロフィールの年齢・年数**：「29歳」「4年目」は固定値のため、誕生日・年明けに更新する
