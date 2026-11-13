@@ -1279,6 +1279,8 @@ footer p,footer > a:last-child { color: #777; font: 500 9px/1 'Barlow Condensed'
 }
 
 @media (max-width: 780px) {
+  /* iPhone は入力欄の文字が 16px 未満だと、押したときに画面を自動で拡大してしまうので 16px にそろえる */
+  input:not([type='checkbox']):not([type='radio']),select,textarea { font-size: 16px !important; }
   /* スマホはブラウザ標準のページスクロールにする。
      入れ子スクロール＋強制スナップは iOS Safari で描画が追いつかなくなるため使わない */
   html { scroll-padding-top: 68px; }
