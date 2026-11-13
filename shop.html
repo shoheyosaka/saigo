@@ -10,7 +10,12 @@
   <meta property="og:site_name" content="SAIGO OFFICIAL SITE">
   <meta property="og:title" content="SHOP | SAIGO OFFICIAL SITE">
   <meta property="og:description" content="SAIGOオフィシャルグッズで、一緒に応援しよう。">
+  <!-- 共有画像は絶対URLが必要。本番ドメインが決まったら差し替える（README「公開前チェックリスト」） -->
+  <meta property="og:image" content="https://shoheyosaka.github.io/saigo/assets/images/og-shop.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
   <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://shoheyosaka.github.io/saigo/assets/images/og-shop.jpg">
   <link rel="icon" href="assets/images/favicon-32.png" sizes="32x32" type="image/png">
   <link rel="icon" href="assets/images/favicon-192.png" sizes="192x192" type="image/png">
   <link rel="apple-touch-icon" href="assets/images/apple-touch-icon.png">
@@ -49,23 +54,47 @@
   </header>
 
   <main id="top">
-    <section class="goods-section" id="shop" aria-labelledby="shop-heading">
-      <div class="goods-head">
-        <div>
-          <p class="section-label">OFFICIAL GOODS</p>
-          <div class="goods-title">
-            <h1 id="shop-heading">SHOP</h1>
-            <img class="chara chara-stand" src="assets/images/chara-stand.webp" alt="" aria-hidden="true" loading="lazy" decoding="async" width="374" height="640">
-          </div>
-        </div>
-        <p>
-          SAIGOオフィシャルグッズ。会場やSNSで一緒に応援してください。
+    <!-- SHOP の上部：ポップな見出し＋ロゴ（ステッカー風） -->
+    <section class="shop-hero" id="shop" aria-labelledby="shop-heading">
+      <div class="shop-hero-copy">
+        <p class="shop-hero-label">OFFICIAL GOODS</p>
+        <h1 class="shop-hero-title" id="shop-heading">SHOP</h1>
+        <p class="shop-hero-lead">
+          SAIGOオフィシャルグッズ。会場やSNSで一緒に応援してください。<br>
           販売情報は Instagram・X でもお知らせします。
         </p>
+        <ul class="shop-hero-tags" aria-label="タグ">
+          <li>#SAIGO</li>
+          <li>#TARGETSHIBUYA</li>
+          <li>#リトルラストサムライ</li>
+        </ul>
       </div>
+      <div class="shop-hero-art">
+        <span class="shop-hero-burst" aria-hidden="true"></span>
+        <img class="shop-hero-logo" src="assets/images/shop-logo.webp" alt="SAIGO オフィシャルロゴ（キャラクター）" decoding="async" fetchpriority="high" width="720" height="1272">
+        <span class="shop-hero-badge" aria-hidden="true">OFFICIAL<br><b>GOODS</b></span>
+      </div>
+      <!-- 下端を流れる帯 -->
+      <div class="shop-ticker" aria-hidden="true">
+        <div><span>SAIGO OFFICIAL GOODS ★ TARGET SHIBUYA ★ LITTLE LAST SAMURAI ★ </span><span>SAIGO OFFICIAL GOODS ★ TARGET SHIBUYA ★ LITTLE LAST SAMURAI ★ </span></div>
+      </div>
+    </section>
 
+    <section class="goods-section" aria-label="グッズ一覧">
       <!-- グッズカードは main.js の goods 配列から描画 -->
       <div class="goods-list"></div>
+
+      <!-- 着用イメージ：リングサイドでセコンドが着ている写真 -->
+      <div class="ringside">
+        <figure class="ringside-photo">
+          <img src="assets/images/ringside-tshirt.webp" alt="SAIGOのTシャツを着てリングサイドに立つセコンド" loading="lazy" decoding="async" width="660" height="820">
+        </figure>
+        <div class="ringside-body">
+          <p class="section-label">ON THE RINGSIDE</p>
+          <h2>リングサイドでも、<br>このTシャツ。</h2>
+          <p>試合当日、セコンド陣もオフィシャルTシャツを着てリングサイドに立っています。会場で、SNSで、同じTシャツで一緒に戦ってください。</p>
+        </div>
+      </div>
 
       <p class="goods-note">
         価格はすべて税込です。会場販売の在庫や通信販売については

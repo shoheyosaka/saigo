@@ -28,13 +28,18 @@ HTML / CSS / JavaScript のみで構成した静的サイトです。ビルド�
         ├── favicon-32.png        # ファビコン（キャラの顔・白フチ）
         ├── favicon-192.png       # ファビコン大（Android など）
         ├── apple-touch-icon.png  # iPhone のホーム画面用（黒地）
-        ├── chara-stand.webp      # キャラクター（SHOP の見出し横）※背景透過
+        ├── chara-stand.webp      # キャラクター（トップの激励賞カード・お礼画面）※背景透過
+        ├── shop-logo.webp        # SHOP 上部のロゴ（キャラ＋ゴリラ＋SAIGO、白フチのステッカー風）
         ├── goods-tshirt.webp     # SHOP：オフィシャルTシャツ
         ├── partner-1〜4-*.webp   # 現在のスポンサーのロゴ（番号順に表示）
         ├── saigo-brush.webp      # 筆文字ロゴ（透過）
         ├── saigo-hero.webp       # ヒーロー用人物切り抜き（透過）
         ├── saigo-profile.webp     # プロフィール写真
-        └── gallery-01〜22.webp   # ギャラリーの写真（表示順は index.html の並び）
+        ├── gallery-01〜22.webp   # ギャラリーの写真（表示順は index.html の並び）。各セクションの背景写真にも流用
+        ├── sponsor-placement.webp # スポンサー欄「ロゴは、ここに載ります。」の写真
+        ├── ringside-tshirt.webp  # Tシャツを着たセコンドの写真（SHOP・激励賞）
+        ├── intro-1〜4.webp       # オープニングで一瞬ずつ映す写真（軽量版）
+        └── og-top / og-cheer / og-shop.jpg  # SNS 共有画像（1200×630）
 ```
 
 外部読み込みは Google Fonts（Barlow Condensed / Noto Sans JP）と YouTube 埋め込みのみです。
@@ -53,15 +58,16 @@ HTML / CSS / JavaScript のみで構成した静的サイトです。ビルド�
 
 | セクション | ID | 内容 |
 | --- | --- | --- |
-| オープニング | — | 煙＋斬撃＋ロゴの演出。同じタブでは初回のみ再生（ロゴクリックで再生し直し） |
+| オープニング | — | 試合写真のフラッシュ＋煙＋斬撃＋ロゴの演出。同じタブでは初回のみ再生（ロゴクリックで再生し直し） |
 | ヒーロー | `#top` | 筆文字ロゴ・キャッチコピー・CTA |
-| 概要 | `#next-fight` / `#career` | 次戦情報（カウントダウン）・戦績サマリー・紹介動画 |
+| 概要 | `#next-fight` / `#career` | 次戦情報（背景に写真・カウントダウン）・戦績サマリー・紹介動画 |
 | プロフィール | `#profile` | メッセージ・基本データ |
+| 写真の帯 | — | 画面いっぱいの写真に「闘いの先に、まだ見ぬ景色を。」。スクロールで写真がゆっくり動く |
 | 戦績 | — | 勝率リング・数値カウントアップ・試合カード一覧（5件＋もっと見る） |
 | ギャラリー | `#gallery` | 写真22枚の立体スライダー（奥の写真が前に出てくる。PCは矢印・ドラッグ、スマホはスワイプ、自動送りあり） |
 | 応援（入口） | `#support` | 激励賞ページ・SHOP ページへの入口カード2枚 |
-| スポンサー | `#sponsor` | 見出し・スポンサーロゴ・プラン・開始までの流れ・お問い合わせボタン |
-| お問い合わせ | `#contact` | フォーム（送信機能は未実装） |
+| スポンサー | `#sponsor` | 見出し・スポンサーロゴ・ロゴの掲出位置（トランクスの写真＋社名一覧）・プラン・開始までの流れ・お問い合わせボタン |
+| お問い合わせ | `#contact` | セクション全体の背景に写真（白黒＋クリーム色を重ねた明るいトーン）・フォーム（送信機能は未実装） |
 
 ### 別ページ（cheer.html・shop.html）
 
@@ -134,6 +140,19 @@ python3 -m http.server 8000
 - `<img>` の `width`・`height` は画像の実寸、`alt` は写真の説明、`.depth-caption` は番号と英字ラベル（ENTRANCE / FIGHT など）
 - 自動で次へ進む間隔は `assets/js/main.js` の `DEPTH_AUTOPLAY_MS`（ミリ秒）
 
+### 写真を背景に使う（全ページ共通のトーン）
+
+背景写真は `<div class="photo-bg" aria-hidden="true"><img src="…" alt=""></div>` で入れます。少し色を抜いて暗くし、オレンジを薄く重ねる処理が自動でかかるので、どの写真を使っても全体のトーンがそろいます。
+
+- 親要素に `position: relative; isolation: isolate;` が必要（既存の箇所を参照）
+- 写真のどこを見せるか：`style="--photo-pos: 50% 30%"`（横・縦の位置）
+- 暗さのかけ方：CSS で `--photo-shade` にグラデーションを指定（文字が乗る側を暗く）
+- スクロールに合わせて写真をゆっくり動かすときは `<img>` に `data-parallax` を付ける
+
+### スポンサーの「ロゴの掲出位置」を変える
+
+`index.html` の `.placement`。写真は `sponsor-placement.webp`、右の社名一覧は `.placement-list` の `<li>`。スポンサーが増えたら `<li>` を1行足し、ロゴが写った新しい写真があれば差し替えます。
+
 ### スポンサーのロゴを追加・変更する
 
 `index.html` の `.partner-logos` に `<li><img …></li>` を1行追加します（並び順＝表示順）。
@@ -199,6 +218,7 @@ YouTube の URL が `https://www.youtube.com/watch?v=XXXX` なら、`XXXX` の�
 - [ ] **プロフィール写真**：現在の計量写真は 430px 程度と小さく、PC ではやや粗く見えるため、可能なら高解像度版（幅 800px 以上）に差し替える
 - [ ] **写真の使用許諾**：RISE 宣材写真・計量写真・大会写真の Web 掲載について、撮影者・主催者の許諾を確認
 - [ ] **フッターの電話番号・LINE ID**：公開して問題ないかお客様に確認
-- [ ] **OGP 画像**：`og:image` は絶対 URL が必要なため、本番ドメイン確定後に `index.html`・`cheer.html`・`shop.html` の `<head>` に追加する（激励賞・SHOP は SNS で共有されるので、それぞれ専用の画像があると効果的）（例：`<meta property="og:image" content="https://example.com/assets/images/ogp.jpg">`、1200×630px 推奨）
+- [ ] **OGP 画像のURL**：共有画像（`og-top.jpg`・`og-cheer.jpg`・`og-shop.jpg`）は作成済み。`og:image` は絶対 URL が必要なため、今は確認用の `https://shoheyosaka.github.io/saigo/…` を指定している。本番ドメインが決まったら `index.html`・`cheer.html`・`shop.html` の `og:image` と `twitter:image` を本番の URL に書き換える
+- [ ] **写真の利用確認**：RISE の写真（©RISE / Chiyo Yamamoto）を背景・切り抜き・共有画像に使っているので、加工しての利用が問題ないか確認する
 - [ ] **プロフィールの年齢・年数**：「29歳」「4年目」は固定値のため、誕生日・年明けに更新する
 - [ ] **グッズ**：現在の4商品（Tシャツ・タオル・キャップ・ステッカー）は仮の内容です。実際の商品名・価格・写真・購入ページに差し替える

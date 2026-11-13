@@ -637,6 +637,30 @@ function initDepthGallery() {
   render()
 }
 
+/* Parallax：写真の帯などで、スクロールに合わせて写真をゆっくり上下に動かす ----
+   PC はページ内の main がスクロールし、スマホはページ全体がスクロールするので両方を見る */
+function initParallax() {
+  const images = Array.from(document.querySelectorAll('[data-parallax]'))
+  if (!images.length || prefersReducedMotion()) return
+  let frame = 0
+  const update = () => {
+    frame = 0
+    const viewport = window.innerHeight
+    images.forEach((image) => {
+      const box = image.parentElement.getBoundingClientRect()
+      if (box.bottom < 0 || box.top > viewport) return
+      // 画面の中央に来たとき 0、上下の端で ±1
+      const progress = (box.top + box.height / 2 - viewport / 2) / (viewport / 2 + box.height / 2)
+      image.style.transform = `translate3d(0,${(progress * 9).toFixed(2)}%,0)`
+    })
+  }
+  const request = () => { if (!frame) frame = requestAnimationFrame(update) }
+  window.addEventListener('scroll', request, { passive: true })
+  document.querySelector('main')?.addEventListener('scroll', request, { passive: true })
+  window.addEventListener('resize', request)
+  update()
+}
+
 /* Hero smoke: stop animating while the hero is off screen ---------------- */
 function initHeroVisibility() {
   const hero = document.querySelector('.hero')
@@ -809,6 +833,7 @@ initCountdown()
 initScrollReveal()
 initRecordCounters()
 initDepthGallery()
+initParallax()
 initHeroVisibility()
 initVideoFacade()
 initContactForm()

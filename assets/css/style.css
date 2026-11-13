@@ -580,6 +580,67 @@ main {
 .goods-head h1,.goods-head h2 { margin-top: 18px; font: 800 clamp(64px,8vw,112px)/.9 'Barlow Condensed',sans-serif; letter-spacing: .02em; }
 .goods-head > p { color: #66625b; font-size: 12px; line-height: 2; }
 .goods-list { display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; margin-top: 60px; }
+.goods-list:first-child { margin-top: 0; }
+
+/* SHOP 上部（ポップな見出し）------------------------------------------------
+   オレンジ地に水玉、白抜きの大きな「SHOP」、ステッカー風のロゴ、下端を流れる帯 */
+.shop-hero {
+  --shop-yellow: #ffd84a;
+  position: relative; display: grid; grid-template-columns: 1.1fr .9fr; align-items: center; gap: 40px;
+  min-height: clamp(520px,62vh,640px); overflow: hidden; padding: 70px max(24px,calc((100vw - 1240px)/2)) 110px;
+  color: #171717;
+  background:
+    radial-gradient(circle,rgba(255,255,255,.18) 2.2px,transparent 2.8px) 0 0/22px 22px,
+    var(--orange);
+}
+.shop-hero-copy { position: relative; z-index: 2; }
+.shop-hero-label {
+  display: inline-block; padding: 8px 14px; color: white; background: #171717;
+  font: 700 13px/1 'Barlow Condensed',sans-serif; letter-spacing: .24em; transform: rotate(-3deg);
+}
+.shop-hero-title {
+  margin-top: 18px; color: white; font: 900 clamp(110px,15vw,210px)/.82 'Barlow Condensed',sans-serif; letter-spacing: .01em;
+  text-shadow: 6px 6px 0 #171717; -webkit-text-stroke: 3px #171717; paint-order: stroke fill;
+}
+.shop-hero-lead { margin-top: 26px; color: #171717; font-size: 14px; font-weight: 700; line-height: 1.9; }
+.shop-hero-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 22px; list-style: none; }
+.shop-hero-tags li {
+  padding: 8px 14px; border: 2px solid #171717; border-radius: 999px; background: white;
+  font-size: 12px; font-weight: 800; box-shadow: 3px 3px 0 #171717;
+}
+.shop-hero-tags li:nth-child(2) { background: var(--shop-yellow); }
+.shop-hero-art { position: relative; z-index: 1; display: grid; place-items: center; }
+/* ロゴの後ろのギザギザ（スターバースト） */
+.shop-hero-burst {
+  position: absolute; width: min(520px,100%); aspect-ratio: 1; background: var(--shop-yellow);
+  clip-path: polygon(50% 0,57% 14%,71% 5%,72% 21%,88% 17%,82% 32%,98% 35%,87% 47%,100% 57%,85% 63%,93% 78%,77% 78%,76% 94%,63% 86%,54% 100%,46% 87%,32% 96%,30% 80%,14% 84%,19% 68%,3% 63%,14% 51%,0 41%,15% 35%,9% 20%,25% 21%,26% 5%,40% 13%);
+  animation: shop-burst-spin 40s linear infinite;
+}
+@keyframes shop-burst-spin { to { transform: rotate(360deg); } }
+.shop-hero-logo {
+  position: relative; width: min(300px,72%); height: auto; transform: rotate(-4deg);
+  filter: drop-shadow(8px 10px 0 rgba(23,23,23,.9));
+  animation: shop-logo-float 4s ease-in-out infinite;
+}
+@keyframes shop-logo-float {
+  0%,100% { transform: rotate(-4deg) translateY(0); }
+  50% { transform: rotate(-2deg) translateY(-10px); }
+}
+.shop-hero-badge {
+  position: absolute; top: 6%; right: 2%; display: grid; width: 108px; height: 108px; place-items: center; align-content: center;
+  border: 3px solid #171717; border-radius: 50%; color: #171717; background: white;
+  font: 700 12px/1.05 'Barlow Condensed',sans-serif; letter-spacing: .12em; text-align: center;
+  transform: rotate(12deg); box-shadow: 4px 4px 0 #171717;
+}
+.shop-hero-badge b { color: var(--orange); font-size: 24px; letter-spacing: .04em; }
+/* 下端を流れる帯 */
+.shop-ticker {
+  position: absolute; right: -2%; bottom: 26px; left: -2%; z-index: 3; overflow: hidden;
+  padding: 12px 0; border-block: 3px solid #171717; background: #171717; transform: rotate(-1.5deg);
+}
+.shop-ticker > div { display: flex; width: max-content; animation: shop-ticker 26s linear infinite; }
+.shop-ticker span { padding-right: 0; color: var(--shop-yellow); font: 800 18px/1 'Barlow Condensed',sans-serif; letter-spacing: .14em; white-space: pre; }
+@keyframes shop-ticker { to { transform: translateX(-50%); } }
 .goods-card {
   display: flex; flex-direction: column; overflow: hidden; background: #fff;
   transition: transform .22s ease,box-shadow .22s ease;
@@ -857,9 +918,6 @@ html:has(.subpage) { scroll-padding-top: 82px; }
   transition: transform .35s cubic-bezier(.3,1.6,.5,1);
 }
 .chara:hover { transform: rotate(-4deg) translateY(-4px); }
-.goods-title { display: flex; align-items: flex-end; gap: 18px; }
-.goods-title .chara-stand { width: 92px; margin-bottom: -4px; transform-origin: bottom center; }
-.goods-title .chara-stand:hover { transform: rotate(6deg) translateY(-4px); }
 
 /* Sponsor ----------------------------------------------------------------- */
 .sponsor-section { color: white; background: #171719; }
@@ -955,6 +1013,116 @@ footer p,footer > a:last-child { color: #777; font: 500 9px/1 'Barlow Condensed'
 .footer-socials a:hover { border-color: var(--orange); color: white; background: var(--orange); }
 .footer-socials svg,.menu-socials svg { width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.7; }
 .footer-socials .icon-fill,.menu-socials .icon-fill { fill: currentColor; stroke: none; }
+
+/* Photo design（写真をデザインに使う） ----------------------------------------
+   写真背景は .photo-bg で全ページ共通のトーンにそろえる：
+   少し色を抜いて暗くし、オレンジを薄く重ねる。撮られ方がバラバラでもサイトとしてまとまって見える。
+   親要素には position: relative と isolation: isolate を指定する。
+   暗さの向きは --photo-shade、写真のどこを見せるかは --photo-pos で個別に調整 */
+.photo-bg { position: absolute; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; background: #0b0b0d; }
+.photo-bg img {
+  display: block; width: 100%; height: 100%; object-fit: cover; object-position: var(--photo-pos,center);
+  filter: grayscale(.4) contrast(1.08) brightness(.62);
+}
+.photo-bg::before {
+  position: absolute; inset: 0; z-index: 1; background: var(--orange); mix-blend-mode: soft-light; opacity: .45; content: '';
+}
+.photo-bg::after {
+  position: absolute; inset: 0; z-index: 1; content: '';
+  background: var(--photo-shade,linear-gradient(90deg,rgba(8,8,10,.9) 0%,rgba(8,8,10,.6) 50%,rgba(8,8,10,.25) 100%));
+}
+/* スクロールで写真がゆっくり動く（main.js の initParallax）。動かす分だけ上下に大きくしておく */
+/* margin の % は横幅基準になるため、top で上にずらす */
+.photo-bg img[data-parallax] { position: relative; top: -12%; height: 124%; will-change: transform; }
+
+/* 次戦：背景に試合前の写真 */
+.next-fight.has-photo { position: relative; isolation: isolate; min-height: 170px; overflow: hidden; border-color: transparent; background: #0b0b0d; }
+.next-fight.has-photo .photo-bg {
+  --photo-shade: linear-gradient(90deg,rgba(8,8,10,.95) 0%,rgba(8,8,10,.8) 45%,rgba(8,8,10,.3) 78%,rgba(8,8,10,.55) 100%);
+}
+
+/* 写真の帯（プロフィールと戦績のあいだ） */
+.photo-band {
+  position: relative; isolation: isolate; display: flex; align-items: center; overflow: hidden;
+  padding: 0 max(24px,calc((100vw - 1240px)/2)); color: #f4f2ed; background: #0b0b0d;
+}
+.photo-band .photo-bg { --photo-shade: linear-gradient(90deg,rgba(8,8,10,.88) 0%,rgba(8,8,10,.45) 60%,rgba(8,8,10,.15) 100%); }
+.photo-band-text { margin-top: 22px; font-size: clamp(40px,6.4vw,96px); font-weight: 800; line-height: 1.18; letter-spacing: -.06em; }
+
+/* スポンサー：ロゴの掲出位置 */
+.placement { display: grid; grid-template-columns: minmax(0,.75fr) 1.25fr; gap: clamp(36px,6vw,80px); align-items: center; margin-top: 70px; }
+.placement .sponsor-block-head { margin-top: 0; }
+.placement-photo { position: relative; width: 100%; max-width: 420px; margin: 0; background: #242426; }
+.placement-photo img { display: block; width: 100%; height: auto; filter: saturate(.92); }
+.placement-lead { margin-top: 24px; color: #b2b1ad; font-size: 13px; line-height: 2; }
+.placement-list { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 28px; list-style: none; }
+.placement-list li {
+  display: flex; align-items: center; gap: 12px; padding: 16px 18px; border: 1px solid #3b3b3e;
+  font-size: 13px; font-weight: 700;
+}
+.placement-list li::before { flex: 0 0 auto; width: 6px; height: 6px; background: var(--orange); content: ''; }
+
+/* お問い合わせ：セクション全体の背景を写真に。
+   セクションの並び（暗い→明るい の交互）に合わせ、ここは白黒にした写真にクリーム色を重ねて明るく見せる */
+.contact-form-section:has(> .photo-bg) { position: relative; isolation: isolate; }
+.contact-form-section > .photo-bg {
+  --photo-shade: linear-gradient(90deg,rgba(241,239,232,.8) 0%,rgba(241,239,232,.9) 45%,rgba(241,239,232,.95) 100%);
+  background: var(--cream);
+}
+.contact-form-section > .photo-bg img { filter: grayscale(1) contrast(1.05) brightness(1.1); }
+.contact-form-section > .photo-bg::before { opacity: .2; }
+.contact-form-section:has(> .photo-bg) .contact-form-intro h2 { font-size: clamp(36px,4.4vw,64px); }
+.contact-form-intro > p.contact-catch { margin-top: 22px; color: var(--orange); font-size: 15px; font-weight: 800; line-height: 1.6; }
+
+/* 激励賞ページ：上部の写真・Tシャツのイメージ・お礼画面の写真 */
+.page-hero {
+  position: relative; isolation: isolate; display: flex; height: clamp(220px,32vw,380px); align-items: flex-end; overflow: hidden;
+  padding: 0 max(24px,calc((100vw - 1240px)/2)); background: #0b0b0d;
+}
+.page-hero .photo-bg { --photo-shade: linear-gradient(180deg,rgba(8,8,10,.1) 25%,rgba(8,8,10,.78) 100%); }
+.page-hero-word {
+  margin-bottom: 26px; color: transparent; -webkit-text-stroke: 1.5px rgba(255,255,255,.6);
+  font: 800 clamp(90px,16vw,230px)/.8 'Barlow Condensed',sans-serif; letter-spacing: .02em;
+}
+.cheer-perks-photo {
+  display: grid; grid-template-columns: 88px 1fr; gap: 14px; align-items: center;
+  margin: 18px 0 0; padding-top: 16px; border-top: 1px solid #dedad1;
+}
+.cheer-perks-photo img { display: block; width: 88px; aspect-ratio: 4/5; object-fit: cover; object-position: center 28%; }
+.cheer-perks-photo figcaption { color: #66625b; font-size: 11px; line-height: 1.7; }
+.cheer-thanks-photo { height: 220px; margin: -44px -40px 28px; overflow: hidden; }
+.cheer-thanks-photo img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: center 30%; }
+.cheer-thanks:has(.cheer-thanks-photo) .chara { top: 190px; }
+
+/* SHOP：リングサイドでの着用写真 */
+.ringside {
+  display: grid; grid-template-columns: minmax(0,.65fr) 1.35fr; align-items: center; gap: clamp(32px,6vw,80px);
+  margin-top: 70px; overflow: hidden; color: #f4f2ed; background: #171719;
+}
+.ringside-photo { height: 100%; margin: 0; }
+.ringside-photo img { display: block; width: 100%; height: 100%; min-height: 360px; object-fit: cover; object-position: center 25%; }
+.ringside-body { padding: 40px 48px 40px 0; }
+.ringside-body h2 { margin-top: 18px; font-size: clamp(28px,3.4vw,46px); font-weight: 800; line-height: 1.3; letter-spacing: -.05em; }
+.ringside-body > p:last-child { margin-top: 20px; color: #b2b1ad; font-size: 13px; line-height: 2; }
+
+/* オープニング：ロゴの前に試合写真を一瞬ずつ切り替える */
+.intro-flash { position: absolute; inset: 0; }
+.intro-flash::after { position: absolute; inset: 0; background: var(--orange); mix-blend-mode: soft-light; opacity: .5; content: ''; }
+.intro-flash img {
+  position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0;
+  filter: grayscale(.55) contrast(1.3) brightness(.75);
+  animation: intro-flash .42s ease-out forwards;
+}
+.intro-flash img:nth-child(1) { animation-delay: .1s; }
+.intro-flash img:nth-child(2) { animation-delay: .45s; }
+.intro-flash img:nth-child(3) { animation-delay: .8s; }
+.intro-flash img:nth-child(4) { animation-delay: 1.15s; }
+@keyframes intro-flash {
+  0% { opacity: 0; transform: scale(1.14); }
+  12% { opacity: .8; }
+  70% { opacity: .55; }
+  100% { opacity: 0; transform: scale(1.02); }
+}
 
 /* Responsive -------------------------------------------------------------- */
 @media (min-width: 781px) {
@@ -1103,7 +1271,6 @@ footer p,footer > a:last-child { color: #777; font: 500 9px/1 'Barlow Condensed'
   .fight-card-latest .fight-card-event,.fight-card-event { right: 22px; left: 22px; }
   .fight-card-main h3 { font-size: 31px; }
   /* スマホ：戦績のキックは見出しの右に、SHOP・お問い合わせのキャラは小さめに */
-  .goods-title .chara-stand { width: 68px; }
   .subpage main { padding-top: 68px; }
   html:has(.subpage) { scroll-padding-top: 68px; }
   .subpage .goods-section,.subpage .cheer-section { min-height: 0; }
@@ -1139,6 +1306,21 @@ footer p,footer > a:last-child { color: #777; font: 500 9px/1 'Barlow Condensed'
   .cheer-thanks-actions { grid-template-columns: 1fr; }
   .goods-section { padding: 75px 20px; }
   .goods-head { grid-template-columns: 1fr; gap: 28px; }
+  /* スマホ：SHOP 上部はロゴを上、文字を下に */
+  .shop-hero { grid-template-columns: 1fr; gap: 10px; min-height: 0; padding: 36px 20px 96px; }
+  .shop-hero-art { order: -1; }
+  .shop-hero-burst { width: min(330px,88vw); }
+  .shop-hero-logo { width: min(190px,50vw); }
+  .shop-hero-badge { top: 2%; right: 4%; width: 82px; height: 82px; font-size: 10px; }
+  .shop-hero-badge b { font-size: 18px; }
+  .shop-hero-title { margin-top: 14px; font-size: 104px; text-shadow: 4px 4px 0 #171717; }
+  .shop-hero-lead { margin-top: 18px; font-size: 12px; }
+  .shop-hero-lead br { display: none; }
+  /* タグはスマホでも3つ横一列に（画面幅に合わせて文字を少し小さく） */
+  .shop-hero-tags { flex-wrap: nowrap; gap: 6px; }
+  .shop-hero-tags li { flex: 0 1 auto; padding: 6px 8px; border-width: 1.5px; font-size: clamp(9px,2.8vw,11px); white-space: nowrap; box-shadow: 2px 2px 0 #171717; }
+  .shop-ticker { bottom: 22px; }
+  .shop-ticker span { font-size: 15px; }
   .goods-list { grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 40px; }
   .goods-body { padding: 14px 14px 16px; }
   .goods-body h3 { font-size: 12px; }
@@ -1166,6 +1348,18 @@ footer p,footer > a:last-child { color: #777; font: 500 9px/1 'Barlow Condensed'
   .form-row { grid-template-columns: 1fr; }
   footer { flex-wrap: wrap; gap: 20px; padding-block: 32px; }
   footer p { order: 3; width: 100%; }
+  /* スマホ：写真を使ったデザイン */
+  .next-fight.has-photo { min-height: 0; }
+  .next-fight.has-photo .photo-bg { --photo-shade: linear-gradient(180deg,rgba(8,8,10,.55) 0%,rgba(8,8,10,.9) 70%); }
+  .photo-band { height: 72svh; min-height: 420px; padding: 0 20px; }
+  .placement { grid-template-columns: 1fr; gap: 30px; margin-top: 56px; }
+  .placement-photo { max-width: 320px; margin-inline: auto; }
+  .placement-list li { gap: 10px; padding: 13px 12px; font-size: 12px; }
+  .cheer-thanks-photo { height: 170px; margin: -30px -18px 22px; }
+  .cheer-thanks:has(.cheer-thanks-photo) .chara { top: 150px; }
+  .ringside { grid-template-columns: 1fr; gap: 0; margin-top: 50px; }
+  .ringside-photo img { height: 300px; min-height: 0; }
+  .ringside-body { padding: 28px 22px 32px; }
 }
 
 /* iPhone SE など縦が短いスマホ：ヒーローを詰めてボタンまで1画面に収める */
@@ -1194,5 +1388,6 @@ footer p,footer > a:last-child { color: #777; font: 500 9px/1 'Barlow Condensed'
     animation: none !important; opacity: 1; transform: none; clip-path: none; filter: none;
   }
   .smoke span { animation: none; opacity: .08; }
+  .shop-hero-burst,.shop-hero-logo,.shop-ticker > div { animation: none; }
   .scroll-cue span::after { animation: none; top: 25%; }
 }

@@ -10,7 +10,12 @@
   <meta property="og:site_name" content="SAIGO OFFICIAL SITE">
   <meta property="og:title" content="SAIGO OFFICIAL SITE | 初代STRIKE NEXUSフェザー級チャンピオン">
   <meta property="og:description" content="挑み続ける姿で、見る人の心を動かす。SAIGOの次なる戦いを、ともに。">
+  <!-- 共有画像は絶対URLが必要。本番ドメインが決まったら差し替える（README「公開前チェックリスト」） -->
+  <meta property="og:image" content="https://shoheyosaka.github.io/saigo/assets/images/og-top.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
   <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://shoheyosaka.github.io/saigo/assets/images/og-top.jpg">
   <link rel="icon" href="assets/images/favicon-32.png" sizes="32x32" type="image/png">
   <link rel="icon" href="assets/images/favicon-192.png" sizes="192x192" type="image/png">
   <link rel="apple-touch-icon" href="assets/images/apple-touch-icon.png">
@@ -45,6 +50,13 @@
 </head>
 <body>
   <div class="intro-sequence" aria-label="SAIGO オープニング">
+    <!-- ロゴが出る前に試合写真を一瞬ずつ切り替える -->
+    <div class="intro-flash" aria-hidden="true">
+      <img src="assets/images/intro-1.webp" alt="" width="900" height="600">
+      <img src="assets/images/intro-2.webp" alt="" width="900" height="656">
+      <img src="assets/images/intro-3.webp" alt="" width="900" height="590">
+      <img src="assets/images/intro-4.webp" alt="" width="900" height="600">
+    </div>
     <div class="intro-smoke" aria-hidden="true">
       <span></span><span></span><span></span><span></span>
       <span></span><span></span><span></span><span></span>
@@ -134,7 +146,8 @@
           <strong>闘いの先に、まだ見ぬ景色を。</strong>
           <span>リトルラストサムライ</span>
         </div>
-        <div class="next-fight scroll-reveal reveal-up" id="next-fight">
+        <div class="next-fight has-photo scroll-reveal reveal-up" id="next-fight">
+          <div class="photo-bg" aria-hidden="true" style="--photo-pos: 50% 38%"><img src="assets/images/gallery-09.webp" alt="" loading="lazy" decoding="async"></div>
           <p class="section-label">NEXT FIGHT</p>
           <div class="next-data">
             <small>RISE 203</small>
@@ -201,6 +214,15 @@
           <div><dt>入場曲</dt><dd>長渕剛 - とんぼ</dd></div>
           <div class="profile-title"><dt>獲得タイトル</dt><dd>STRIKE NEXUS 初代フェザー級チャンピオン</dd></div>
         </dl>
+      </div>
+    </section>
+
+    <!-- 写真の帯：画面いっぱいの写真に言葉を重ねる（スクロールで写真がゆっくり動く） -->
+    <section class="photo-band snap-section" aria-label="闘いの先に、まだ見ぬ景色を。">
+      <div class="photo-bg" aria-hidden="true" style="--photo-pos: 60% 30%"><img src="assets/images/gallery-12.webp" alt="" loading="lazy" decoding="async" data-parallax></div>
+      <div class="photo-band-copy scroll-reveal reveal-up">
+        <p class="section-label">LITTLE LAST SAMURAI</p>
+        <p class="photo-band-text">闘いの先に、<br>まだ見ぬ景色を。</p>
       </div>
     </section>
 
@@ -399,6 +421,29 @@
         </ul>
       </div>
 
+      <!-- ロゴの掲出位置（トランクスのロゴが写った写真＋社名一覧） -->
+      <div class="placement">
+        <figure class="placement-photo">
+          <img src="assets/images/sponsor-placement.webp" alt="計量でポーズをとるSAIGO。トランクスにスポンサー4社のロゴが入っている" loading="lazy" decoding="async" width="760" height="1218">
+        </figure>
+        <div class="placement-body">
+          <div class="sponsor-block-head">
+            <p class="section-label">LOGO PLACEMENT</p>
+            <h3>ロゴは、ここに載ります。</h3>
+          </div>
+          <p class="placement-lead">
+            試合で着用するトランクスにロゴを掲出します。計量・記者会見・試合の写真や映像を通して、
+            会場の観客だけでなく、SNSで試合を見る人にも届きます。
+          </p>
+          <ul class="placement-list">
+            <li><span>First Air Inc.</span></li>
+            <li><span>服作る人</span></li>
+            <li><span>Re:SHAL</span></li>
+            <li><span>Peaks marketing</span></li>
+          </ul>
+        </div>
+      </div>
+
       <div class="sponsor-block-head">
         <p class="section-label">SPONSOR PLAN</p>
         <h3>スポンサープラン</h3>
@@ -437,9 +482,11 @@
     </section>
 
     <section class="contact-form-section snap-section scroll-reveal reveal-up" id="contact">
+      <div class="photo-bg" aria-hidden="true" style="--photo-pos: 38% 30%"><img src="assets/images/gallery-16.webp" alt="" loading="lazy" decoding="async"></div>
       <div class="contact-form-intro">
         <p class="section-label">CONTACT</p>
-        <h2>ともに、新しい挑戦を。</h2>
+        <h2>ともに、<br>新しい挑戦を。</h2>
+        <p class="contact-catch">一緒に、会場を盛り上げませんか。</p>
         <p>スポンサーシップ、出演、取材、グッズ、その他のお問い合わせはこちらからお送りください。</p>
         <div>
           <small>RESPONSE</small>
