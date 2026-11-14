@@ -22,6 +22,44 @@
   <link rel="icon" href="assets/images/favicon-192.png" sizes="192x192" type="image/png">
   <link rel="apple-touch-icon" href="assets/images/apple-touch-icon.png">
 
+  <!-- 構造化データ（Google 向け。画面には出ない）。プロフィール・SNS を変えたらここも合わせる。
+       確認：https://validator.schema.org/ に https://saigoofficial.com/ を入れて、エラー 0 ならOK -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": "https://saigoofficial.com/#website",
+        "url": "https://saigoofficial.com/",
+        "name": "SAIGO OFFICIAL SITE",
+        "alternateName": ["SAIGO 公式サイト", "SAIGO"],
+        "inLanguage": "ja",
+        "about": { "@id": "https://saigoofficial.com/#saigo" }
+      },
+      {
+        "@type": "Person",
+        "@id": "https://saigoofficial.com/#saigo",
+        "name": "SAIGO",
+        "url": "https://saigoofficial.com/",
+        "image": "https://saigoofficial.com/assets/images/saigo-profile.webp",
+        "jobTitle": "プロキックボクサー",
+        "description": "TARGET SHIBUYA 所属のプロキックボクサー。初代 STRIKE NEXUS フェザー級チャンピオン。",
+        "birthDate": "1997-03-06",
+        "birthPlace": { "@type": "Place", "name": "大阪府" },
+        "height": { "@type": "QuantitativeValue", "value": 162, "unitCode": "CMT" },
+        "affiliation": { "@type": "SportsOrganization", "name": "TARGET SHIBUYA", "sport": "キックボクシング" },
+        "award": "STRIKE NEXUS 初代フェザー級チャンピオン",
+        "sameAs": [
+          "https://instagram.com/saigo0306",
+          "https://x.com/saigo0306",
+          "https://www.threads.com/@saigo0306"
+        ]
+      }
+    ]
+  }
+  </script>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800;900&family=Noto+Sans+JP:wght@400..800&display=swap">
