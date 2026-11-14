@@ -41,7 +41,7 @@ HTML / CSS / JavaScript のみで構成した静的サイトです。ビルド�
         ├── supporter-team-tshirt.webp # SAIGOとTシャツを着たセコンド2人（SHOPの「リングサイドでも」。STRIKEロゴは切り落とし済み）
         ├── supporter-perk-tshirt.webp # Tシャツを着てグローブを構えるSAIGO（サポーターページの特典欄）
         ├── intro-1〜4.webp       # オープニングで一瞬ずつ映す写真（軽量版）
-        └── og-top / og-cheer / og-shop.jpg  # SNS 共有画像（1200×630）
+        └── og-top-v2 / og-cheer-v2 / og-shop-v2.jpg  # SNS 共有画像（1200×630）。差し替えるときはファイル名の番号も上げる（SNS に新しい画像として読ませるため）
 ```
 
 外部読み込みは Google Fonts（Barlow Condensed / Noto Sans JP）と YouTube 埋め込みのみです。
@@ -220,7 +220,7 @@ YouTube の URL が `https://www.youtube.com/watch?v=XXXX` なら、`XXXX` の�
 - [ ] **お問い合わせフォーム**：現在は送信せず「準備中」メッセージを表示するだけです。Formspree・Googleフォーム・Cloudflare Workers などで送信先を実装する
 - [ ] **プロフィール写真**：現在の計量写真は 430px 程度と小さく、PC ではやや粗く見えるため、可能なら高解像度版（幅 800px 以上）に差し替える
 - [ ] **写真の使用許諾**：RISE 宣材写真・計量写真・大会写真の Web 掲載について、撮影者・主催者の許諾を確認
-- [ ] **OGP 画像のURL**：共有画像（`og-top.jpg`・`og-cheer.jpg`・`og-shop.jpg`）は作成済み。`og:image` は絶対 URL が必要なため、今は確認用の `https://shoheyosaka.github.io/saigo/…` を指定している。本番ドメインが決まったら `index.html`・`cheer.html`・`shop.html` の `og:image` と `twitter:image` を本番の URL に書き換える
+- [ ] **OGP 画像のURL**：共有画像（`og-top-v2.jpg`・`og-cheer-v2.jpg`・`og-shop-v2.jpg`）は作成済み。`og:image` は絶対 URL が必要なため、今は確認用の `https://shoheyosaka.github.io/saigo/…` を指定している。本番ドメインが決まったら `index.html`・`cheer.html`・`shop.html` の `og:image` と `twitter:image` を本番の URL に書き換える
 - [ ] **写真の利用確認**：RISE の写真（©RISE / Chiyo Yamamoto）を背景・切り抜き・共有画像に使っているので、加工しての利用が問題ないか確認する
 - [ ] **プロフィールの年齢・年数**：「29歳」「4年目」は固定値のため、誕生日・年明けに更新する
 - [ ] **グッズ**：現在の4商品（Tシャツ・タオル・キャップ・ステッカー）は仮の内容です。実際の商品名・価格・写真・購入ページに差し替える
