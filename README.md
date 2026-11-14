@@ -5,7 +5,8 @@
 HTML / CSS / JavaScript のみで構成した静的サイトです。ビルドツールやパッケージのインストールは不要で、ファイルをそのまま配信すれば動きます。
 
 - 確認用：GitHub Pages
-- 本番：お客様確認後、Cloudflare Pages で公開予定
+- 本番：Cloudflare Pages（https://saigoofficial.com/ 。プロジェクトの URL は https://saigo.pages.dev/）
+- Cloudflare Pages は `.html` を外した URL に転送する（`/cheer.html` → `/cheer`）。canonical・og:url・sitemap.xml はこの形で書く
 
 ---
 
@@ -18,6 +19,8 @@ HTML / CSS / JavaScript のみで構成した静的サイトです。ビルド�
 ├── shop.html               # SHOP ページ（同上）
 ├── checkout-demo.html      # サポーターの仮の決済ページ（Stripe 接続前の確認用・本番前に削除）
 ├── .nojekyll               # GitHub Pages で Jekyll 処理を無効化
+├── robots.txt              # 検索エンジン向け（sitemap.xml の場所を伝える）
+├── sitemap.xml             # 検索エンジン向けのページ一覧（ページを増やしたら足す）
 ├── README.md
 └── assets/
     ├── css/
@@ -220,7 +223,9 @@ YouTube の URL が `https://www.youtube.com/watch?v=XXXX` なら、`XXXX` の�
 - [ ] **お問い合わせフォーム**：現在は送信せず「準備中」メッセージを表示するだけです。Formspree・Googleフォーム・Cloudflare Workers などで送信先を実装する
 - [ ] **プロフィール写真**：現在の計量写真は 430px 程度と小さく、PC ではやや粗く見えるため、可能なら高解像度版（幅 800px 以上）に差し替える
 - [ ] **写真の使用許諾**：RISE 宣材写真・計量写真・大会写真の Web 掲載について、撮影者・主催者の許諾を確認
-- [ ] **OGP 画像のURL**：共有画像（`og-top-v2.jpg`・`og-cheer-v2.jpg`・`og-shop-v2.jpg`）は作成済み。`og:image` は絶対 URL が必要なため、今は確認用の `https://shoheyosaka.github.io/saigo/…` を指定している。本番ドメインが決まったら `index.html`・`cheer.html`・`shop.html` の `og:image` と `twitter:image` を本番の URL に書き換える
+- [x] **OGP 画像のURL・canonical**：`og:image`・`twitter:image`・`og:url`・`canonical` を `https://saigoofficial.com/…` にした。robots.txt・sitemap.xml も追加済み
+- [ ] **独自ドメインの接続**：Cloudflare Pages の Custom domains に `saigoofficial.com`（と `www`）を追加。つながるまでは共有画像が表示されない
+- [ ] **GitHub Pages を止める**：本番ドメインがつながったら Settings → Pages で無効化（同じ内容が2か所で公開されたままにしない）
 - [ ] **写真の利用確認**：RISE の写真（©RISE / Chiyo Yamamoto）は「クレジットを消さなければ使用可」とのこと。サイトでは切り抜き（トップの人物）・トリミング（ギャラリー・オープニング・スポンサー欄）・背景・SNS 共有画像など、クレジットが見えなくなる使い方をしているので、公開前に運営へ確認する（NG なら、クレジットが見える形に戻すか、別の写真に差し替える）
 - [ ] **プロフィールの年齢・年数**：「29歳」「4年目」は固定値のため、誕生日・年明けに更新する
 - [ ] **グッズ**：現在の4商品（Tシャツ・タオル・キャップ・ステッカー）は仮の内容です。実際の商品名・価格・写真・購入ページに差し替える

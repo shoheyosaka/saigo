@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 検索エンジン向けのページ一覧。ページを増やしたら <url> を足す（URL は .html なしの形） -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://saigoofficial.com/</loc>
+  </url>
+  <url>
+    <loc>https://saigoofficial.com/cheer</loc>
+  </url>
+  <url>
+    <loc>https://saigoofficial.com/shop</loc>
+  </url>
+</urlset>
